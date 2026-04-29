@@ -80,6 +80,7 @@
 |智谱GLM|[https://www.bigmodel.cn](https://www.bigmodel.cn/invite?icode=KNHlie%2Fn17uAYsTEOr7TH33uFJ1nZ0jLLgipQkYjpcA%3D)|新用户注册得 2000万 Tokens，新模型免费玩到爽！|
 |方舟Coding Plan                             | [https://volcengine.com](https://volcengine.com/L/-BM38uBifyU)          | 8.9元/月聚合了好几个国产模型 Doubao、GLM、DeepSeek、Kimi   |
 |Agent-Skills|[skills](https://github.com/itgoyo/awesome-claude-code-skills)|收集全网最热门的Agent-Skills项目|
+|image2-prompt|[image2-prompt](https://github.com/itgoyo/awesome-gpt-image2-prompt)|🎨精选599个GPT-Image-2提示词，含效果图|
 | **📱 全网最全低价流量卡** | [0元自助申请入口](https://h5.lot-ml.com/ProductEn/Index/5d4a5a4cfae41cab) | 我们提供最新的电信、移动、联通和广电流量卡及物联卡的在线申请和办理服务，热销19元192G流量卡 |
 |不用赴港申请Wise香港账户 | [https://wise.com](https://wise.com/invite/dic/xfp7e3v) |可选择免费 Wise 借记卡或免手续费汇款机会 |
 
