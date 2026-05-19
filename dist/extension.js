@@ -1,24 +1,25 @@
-"use strict";var ee=Object.create;var M=Object.defineProperty;var te=Object.getOwnPropertyDescriptor;var ne=Object.getOwnPropertyNames;var re=Object.getPrototypeOf,oe=Object.prototype.hasOwnProperty;var se=(i,e)=>{for(var o in e)M(i,o,{get:e[o],enumerable:!0})},z=(i,e,o,l)=>{if(e&&typeof e=="object"||typeof e=="function")for(let r of ne(e))!oe.call(i,r)&&r!==o&&M(i,r,{get:()=>e[r],enumerable:!(l=te(e,r))||l.enumerable});return i};var k=(i,e,o)=>(o=i!=null?ee(re(i)):{},z(e||!i||!i.__esModule?M(o,"default",{value:i,enumerable:!0}):o,i)),ae=i=>z(M({},"__esModule",{value:!0}),i);var xe={};se(xe,{activate:()=>we,deactivate:()=>ye});module.exports=ae(xe);var p=k(require("vscode")),y=k(require("path")),h=k(require("fs")),I=k(require("os"));var a=k(require("vscode")),N=k(require("fs")),B=k(require("path")),q=k(require("child_process"));var u=k(require("vscode")),V=k(require("os")),Z=k(require("fs")),j=k(require("path"));var A={"":null,Dracula:{name:"Dracula",background:"#282a36",foreground:"#f8f8f2",cursor:"#f8f8f2",cursorAccent:"#282a36",selectionBackground:"#44475a",black:"#21222c",brightBlack:"#6272a4",red:"#ff5555",brightRed:"#ff6e6e",green:"#50fa7b",brightGreen:"#69ff94",yellow:"#f1fa8c",brightYellow:"#ffffa5",blue:"#bd93f9",brightBlue:"#d6acff",magenta:"#ff79c6",brightMagenta:"#ff92df",cyan:"#8be9fd",brightCyan:"#a4ffff",white:"#f8f8f2",brightWhite:"#ffffff"},Monokai:{name:"Monokai",background:"#272822",foreground:"#f8f8f2",cursor:"#f8f8f0",cursorAccent:"#272822",selectionBackground:"#49483e",black:"#272822",brightBlack:"#75715e",red:"#f92672",brightRed:"#f92672",green:"#a6e22e",brightGreen:"#a6e22e",yellow:"#f4bf75",brightYellow:"#f4bf75",blue:"#66d9ef",brightBlue:"#66d9ef",magenta:"#ae81ff",brightMagenta:"#ae81ff",cyan:"#a1efe4",brightCyan:"#a1efe4",white:"#f8f8f2",brightWhite:"#f9f8f5"},"Solarized Dark":{name:"Solarized Dark",background:"#002b36",foreground:"#839496",cursor:"#839496",cursorAccent:"#002b36",selectionBackground:"#073642",black:"#073642",brightBlack:"#586e75",red:"#dc322f",brightRed:"#cb4b16",green:"#859900",brightGreen:"#586e75",yellow:"#b58900",brightYellow:"#657b83",blue:"#268bd2",brightBlue:"#839496",magenta:"#d33682",brightMagenta:"#6c71c4",cyan:"#2aa198",brightCyan:"#93a1a1",white:"#eee8d5",brightWhite:"#fdf6e3"},"Solarized Light":{name:"Solarized Light",background:"#fdf6e3",foreground:"#657b83",cursor:"#657b83",cursorAccent:"#fdf6e3",selectionBackground:"#eee8d5",black:"#073642",brightBlack:"#586e75",red:"#dc322f",brightRed:"#cb4b16",green:"#859900",brightGreen:"#586e75",yellow:"#b58900",brightYellow:"#657b83",blue:"#268bd2",brightBlue:"#839496",magenta:"#d33682",brightMagenta:"#6c71c4",cyan:"#2aa198",brightCyan:"#93a1a1",white:"#eee8d5",brightWhite:"#fdf6e3"},Nord:{name:"Nord",background:"#2e3440",foreground:"#d8dee9",cursor:"#d8dee9",cursorAccent:"#2e3440",selectionBackground:"#434c5e",black:"#3b4252",brightBlack:"#4c566a",red:"#bf616a",brightRed:"#bf616a",green:"#a3be8c",brightGreen:"#a3be8c",yellow:"#ebcb8b",brightYellow:"#ebcb8b",blue:"#81a1c1",brightBlue:"#81a1c1",magenta:"#b48ead",brightMagenta:"#b48ead",cyan:"#88c0d0",brightCyan:"#8fbcbb",white:"#e5e9f0",brightWhite:"#eceff4"},"One Dark":{name:"One Dark",background:"#282c34",foreground:"#abb2bf",cursor:"#528bff",cursorAccent:"#282c34",selectionBackground:"#3e4451",black:"#282c34",brightBlack:"#5c6370",red:"#e06c75",brightRed:"#e06c75",green:"#98c379",brightGreen:"#98c379",yellow:"#e5c07b",brightYellow:"#d19a66",blue:"#61afef",brightBlue:"#61afef",magenta:"#c678dd",brightMagenta:"#c678dd",cyan:"#56b6c2",brightCyan:"#56b6c2",white:"#abb2bf",brightWhite:"#ffffff"},"Gruvbox Dark":{name:"Gruvbox Dark",background:"#282828",foreground:"#ebdbb2",cursor:"#ebdbb2",cursorAccent:"#282828",selectionBackground:"#504945",black:"#282828",brightBlack:"#928374",red:"#cc241d",brightRed:"#fb4934",green:"#98971a",brightGreen:"#b8bb26",yellow:"#d79921",brightYellow:"#fabd2f",blue:"#458588",brightBlue:"#83a598",magenta:"#b16286",brightMagenta:"#d3869b",cyan:"#689d6a",brightCyan:"#8ec07c",white:"#a89984",brightWhite:"#ebdbb2"},"Tokyo Night":{name:"Tokyo Night",background:"#1a1b26",foreground:"#a9b1d6",cursor:"#c0caf5",cursorAccent:"#1a1b26",selectionBackground:"#33467c",black:"#15161e",brightBlack:"#414868",red:"#f7768e",brightRed:"#f7768e",green:"#9ece6a",brightGreen:"#9ece6a",yellow:"#e0af68",brightYellow:"#e0af68",blue:"#7aa2f7",brightBlue:"#7aa2f7",magenta:"#bb9af7",brightMagenta:"#bb9af7",cyan:"#7dcfff",brightCyan:"#7dcfff",white:"#a9b1d6",brightWhite:"#c0caf5"}},$=Object.keys(A);function R(i){let e=A[i];if(!e)return null;let{name:o,...l}=e;return l}function L(i){return new Promise(e=>setTimeout(e,i))}var ie=3e3,le=15e3,de=200,ce=[/[❯>✻⏵›]\s*$/m,/aider>\s*$/m],U=(()=>{if(process.platform!=="win32")return 0;let i=V.release().split(".");return parseInt(i[2]||"0",10)})(),H=U>0&&U<22e3?"\r":"\x1B[13u",pe=["claude","codex","gemini","copilot","aider","claude --dangerously-skip-permissions","codex -s danger-full-access -a never"];function G(i){let e=i.trim();return pe.some(o=>e===o||e.startsWith(o+" "))}function ge(i){let e=i.toLowerCase();return e.includes("powershell")||e.includes("pwsh")||e.includes("cmd")?`\r
-`:"\r"}function W(i,e,o,l,r){let t=i[r];return t?.startupSteps&&t.startupSteps.length>0?t.startupSteps:t?.startupCommand?[{type:"command",input:t.startupCommand}]:e[r]?[{type:"command",input:e[r]}]:o.length>0?o:l?[{type:"command",input:l}]:[]}var J={".ttf":"truetype",".otf":"opentype",".woff":"woff",".woff2":"woff2"},f=class i{constructor(e,o,l,r){this._terminals=[];this._outputBuffers=[];this._csiUMode=[];this._insideLlm=[];this._cellShellType=[];this._disposed=!1;this._stepGeneration={};this._panel=e,this._context=o,this._rows=l,this._cols=r;let t=o.globalState.get("mergedRegions",[]).filter(n=>n.startRow+n.rowSpan<=l&&n.startCol+n.colSpan<=r);this._hiddenCells=new Set;for(let n of t)for(let d=n.startRow;d<n.startRow+n.rowSpan;d++)for(let s=n.startCol;s<n.startCol+n.colSpan;s++)d===n.startRow&&s===n.startCol||this._hiddenCells.add(d*r+s);this._panel.webview.options={enableScripts:!0,localResourceRoots:[u.Uri.joinPath(o.extensionUri,"media")]},this._panel.webview.html=this._getHtml(),this._panel.webview.onDidReceiveMessage(async n=>{switch(n.type){case"ready":if(this._createTerminals(n.defaultCols,n.defaultRows),n.cellDims&&Array.isArray(n.cellDims))for(let s=0;s<n.cellDims.length&&s<this._terminals.length;s++){let c=n.cellDims[s];if(c?.cols&&c?.rows)try{this._terminals[s].pty.resize(c.cols,c.rows)}catch{}}this.loadCustomFonts(this._context.globalState.get("customFonts",[]));let d=this._context.globalState.get("cellOverrides",{});for(let[s,c]of Object.entries(d))if(c.bgColor||c.fgColor||c.fontFamily||c.themeName){let g=c.themeName?R(c.themeName):null;this.sendCellConfig(parseInt(s),c.bgColor||"",c.fgColor||"",c.fontFamily||"",c.themeName||"",g)}break;case"input":{let s=this._terminals[n.id]?.pty;s&&this._chunkedWrite(s,n.data);break}case"clipboardWrite":u.env.clipboard.writeText(n.text);break;case"resize":try{this._terminals[n.id]?.pty.resize(n.cols,n.rows)}catch{}break;case"clearTerminal":this._panel.webview.postMessage({type:"clear",id:n.id});break;case"killTerminal":try{this._terminals[n.id]?.pty.kill()}catch{}break;case"restartTerminal":this._restartTerminal(n.id);break;case"renameCell":{let s=this._context.globalState.get("cellLabels",[]),c=s[n.id]||"",g=await u.window.showInputBox({prompt:u.l10n.t("Rename cell {0}",n.id+1),value:c,placeHolder:u.l10n.t("Enter alias (empty to reset)")});g!==void 0&&(s[n.id]=g,await this._context.globalState.update("cellLabels",s),this.sendLabels(),u.commands.executeCommand("terminalGrid._refreshSidebar"));break}}}),this._configListener=u.workspace.onDidChangeConfiguration(n=>{if(n.affectsConfiguration("terminalGrid")){let d=u.workspace.getConfiguration("terminalGrid"),s=d.get("colorTheme","");this._panel.webview.postMessage({type:"configUpdate",zoom:d.get("zoomPercent",100),fontFamily:d.get("fontFamily",""),bgColor:d.get("backgroundColor",""),fgColor:d.get("foregroundColor",""),themeName:s,themeColors:R(s)})}}),this._panel.onDidDispose(()=>this.dispose()),this._panel.iconPath=u.Uri.joinPath(o.extensionUri,"images","sidebar.svg")}static{this.OUTPUT_BUFFER_SIZE=5e4}static{this.CSI_U_ENABLE=/\x1b\[>[0-9]+u/}static{this.CSI_U_DISABLE=/\x1b\[<[0-9]*u/}static _getLog(){return i._log||(i._log=u.window.createOutputChannel("Terminal Grid")),i._log}static _getNodePty(){if(i._nodePty===void 0)try{i._nodePty=require("node-pty")}catch{i._nodePty=null}return i._nodePty}static getAvailableShells(){let e=[{name:"IDE Default",path:"",args:[]}];try{let n=function(g){try{if(/[/\\]/.test(g))return l.existsSync(g);let b=process.platform==="win32"?`where ${g}`:`which ${g}`;return r.execSync(b,{stdio:"ignore",timeout:500}),!0}catch{return!1}};var o=n;let l=require("fs"),r=require("child_process"),t=new Set,d=process.platform==="win32"?"windows":process.platform==="darwin"?"osx":"linux",s=u.workspace.getConfiguration(`terminal.integrated.profiles.${d}`);if(s)for(let g of Object.keys(s))try{let b=s.get(g);if(!b||typeof b!="object")continue;let w=Array.isArray(b.path)?b.path[0]:b.path;w&&n(w)&&(e.push({name:g,path:w,args:b.args||[]}),t.add(w.toLowerCase()))}catch{}let c=process.platform==="win32"?[{name:"PowerShell",path:"powershell.exe",args:["-NoLogo"]},{name:"PowerShell 7",path:"pwsh.exe",args:["-NoLogo"]},{name:"Command Prompt",path:"cmd.exe",args:[]},{name:"Git Bash",path:"C:\\Program Files\\Git\\bin\\bash.exe",args:["--login"]},{name:"WSL",path:"wsl.exe",args:[]}]:[{name:"Bash",path:"/bin/bash",args:["--login"]},{name:"Zsh",path:"/bin/zsh",args:["--login"]},{name:"Fish",path:"/usr/bin/fish",args:[]},{name:"sh",path:"/bin/sh",args:[]}];for(let g of c)!t.has(g.path.toLowerCase())&&n(g.path)&&(e.push(g),t.add(g.path.toLowerCase()))}catch{}return e}_resolveShell(e){if(!e)return process.platform==="win32"?i._getNodePty()?{path:"powershell.exe",args:["-NoLogo","-NoProfile"]}:{path:process.env.COMSPEC||"cmd.exe",args:[]}:{path:process.env.SHELL||"bash",args:[]};let l=i.getAvailableShells().find(t=>t.path===e||t.name===e);if(l&&l.path)return{path:l.path,args:l.args};let r=e.toLowerCase();return r.includes("powershell")||r.includes("pwsh")?{path:e,args:["-NoLogo"]}:r.includes("bash")||r.includes("zsh")?{path:e,args:["--login"]}:{path:e,args:[]}}static createOrShow(e,o,l){i.currentPanel&&i.currentPanel.dispose();let r=u.window.createWebviewPanel("terminalGrid",u.l10n.t("Terminal Grid {0}\xD7{1}",o,l),u.ViewColumn.One,{enableScripts:!0,retainContextWhenHidden:!0,localResourceRoots:[u.Uri.joinPath(e.extensionUri,"media")]});i.currentPanel=new i(r,e,o,l),e.globalState.update("lastGrid",{rows:o,cols:l}),u.commands.executeCommand("terminalGrid._refreshSidebar")}static revive(e,o,l,r){i.currentPanel&&i.currentPanel.dispose(),i.currentPanel=new i(e,o,l,r),o.globalState.update("lastGrid",{rows:l,cols:r}),u.commands.executeCommand("terminalGrid._refreshSidebar")}_enterSeq(e){return this._csiUMode[e]||this._insideLlm[e]?H:ge(this._cellShellType[e]||"")}broadcastInput(e){for(let o of this._terminals)if(!this._hiddenCells.has(o.id)){if(this._insideLlm[o.id])this._typeToCell(o.id,e).then(()=>L(50)).then(()=>{o.pty.write(this._enterSeq(o.id))});else{let r=/\r?\n/.test(e)?"\x1B[200~"+e+"\x1B[201~":e;o.pty.write(r+this._enterSeq(o.id))}G(e)&&(this._insideLlm[o.id]=!0),e.trim()==="exit"&&(this._insideLlm[o.id]=!1)}}sendToCell(e,o){let l=this._terminals[e];return l?(this._chunkedWrite(l.pty,o),!0):!1}sendInputToCell(e,o){let l=this._terminals[e];if(!l)return!1;if(this._insideLlm[e])this._typeToCell(e,o).then(()=>L(50)).then(()=>{l.pty.write(this._enterSeq(e))});else{let t=/\r?\n/.test(o)?"\x1B[200~"+o+"\x1B[201~":o;l.pty.write(t+this._enterSeq(e))}return G(o)&&(this._insideLlm[e]=!0),o.trim()==="exit"&&(this._insideLlm[e]=!1),!0}static _stripAnsi(e){return e.replace(/\x1b\[[0-9;?]*[a-zA-Z]/g,"").replace(/\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)/g,"").replace(/\x1b[()][0-9A-Z]/g,"").replace(/\x1b[78DEHM]/g,"").replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,"").replace(/\r\n/g,`
+"use strict";var ee=Object.create;var G=Object.defineProperty;var te=Object.getOwnPropertyDescriptor;var ne=Object.getOwnPropertyNames;var re=Object.getPrototypeOf,oe=Object.prototype.hasOwnProperty;var se=(i,t)=>{for(var o in t)G(i,o,{get:t[o],enumerable:!0})},z=(i,t,o,s)=>{if(t&&typeof t=="object"||typeof t=="function")for(let r of ne(t))!oe.call(i,r)&&r!==o&&G(i,r,{get:()=>t[r],enumerable:!(s=te(t,r))||s.enumerable});return i};var k=(i,t,o)=>(o=i!=null?ee(re(i)):{},z(t||!i||!i.__esModule?G(o,"default",{value:i,enumerable:!0}):o,i)),ae=i=>z(G({},"__esModule",{value:!0}),i);var xe={};se(xe,{activate:()=>we,deactivate:()=>ye});module.exports=ae(xe);var p=k(require("vscode")),_=k(require("path")),x=k(require("fs")),D=k(require("os"));var l=k(require("vscode")),y=k(require("fs")),P=k(require("path")),Z=k(require("child_process"));var g=k(require("vscode")),q=k(require("os")),R=k(require("fs")),I=k(require("path"));var $={"":null,Dracula:{name:"Dracula",background:"#282a36",foreground:"#f8f8f2",cursor:"#f8f8f2",cursorAccent:"#282a36",selectionBackground:"#44475a",black:"#21222c",brightBlack:"#6272a4",red:"#ff5555",brightRed:"#ff6e6e",green:"#50fa7b",brightGreen:"#69ff94",yellow:"#f1fa8c",brightYellow:"#ffffa5",blue:"#bd93f9",brightBlue:"#d6acff",magenta:"#ff79c6",brightMagenta:"#ff92df",cyan:"#8be9fd",brightCyan:"#a4ffff",white:"#f8f8f2",brightWhite:"#ffffff"},Monokai:{name:"Monokai",background:"#272822",foreground:"#f8f8f2",cursor:"#f8f8f0",cursorAccent:"#272822",selectionBackground:"#49483e",black:"#272822",brightBlack:"#75715e",red:"#f92672",brightRed:"#f92672",green:"#a6e22e",brightGreen:"#a6e22e",yellow:"#f4bf75",brightYellow:"#f4bf75",blue:"#66d9ef",brightBlue:"#66d9ef",magenta:"#ae81ff",brightMagenta:"#ae81ff",cyan:"#a1efe4",brightCyan:"#a1efe4",white:"#f8f8f2",brightWhite:"#f9f8f5"},"Solarized Dark":{name:"Solarized Dark",background:"#002b36",foreground:"#839496",cursor:"#839496",cursorAccent:"#002b36",selectionBackground:"#073642",black:"#073642",brightBlack:"#586e75",red:"#dc322f",brightRed:"#cb4b16",green:"#859900",brightGreen:"#586e75",yellow:"#b58900",brightYellow:"#657b83",blue:"#268bd2",brightBlue:"#839496",magenta:"#d33682",brightMagenta:"#6c71c4",cyan:"#2aa198",brightCyan:"#93a1a1",white:"#eee8d5",brightWhite:"#fdf6e3"},"Solarized Light":{name:"Solarized Light",background:"#fdf6e3",foreground:"#657b83",cursor:"#657b83",cursorAccent:"#fdf6e3",selectionBackground:"#eee8d5",black:"#073642",brightBlack:"#586e75",red:"#dc322f",brightRed:"#cb4b16",green:"#859900",brightGreen:"#586e75",yellow:"#b58900",brightYellow:"#657b83",blue:"#268bd2",brightBlue:"#839496",magenta:"#d33682",brightMagenta:"#6c71c4",cyan:"#2aa198",brightCyan:"#93a1a1",white:"#eee8d5",brightWhite:"#fdf6e3"},Nord:{name:"Nord",background:"#2e3440",foreground:"#d8dee9",cursor:"#d8dee9",cursorAccent:"#2e3440",selectionBackground:"#434c5e",black:"#3b4252",brightBlack:"#4c566a",red:"#bf616a",brightRed:"#bf616a",green:"#a3be8c",brightGreen:"#a3be8c",yellow:"#ebcb8b",brightYellow:"#ebcb8b",blue:"#81a1c1",brightBlue:"#81a1c1",magenta:"#b48ead",brightMagenta:"#b48ead",cyan:"#88c0d0",brightCyan:"#8fbcbb",white:"#e5e9f0",brightWhite:"#eceff4"},"One Dark":{name:"One Dark",background:"#282c34",foreground:"#abb2bf",cursor:"#528bff",cursorAccent:"#282c34",selectionBackground:"#3e4451",black:"#282c34",brightBlack:"#5c6370",red:"#e06c75",brightRed:"#e06c75",green:"#98c379",brightGreen:"#98c379",yellow:"#e5c07b",brightYellow:"#d19a66",blue:"#61afef",brightBlue:"#61afef",magenta:"#c678dd",brightMagenta:"#c678dd",cyan:"#56b6c2",brightCyan:"#56b6c2",white:"#abb2bf",brightWhite:"#ffffff"},"Gruvbox Dark":{name:"Gruvbox Dark",background:"#282828",foreground:"#ebdbb2",cursor:"#ebdbb2",cursorAccent:"#282828",selectionBackground:"#504945",black:"#282828",brightBlack:"#928374",red:"#cc241d",brightRed:"#fb4934",green:"#98971a",brightGreen:"#b8bb26",yellow:"#d79921",brightYellow:"#fabd2f",blue:"#458588",brightBlue:"#83a598",magenta:"#b16286",brightMagenta:"#d3869b",cyan:"#689d6a",brightCyan:"#8ec07c",white:"#a89984",brightWhite:"#ebdbb2"},"Tokyo Night":{name:"Tokyo Night",background:"#1a1b26",foreground:"#a9b1d6",cursor:"#c0caf5",cursorAccent:"#1a1b26",selectionBackground:"#33467c",black:"#15161e",brightBlack:"#414868",red:"#f7768e",brightRed:"#f7768e",green:"#9ece6a",brightGreen:"#9ece6a",yellow:"#e0af68",brightYellow:"#e0af68",blue:"#7aa2f7",brightBlue:"#7aa2f7",magenta:"#bb9af7",brightMagenta:"#bb9af7",cyan:"#7dcfff",brightCyan:"#7dcfff",white:"#a9b1d6",brightWhite:"#c0caf5"}},U=Object.keys($);function M(i){let t=$[i];if(!t)return null;let{name:o,...s}=t;return s}function B(i){return new Promise(t=>setTimeout(t,i))}var ie=3e3,le=15e3,de=200,ce=[/[❯>✻⏵›]\s*$/m,/aider>\s*$/m],W=(()=>{if(process.platform!=="win32")return 0;let i=q.release().split(".");return parseInt(i[2]||"0",10)})(),H=W>0&&W<22e3?"\r":"\x1B[13u",pe=["claude","codex","gemini","copilot","aider","claude --dangerously-skip-permissions","codex -s danger-full-access -a never"];function A(i){let t=i.trim();return pe.some(o=>t===o||t.startsWith(o+" "))}function ge(i){let t=i.toLowerCase();return t.includes("powershell")||t.includes("pwsh")||t.includes("cmd")?`\r
+`:"\r"}function J(i,t,o,s,r){let e=i[r];return e?.startupSteps&&e.startupSteps.length>0?e.startupSteps:e?.startupCommand?[{type:"command",input:e.startupCommand}]:t[r]?[{type:"command",input:t[r]}]:o.length>0?o:s?[{type:"command",input:s}]:[]}var V={".ttf":"truetype",".otf":"opentype",".woff":"woff",".woff2":"woff2"},f=class i{constructor(t,o,s,r){this._terminals=[];this._outputBuffers=[];this._csiUMode=[];this._insideLlm=[];this._cellShellType=[];this._disposed=!1;this._stepGeneration={};this._panel=t,this._context=o,this._rows=s,this._cols=r;let e=o.globalState.get("mergedRegions",[]).filter(n=>n.startRow+n.rowSpan<=s&&n.startCol+n.colSpan<=r);this._hiddenCells=new Set;for(let n of e)for(let a=n.startRow;a<n.startRow+n.rowSpan;a++)for(let d=n.startCol;d<n.startCol+n.colSpan;d++)a===n.startRow&&d===n.startCol||this._hiddenCells.add(a*r+d);this._panel.webview.options={enableScripts:!0,localResourceRoots:[g.Uri.joinPath(o.extensionUri,"media")]},this._panel.webview.html=this._getHtml(),this._panel.webview.onDidReceiveMessage(async n=>{switch(n.type){case"ready":if(this._createTerminals(n.defaultCols,n.defaultRows),n.cellDims&&Array.isArray(n.cellDims))for(let d=0;d<n.cellDims.length&&d<this._terminals.length;d++){let c=n.cellDims[d];if(c?.cols&&c?.rows)try{this._terminals[d].pty.resize(c.cols,c.rows)}catch{}}this.loadCustomFonts(this._context.globalState.get("customFonts",[]));let a=this._context.globalState.get("cellOverrides",{});for(let[d,c]of Object.entries(a))if(c.bgColor||c.fgColor||c.fontFamily||c.themeName){let m=c.themeName?M(c.themeName):null;this.sendCellConfig(parseInt(d),c.bgColor||"",c.fgColor||"",c.fontFamily||"",c.themeName||"",m)}break;case"input":{let d=this._terminals[n.id]?.pty;d&&this._chunkedWrite(d,n.data);break}case"clipboardWrite":g.env.clipboard.writeText(n.text);break;case"resize":try{this._terminals[n.id]?.pty.resize(n.cols,n.rows)}catch{}break;case"clearTerminal":this._panel.webview.postMessage({type:"clear",id:n.id});break;case"killTerminal":try{this._terminals[n.id]?.pty.kill()}catch{}break;case"restartTerminal":this._restartTerminal(n.id);break;case"renameCell":{let d=this._context.globalState.get("cellLabels",[]),c=d[n.id]||"",m=await g.window.showInputBox({prompt:g.l10n.t("Rename cell {0}",n.id+1),value:c,placeHolder:g.l10n.t("Enter alias (empty to reset)")});m!==void 0&&(d[n.id]=m,await this._context.globalState.update("cellLabels",d),this.sendLabels(),g.commands.executeCommand("terminalGrid._refreshSidebar"));break}}}),this._configListener=g.workspace.onDidChangeConfiguration(n=>{if(n.affectsConfiguration("terminalGrid")){let a=g.workspace.getConfiguration("terminalGrid"),d=a.get("colorTheme","");this._panel.webview.postMessage({type:"configUpdate",zoom:a.get("zoomPercent",100),fontFamily:a.get("fontFamily",""),bgColor:a.get("backgroundColor",""),fgColor:a.get("foregroundColor",""),themeName:d,themeColors:M(d)})}}),this._panel.onDidDispose(()=>this.dispose()),this._panel.iconPath=g.Uri.joinPath(o.extensionUri,"images","sidebar.svg")}static{this.OUTPUT_BUFFER_SIZE=5e4}static{this.CSI_U_ENABLE=/\x1b\[>[0-9]+u/}static{this.CSI_U_DISABLE=/\x1b\[<[0-9]*u/}static _getLog(){return i._log||(i._log=g.window.createOutputChannel("Terminal Grid")),i._log}static _getNodePty(){if(i._nodePty===void 0)try{i._nodePty=require("node-pty"),i._ensureNodePtySpawnHelperExecutable()}catch{i._nodePty=null}return i._nodePty}static _ensureNodePtySpawnHelperExecutable(){if(process.platform==="darwin")try{let t=require.resolve("node-pty/package.json"),o=I.dirname(t),s=I.join(o,"prebuilds",`darwin-${process.arch}`,"spawn-helper");if(!R.existsSync(s))return;let r=R.statSync(s);if((r.mode&73)!==0)return;R.chmodSync(s,r.mode|493),i._getLog().appendLine(`[_getNodePty] fixed executable bit on "${s}"`)}catch(t){i._getLog().appendLine(`[_getNodePty] could not fix node-pty spawn-helper permissions: ${t instanceof Error?t.message:String(t)}`)}}static _resolveCommandPath(t){let o=t.trim();if(!o)return null;try{if(/[/\\]/.test(o))return R.existsSync(o)?o:null}catch{return null}if(process.platform!=="win32")for(let s of["/bin","/usr/bin","/usr/local/bin","/opt/homebrew/bin"]){let r=I.join(s,o);try{if(R.existsSync(r))return r}catch{}}try{let s=require("child_process"),r=process.platform==="win32"?"where":"which";return s.execFileSync(r,[o],{encoding:"utf8",stdio:["ignore","pipe","ignore"],timeout:500}).split(/\r?\n/).map(a=>a.trim()).find(Boolean)||null}catch{return null}}static _defaultShell(t){if(process.platform==="win32"){let s=i._resolveCommandPath("pwsh.exe")||i._resolveCommandPath("powershell.exe");if(s)return t?.appendLine(`[_defaultShell] -> using powershell: "${s}"`),{path:s,args:["-NoLogo","-NoProfile"]};let r=process.env.COMSPEC||i._resolveCommandPath("cmd.exe")||"cmd.exe";return t?.appendLine(`[_defaultShell] -> using cmd: "${r}"`),{path:r,args:[]}}let o=process.env.SHELL;if(o){let s=i._resolveCommandPath(o);if(s)return t?.appendLine(`[_defaultShell] -> using SHELL: "${s}"`),{path:s,args:[]};t?.appendLine(`[_defaultShell] -> SHELL not usable: "${o}"`)}for(let s of["/bin/zsh","/bin/bash","/bin/sh"]){let r=i._resolveCommandPath(s);if(r)return t?.appendLine(`[_defaultShell] -> using fallback: "${r}"`),{path:r,args:[]}}return t?.appendLine('[_defaultShell] -> using final fallback: "/bin/sh"'),{path:"/bin/sh",args:[]}}static getAvailableShells(){let t=[{name:"IDE Default",path:"",args:[]}];try{let r=function(d){return i._resolveCommandPath(d)!==null};var o=r;let s=new Set,e=process.platform==="win32"?"windows":process.platform==="darwin"?"osx":"linux",n=g.workspace.getConfiguration(`terminal.integrated.profiles.${e}`);if(n)for(let d of Object.keys(n))try{let c=n.get(d);if(!c||typeof c!="object")continue;let m=Array.isArray(c.path)?c.path[0]:c.path;m&&r(m)&&(t.push({name:d,path:m,args:c.args||[]}),s.add(m.toLowerCase()))}catch{}let a=process.platform==="win32"?[{name:"PowerShell",path:"powershell.exe",args:["-NoLogo"]},{name:"PowerShell 7",path:"pwsh.exe",args:["-NoLogo"]},{name:"Command Prompt",path:"cmd.exe",args:[]},{name:"Git Bash",path:"C:\\Program Files\\Git\\bin\\bash.exe",args:["--login"]},{name:"WSL",path:"wsl.exe",args:[]}]:[{name:"Bash",path:"/bin/bash",args:["--login"]},{name:"Zsh",path:"/bin/zsh",args:["--login"]},{name:"Fish",path:"/usr/bin/fish",args:[]},{name:"sh",path:"/bin/sh",args:[]}];for(let d of a)!s.has(d.path.toLowerCase())&&r(d.path)&&(t.push(d),s.add(d.path.toLowerCase()))}catch{}return t}_resolveShell(t){let o=i._getLog(),s=(t||"").trim();if(o.appendLine(`[_resolveShell] shellType="${s}"`),!s||s.toLowerCase()==="ide default")return i._defaultShell(o);let r=i.getAvailableShells(),e=s.toLowerCase(),n=r.find(c=>c.path.toLowerCase()===e||c.name.toLowerCase()===e||I.basename(c.path).toLowerCase()===e);if(n&&n.path)return o.appendLine(`[_resolveShell] -> matched: "${n.path}"`),{path:n.path,args:n.args};let a=i._resolveCommandPath(s);if(!a)return o.appendLine(`[_resolveShell] -> requested shell not found, falling back: "${s}"`),i._defaultShell(o);let d=a.toLowerCase();return d.includes("powershell")||d.includes("pwsh")?(o.appendLine(`[_resolveShell] -> direct path powershell: "${a}"`),{path:a,args:["-NoLogo"]}):d.includes("bash")||d.includes("zsh")?(o.appendLine(`[_resolveShell] -> direct path bash/zsh: "${a}"`),{path:a,args:["--login"]}):(o.appendLine(`[_resolveShell] -> direct path (no match): "${a}"`),{path:a,args:[]})}static createOrShow(t,o,s){i.currentPanel&&i.currentPanel.dispose();let r=g.window.createWebviewPanel("terminalGrid",g.l10n.t("Terminal Grid {0}\xD7{1}",o,s),g.ViewColumn.One,{enableScripts:!0,retainContextWhenHidden:!0,localResourceRoots:[g.Uri.joinPath(t.extensionUri,"media")]});i.currentPanel=new i(r,t,o,s),t.globalState.update("lastGrid",{rows:o,cols:s}),g.commands.executeCommand("terminalGrid._refreshSidebar")}static revive(t,o,s,r){i.currentPanel&&i.currentPanel.dispose(),i.currentPanel=new i(t,o,s,r),o.globalState.update("lastGrid",{rows:s,cols:r}),g.commands.executeCommand("terminalGrid._refreshSidebar")}_enterSeq(t){return this._csiUMode[t]||this._insideLlm[t]?H:ge(this._cellShellType[t]||"")}broadcastInput(t){for(let o of this._terminals)if(!this._hiddenCells.has(o.id)){if(this._insideLlm[o.id])this._typeToCell(o.id,t).then(()=>B(50)).then(()=>{o.pty.write(this._enterSeq(o.id))});else{let r=/\r?\n/.test(t)?"\x1B[200~"+t+"\x1B[201~":t;o.pty.write(r+this._enterSeq(o.id))}A(t)&&(this._insideLlm[o.id]=!0),t.trim()==="exit"&&(this._insideLlm[o.id]=!1)}}sendToCell(t,o){let s=this._terminals[t];return s?(this._chunkedWrite(s.pty,o),!0):!1}sendInputToCell(t,o){let s=this._terminals[t];if(!s)return!1;if(this._insideLlm[t])this._typeToCell(t,o).then(()=>B(50)).then(()=>{s.pty.write(this._enterSeq(t))});else{let e=/\r?\n/.test(o)?"\x1B[200~"+o+"\x1B[201~":o;s.pty.write(e+this._enterSeq(t))}return A(o)&&(this._insideLlm[t]=!0),o.trim()==="exit"&&(this._insideLlm[t]=!1),!0}static _stripAnsi(t){return t.replace(/\x1b\[[0-9;?]*[a-zA-Z]/g,"").replace(/\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)/g,"").replace(/\x1b[()][0-9A-Z]/g,"").replace(/\x1b[78DEHM]/g,"").replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,"").replace(/\r\n/g,`
 `).replace(/\r/g,`
 `).replace(/\n{3,}/g,`
 
-`)}readCell(e,o){if(this._hiddenCells.has(e))return null;let l=this._outputBuffers[e];if(l===void 0)return null;let r=i._stripAnsi(l);return o===void 0?r:o<=0?"":r.split(`
+`)}readCell(t,o){if(this._hiddenCells.has(t))return null;let s=this._outputBuffers[t];if(s===void 0)return null;let r=i._stripAnsi(s);return o===void 0?r:o<=0?"":r.split(`
 `).slice(-o).join(`
-`)}getCellCount(){return this._terminals.length}getRows(){return this._rows}getCols(){return this._cols}getCellLabels(){let e=this._context.globalState.get("cellLabels",[]),o=this._rows*this._cols;return Array.from({length:o},(l,r)=>e[r]||String(r+1))}sendCellConfig(e,o,l,r,t,n){this._panel.webview.postMessage({type:"cellConfig",id:e,bgColor:o,fgColor:l,fontFamily:r,themeName:t??"",themeColors:n??null})}clearCellOverrides(){this._panel.webview.postMessage({type:"clearCellOverrides"})}sendLabels(){let e=this._context.globalState.get("cellLabels",[]);this._panel.webview.postMessage({type:"setLabels",labels:e})}loadCustomFonts(e){for(let o of e){let l=this._readFontBase64(o.path);if(l){let r=j.extname(o.path).toLowerCase();this._panel.webview.postMessage({type:"loadFont",name:o.name,data:l,format:J[r]||"truetype"})}}}_readFontBase64(e){try{return Z.readFileSync(e).toString("base64")}catch{return null}}_spawnPty(e,o,l,r,t){let n=this._resolveShell(t);if(e){let c=e.spawn(n.path,n.args,{name:"xterm-256color",cols:o,rows:l,cwd:r,env:process.env});return{onData:g=>{c.onData(g)},write:g=>c.write(g),resize:(g,b)=>c.resize(g,b),kill:()=>c.kill()}}let{spawn:d}=require("child_process"),s=d(n.path,n.args,{cwd:r,env:process.env,windowsHide:!0});return{onData:c=>{s.stdout?.on("data",g=>c(g.toString())),s.stderr?.on("data",g=>c(g.toString()))},write:c=>{s.stdin?.write(c)},resize:()=>{},kill:()=>s.kill()}}_createTerminals(e,o){let l=u.workspace.workspaceFolders?.[0]?.uri.fsPath||process.env.USERPROFILE||process.env.HOME||".",r=this._rows*this._cols,t=i._getNodePty();t||u.window.showWarningMessage(u.l10n.t("node-pty not available. Falling back to basic shell (limited features)."));let n=this._context.globalState.get("startupCommands",[]),d=[];for(let m of n)if(typeof m=="string")d.push(m);else if(m&&typeof m=="object"&&"command"in m){let C=m;for(let x=0;x<(C.count||1);x++)d.push(C.command)}let s=this._context.globalState.get("defaultCommand",""),c=this._context.globalState.get("defaultSteps",[]),g=e||80,b=o||24,w=u.workspace.getConfiguration("terminalGrid").get("shellType",""),_=this._context.globalState.get("cellOverrides",{});for(let m=0;m<r;m++){if(this._hiddenCells.has(m)){let E={onData(){},write(){},resize(){},kill(){}};this._terminals.push({id:m,pty:E}),this._outputBuffers[m]="",this._cellShellType[m]="",this._insideLlm[m]=!1,this._csiUMode[m]=!1;continue}let C=_[m]?.shellType||w||"",x=this._spawnPty(t,g,b,l,C||void 0),v=m,S=W(_,d,c,s,m);this._cellShellType[v]=C,this._insideLlm[v]=!1,this._outputBuffers[v]="",this._csiUMode[v]=!1;let T=!1;x.onData(E=>{this._disposed||(i.CSI_U_ENABLE.test(E)&&(this._csiUMode[v]=!0),i.CSI_U_DISABLE.test(E)&&(this._csiUMode[v]=!1),this._outputBuffers[v]=(this._outputBuffers[v]||"")+E,this._outputBuffers[v].length>i.OUTPUT_BUFFER_SIZE&&(this._outputBuffers[v]=this._outputBuffers[v].slice(-i.OUTPUT_BUFFER_SIZE)),this._panel.webview.postMessage({type:"output",id:v,data:E}),!T&&S.length>0&&(T=!0,this._executeSteps(v,S,this._cellShellType[v]||"")))}),this._terminals.push({id:m,pty:x})}this.sendLabels()}_restartTerminal(e){let o=this._terminals[e];if(!o)return;try{o.pty.kill()}catch{}this._panel.webview.postMessage({type:"reset",id:e});let l=u.workspace.workspaceFolders?.[0]?.uri.fsPath||process.env.USERPROFILE||process.env.HOME||".",r=u.workspace.getConfiguration("terminalGrid").get("shellType",""),t=this._context.globalState.get("cellOverrides",{}),n=t[e]?.shellType||r||"",d=this._spawnPty(i._getNodePty(),80,24,l,n||void 0),s=this._context.globalState.get("startupCommands",[]),c=[];for(let m of s)if(typeof m=="string")c.push(m);else if(m&&typeof m=="object"&&"command"in m){let C=m;for(let x=0;x<(C.count||1);x++)c.push(C.command)}let g=this._context.globalState.get("defaultCommand",""),b=this._context.globalState.get("defaultSteps",[]),w=W(t,c,b,g,e);this._cellShellType[e]=n,this._insideLlm[e]=!1;let _=!1;this._outputBuffers[e]="",this._csiUMode[e]=!1,d.onData(m=>{this._disposed||(i.CSI_U_ENABLE.test(m)&&(this._csiUMode[e]=!0),i.CSI_U_DISABLE.test(m)&&(this._csiUMode[e]=!1),this._outputBuffers[e]=(this._outputBuffers[e]||"")+m,this._outputBuffers[e].length>i.OUTPUT_BUFFER_SIZE&&(this._outputBuffers[e]=this._outputBuffers[e].slice(-i.OUTPUT_BUFFER_SIZE)),this._panel.webview.postMessage({type:"output",id:e,data:m}),!_&&w.length>0&&(_=!0,this._executeSteps(e,w,this._cellShellType[e]||"")))}),this._terminals[e]={id:e,pty:d}}static{this.CHUNK_SIZE=65536}_chunkedWrite(e,o){if(o.length<=i.CHUNK_SIZE){e.write(o);return}let l=0,r=()=>{if(l>=o.length)return;let t=o.slice(l,l+i.CHUNK_SIZE);l+=i.CHUNK_SIZE,e.write(t),l<o.length&&setTimeout(r,5)};r()}async _typeToCell(e,o){let l=this._terminals[e]?.pty;if(l)for(let r of o)l.write(r),await L(20)}static{this.LLM_TYPE_MAX_RETRIES=5}static{this.LLM_ECHO_WAIT=2e3}async _waitForLlmPrompt(e){let o=(this._outputBuffers[e]||"").length,l=Date.now()+le;for(;Date.now()<l;){await L(de);let r=this._outputBuffers[e]||"",t=i._stripAnsi(r.slice(o));if(ce.some(n=>n.test(t)))return!0;if(this._disposed)return!1}return!1}async _typeWithRetry(e,o){let l=this._terminals[e]?.pty;if(!l)return!1;for(let r=0;r<i.LLM_TYPE_MAX_RETRIES;r++){let t=(this._outputBuffers[e]||"").length;await this._typeToCell(e,o);let n=Date.now()+i.LLM_ECHO_WAIT;for(;Date.now()<n;){await L(50);let d=this._outputBuffers[e]||"";if(i._stripAnsi(d.slice(t)).includes(o))return!0;if(this._disposed)return!1}for(let d=0;d<o.length;d++)l.write("\x7F");await L(300)}return!1}async _executeSteps(e,o,l){this._stepGeneration[e]||(this._stepGeneration[e]=0);let r=++this._stepGeneration[e],t=!1;for(let n=0;n<o.length;n++){if(this._disposed||this._stepGeneration[e]!==r)return;let d=o[n];if(d.type==="timeout")await L(d.ms);else if(d.type==="command"){if(n>0&&(t?await this._waitForLlmPrompt(e):o[n-1].type==="command"&&await L(ie)),this._disposed||this._stepGeneration[e]!==r)return;let s=t?H:this._enterSeq(e);t?(await this._typeWithRetry(e,d.input),this._terminals[e]?.pty.write(s)):this._terminals[e]?.pty.write(d.input+s),G(d.input)&&(t=!0),d.input.trim()==="exit"&&(t=!1),this._insideLlm[e]=t}}}restartCell(e){this._restartTerminal(e)}restartAllCells(){for(let e of this._terminals)this._restartTerminal(e.id)}dispose(){this._disposed=!0,i.currentPanel=void 0,this._configListener?.dispose(),this._context.globalState.update("lastGrid",void 0);for(let e of this._terminals)try{e.pty.kill()}catch{}this._terminals=[],this._panel.dispose()}_buildCustomFontCss(){let e=this._context.globalState.get("customFonts",[]),o="";for(let l of e){let r=this._readFontBase64(l.path);if(!r)continue;let t=j.extname(l.path).toLowerCase(),n=J[t]||"truetype";o+=`@font-face { font-family: '${l.name}'; src: url(data:font/${t.slice(1)};base64,${r}) format('${n}'); font-display: swap; }
-`}return o}_getHtml(){let e=this._panel.webview,o=e.asWebviewUri(u.Uri.joinPath(this._context.extensionUri,"media","gridTerminal.js")),l=e.asWebviewUri(u.Uri.joinPath(this._context.extensionUri,"media","xterm.css")),r=ue(),t=this._buildCustomFontCss();return`<!DOCTYPE html>
+`)}getCellCount(){return this._terminals.length}getRows(){return this._rows}getCols(){return this._cols}getCellLabels(){let t=this._context.globalState.get("cellLabels",[]),o=this._rows*this._cols;return Array.from({length:o},(s,r)=>t[r]||String(r+1))}sendCellConfig(t,o,s,r,e,n){this._panel.webview.postMessage({type:"cellConfig",id:t,bgColor:o,fgColor:s,fontFamily:r,themeName:e??"",themeColors:n??null})}clearCellOverrides(){this._panel.webview.postMessage({type:"clearCellOverrides"})}sendLabels(){let t=this._context.globalState.get("cellLabels",[]);this._panel.webview.postMessage({type:"setLabels",labels:t})}loadCustomFonts(t){for(let o of t){let s=this._readFontBase64(o.path);if(s){let r=I.extname(o.path).toLowerCase();this._panel.webview.postMessage({type:"loadFont",name:o.name,data:s,format:V[r]||"truetype"})}}}_readFontBase64(t){try{return R.readFileSync(t).toString("base64")}catch{return null}}_spawnPty(t,o,s,r,e){let n=this._resolveShell(e),a=i._getLog();a.appendLine(`[_spawnPty] shellType param="${e}", resolved path="${n.path}", args=${JSON.stringify(n.args)}`);let d=b=>{if(!t)throw new Error("node-pty unavailable");let v=t.spawn(b.path,b.args,{name:"xterm-256color",cols:o,rows:s,cwd:r,env:process.env});return{onData:u=>{v.onData(u)},write:u=>v.write(u),resize:(u,C)=>v.resize(u,C),kill:()=>v.kill()}};if(t)try{return d(n)}catch(b){a.appendLine(`[_spawnPty] node-pty failed for "${n.path}": ${b instanceof Error?b.message:String(b)}`);let v=i._defaultShell(a);if(v.path!==n.path)try{return a.appendLine(`[_spawnPty] retrying node-pty with fallback "${v.path}"`),d(v)}catch(u){a.appendLine(`[_spawnPty] fallback node-pty failed: ${u instanceof Error?u.message:String(u)}`)}g.window.showWarningMessage(g.l10n.t("Terminal Grid could not start the configured shell. Falling back to basic shell."))}let{spawn:c}=require("child_process"),m=i._defaultShell(a),h=c(m.path,m.args,{cwd:r,env:process.env,windowsHide:!0});return{onData:b=>{h.stdout?.on("data",v=>b(v.toString())),h.stderr?.on("data",v=>b(v.toString())),h.on("error",v=>{a.appendLine(`[_spawnPty] child_process fallback failed: ${v.message}`),b(`Terminal Grid failed to start shell: ${v.message}\r
+`)})},write:b=>{h.stdin?.write(b)},resize:()=>{},kill:()=>h.kill()}}_createTerminals(t,o){let s=g.workspace.workspaceFolders?.[0]?.uri.fsPath||process.env.USERPROFILE||process.env.HOME||".",r=this._rows*this._cols,e=i._getNodePty();e||g.window.showWarningMessage(g.l10n.t("node-pty not available. Falling back to basic shell (limited features)."));let n=this._context.globalState.get("startupCommands",[]),a=[];for(let u of n)if(typeof u=="string")a.push(u);else if(u&&typeof u=="object"&&"command"in u){let C=u;for(let T=0;T<(C.count||1);T++)a.push(C.command)}let d=this._context.globalState.get("defaultCommand",""),c=this._context.globalState.get("defaultSteps",[]),m=t||80,h=o||24,b=g.workspace.getConfiguration("terminalGrid").get("shellType",""),v=this._context.globalState.get("cellOverrides",{});for(let u=0;u<r;u++){if(this._hiddenCells.has(u)){let E={onData(){},write(){},resize(){},kill(){}};this._terminals.push({id:u,pty:E}),this._outputBuffers[u]="",this._cellShellType[u]="",this._insideLlm[u]=!1,this._csiUMode[u]=!1;continue}let C=v[u]?.shellType||b||"",T=this._spawnPty(e,m,h,s,C||void 0),w=u,S=J(v,a,c,d,u);this._cellShellType[w]=C,this._insideLlm[w]=!1,this._outputBuffers[w]="",this._csiUMode[w]=!1;let L=!1;T.onData(E=>{this._disposed||(i.CSI_U_ENABLE.test(E)&&(this._csiUMode[w]=!0),i.CSI_U_DISABLE.test(E)&&(this._csiUMode[w]=!1),this._outputBuffers[w]=(this._outputBuffers[w]||"")+E,this._outputBuffers[w].length>i.OUTPUT_BUFFER_SIZE&&(this._outputBuffers[w]=this._outputBuffers[w].slice(-i.OUTPUT_BUFFER_SIZE)),this._panel.webview.postMessage({type:"output",id:w,data:E}),!L&&S.length>0&&(L=!0,this._executeSteps(w,S,this._cellShellType[w]||"")))}),this._terminals.push({id:u,pty:T})}this.sendLabels()}_restartTerminal(t){let o=this._terminals[t];if(!o)return;try{o.pty.kill()}catch{}this._panel.webview.postMessage({type:"reset",id:t});let s=g.workspace.workspaceFolders?.[0]?.uri.fsPath||process.env.USERPROFILE||process.env.HOME||".",r=g.workspace.getConfiguration("terminalGrid").get("shellType",""),e=this._context.globalState.get("cellOverrides",{}),n=e[t]?.shellType||r||"",a=this._spawnPty(i._getNodePty(),80,24,s,n||void 0),d=this._context.globalState.get("startupCommands",[]),c=[];for(let u of d)if(typeof u=="string")c.push(u);else if(u&&typeof u=="object"&&"command"in u){let C=u;for(let T=0;T<(C.count||1);T++)c.push(C.command)}let m=this._context.globalState.get("defaultCommand",""),h=this._context.globalState.get("defaultSteps",[]),b=J(e,c,h,m,t);this._cellShellType[t]=n,this._insideLlm[t]=!1;let v=!1;this._outputBuffers[t]="",this._csiUMode[t]=!1,a.onData(u=>{this._disposed||(i.CSI_U_ENABLE.test(u)&&(this._csiUMode[t]=!0),i.CSI_U_DISABLE.test(u)&&(this._csiUMode[t]=!1),this._outputBuffers[t]=(this._outputBuffers[t]||"")+u,this._outputBuffers[t].length>i.OUTPUT_BUFFER_SIZE&&(this._outputBuffers[t]=this._outputBuffers[t].slice(-i.OUTPUT_BUFFER_SIZE)),this._panel.webview.postMessage({type:"output",id:t,data:u}),!v&&b.length>0&&(v=!0,this._executeSteps(t,b,this._cellShellType[t]||"")))}),this._terminals[t]={id:t,pty:a}}static{this.CHUNK_SIZE=65536}_chunkedWrite(t,o){if(o.length<=i.CHUNK_SIZE){t.write(o);return}let s=0,r=()=>{if(s>=o.length)return;let e=o.slice(s,s+i.CHUNK_SIZE);s+=i.CHUNK_SIZE,t.write(e),s<o.length&&setTimeout(r,5)};r()}async _typeToCell(t,o){let s=this._terminals[t]?.pty;if(s)for(let r of o)s.write(r),await B(20)}static{this.LLM_TYPE_MAX_RETRIES=5}static{this.LLM_ECHO_WAIT=2e3}async _waitForLlmPrompt(t){let o=(this._outputBuffers[t]||"").length,s=Date.now()+le;for(;Date.now()<s;){await B(de);let r=this._outputBuffers[t]||"",e=i._stripAnsi(r.slice(o));if(ce.some(n=>n.test(e)))return!0;if(this._disposed)return!1}return!1}async _typeWithRetry(t,o){let s=this._terminals[t]?.pty;if(!s)return!1;for(let r=0;r<i.LLM_TYPE_MAX_RETRIES;r++){let e=(this._outputBuffers[t]||"").length;await this._typeToCell(t,o);let n=Date.now()+i.LLM_ECHO_WAIT;for(;Date.now()<n;){await B(50);let a=this._outputBuffers[t]||"";if(i._stripAnsi(a.slice(e)).includes(o))return!0;if(this._disposed)return!1}for(let a=0;a<o.length;a++)s.write("\x7F");await B(300)}return!1}async _executeSteps(t,o,s){this._stepGeneration[t]||(this._stepGeneration[t]=0);let r=++this._stepGeneration[t],e=!1;for(let n=0;n<o.length;n++){if(this._disposed||this._stepGeneration[t]!==r)return;let a=o[n];if(a.type==="timeout")await B(a.ms);else if(a.type==="command"){if(n>0&&(e?await this._waitForLlmPrompt(t):o[n-1].type==="command"&&await B(ie)),this._disposed||this._stepGeneration[t]!==r)return;let d=e?H:this._enterSeq(t);e?(await this._typeWithRetry(t,a.input),this._terminals[t]?.pty.write(d)):this._terminals[t]?.pty.write(a.input+d),A(a.input)&&(e=!0),a.input.trim()==="exit"&&(e=!1),this._insideLlm[t]=e}}}restartCell(t){this._restartTerminal(t)}restartAllCells(){for(let t of this._terminals)this._restartTerminal(t.id)}dispose(){this._disposed=!0,i.currentPanel=void 0,this._configListener?.dispose(),this._context.globalState.update("lastGrid",void 0);for(let t of this._terminals)try{t.pty.kill()}catch{}this._terminals=[],this._panel.dispose()}_buildCustomFontCss(){let t=this._context.globalState.get("customFonts",[]),o="";for(let s of t){let r=this._readFontBase64(s.path);if(!r)continue;let e=I.extname(s.path).toLowerCase(),n=V[e]||"truetype";o+=`@font-face { font-family: '${s.name}'; src: url(data:font/${e.slice(1)};base64,${r}) format('${n}'); font-display: swap; }
+`}return o}_getHtml(){let t=this._panel.webview,o=t.asWebviewUri(g.Uri.joinPath(this._context.extensionUri,"media","gridTerminal.js")),s=t.asWebviewUri(g.Uri.joinPath(this._context.extensionUri,"media","xterm.css")),r=ue(),e=this._buildCustomFontCss();return`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'none';
-                 style-src ${e.cspSource} 'unsafe-inline';
+                 style-src ${t.cspSource} 'unsafe-inline';
                  script-src 'nonce-${r}';
-                 font-src ${e.cspSource} data:;">
+                 font-src ${t.cspSource} data: *;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="${l}">
+  <link rel="stylesheet" href="${s}">
   <style>
-    ${t}
+    ${e}
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       width: 100%; height: 100%;
@@ -54,7 +55,7 @@
       top: 4px; right: 8px;
       display: flex; align-items: center; gap: 6px;
       font-size: 10px;
-      font-family: var(--vscode-terminal-fontFamily, var(--vscode-editor-fontFamily, monospace));
+      font-family: var(--vscode-terminal-fontFamily, var(--vscode-editor-fontFamily, 'Menlo', 'Monaco', 'Consolas', monospace));
       z-index: 1;
       pointer-events: none;
       user-select: none;
@@ -130,35 +131,36 @@
 <body>
   <div id="grid"></div>
   <div class="ctx-menu" id="ctxMenu">
-    <div class="ctx-menu-item" data-action="copy">${u.l10n.t("Copy")}</div>
-    <div class="ctx-menu-item" data-action="copyPlain">${u.l10n.t("Copy (Plain)")}</div>
-    <div class="ctx-menu-item" data-action="paste">${u.l10n.t("Paste")}</div>
+    <div class="ctx-menu-item" data-action="copy">${g.l10n.t("Copy")}</div>
+    <div class="ctx-menu-item" data-action="copyPlain">${g.l10n.t("Copy (Plain)")}</div>
+    <div class="ctx-menu-item" data-action="paste">${g.l10n.t("Paste")}</div>
     <div class="ctx-menu-sep"></div>
-    <div class="ctx-menu-item" data-action="clear">${u.l10n.t("Clear")}</div>
-    <div class="ctx-menu-item" data-action="restart">${u.l10n.t("Restart")}</div>
-    <div class="ctx-menu-item" data-action="kill">${u.l10n.t("Kill")}</div>
+    <div class="ctx-menu-item" data-action="clear">${g.l10n.t("Clear")}</div>
+    <div class="ctx-menu-item" data-action="restart">${g.l10n.t("Restart")}</div>
+    <div class="ctx-menu-item" data-action="kill">${g.l10n.t("Kill")}</div>
     <div class="ctx-menu-sep"></div>
-    <div class="ctx-menu-item" data-action="rename">${u.l10n.t("Rename")}</div>
+    <div class="ctx-menu-item" data-action="rename">${g.l10n.t("Rename")}</div>
   </div>
   <script nonce="${r}">
     var __GRID_ROWS = ${this._rows};
     var __GRID_COLS = ${this._cols};
-    var __GRID_ZOOM = ${u.workspace.getConfiguration("terminalGrid").get("zoomPercent",100)};
-    var __GRID_FONT_FAMILY = ${JSON.stringify(u.workspace.getConfiguration("terminalGrid").get("fontFamily",""))};
-    var __GRID_BG_COLOR = ${JSON.stringify(u.workspace.getConfiguration("terminalGrid").get("backgroundColor",""))};
-    var __GRID_FG_COLOR = ${JSON.stringify(u.workspace.getConfiguration("terminalGrid").get("foregroundColor",""))};
-    var __GRID_THEME = ${JSON.stringify(u.workspace.getConfiguration("terminalGrid").get("colorTheme",""))};
-    var __GRID_THEME_COLORS = ${JSON.stringify(R(u.workspace.getConfiguration("terminalGrid").get("colorTheme","")))};
+    var __GRID_ZOOM = ${g.workspace.getConfiguration("terminalGrid").get("zoomPercent",100)};
+    var __GRID_FONT_FAMILY = ${JSON.stringify(g.workspace.getConfiguration("terminalGrid").get("fontFamily",""))};
+    var __GRID_IDE_FONT_FAMILY = ${JSON.stringify(g.workspace.getConfiguration("terminal.integrated").get("fontFamily","")||g.workspace.getConfiguration("editor").get("fontFamily",""))};
+    var __GRID_BG_COLOR = ${JSON.stringify(g.workspace.getConfiguration("terminalGrid").get("backgroundColor",""))};
+    var __GRID_FG_COLOR = ${JSON.stringify(g.workspace.getConfiguration("terminalGrid").get("foregroundColor",""))};
+    var __GRID_THEME = ${JSON.stringify(g.workspace.getConfiguration("terminalGrid").get("colorTheme",""))};
+    var __GRID_THEME_COLORS = ${JSON.stringify(M(g.workspace.getConfiguration("terminalGrid").get("colorTheme","")))};
     var __GRID_MERGE_REGIONS = ${JSON.stringify(this._context.globalState.get("mergedRegions",[]).filter(n=>n.startRow+n.rowSpan<=this._rows&&n.startCol+n.colSpan<=this._cols))};
   </script>
   <script nonce="${r}" src="${o}"></script>
 </body>
-</html>`}};function ue(){let i="",e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";for(let o=0;o<32;o++)i+=e.charAt(Math.floor(Math.random()*e.length));return i}var me=[".ttf",".otf",".woff",".woff2"];function fe(){try{return require("node-pty"),!0}catch{return!1}}var D=class{constructor(e){this._mcpPort=0;this._context=e}static{this.viewType="terminalGrid.sidebarView"}setMcpPort(e){this._mcpPort=e,this._view?.webview.postMessage({type:"mcpPort",port:e})}resolveWebviewView(e,o,l){this._view=e,e.webview.options={enableScripts:!0,localResourceRoots:[this._context.extensionUri]},e.webview.html=this._getHtml(),e.webview.onDidReceiveMessage(async r=>{switch(r.type){case"openGrid":await a.commands.executeCommand("terminalGrid.openCustomGrid",r.rows,r.cols),this.sendConfig();break;case"reload":await a.commands.executeCommand("workbench.action.reloadWindow");break;case"setConfig":{let t=a.workspace.getConfiguration("terminalGrid");r.key&&r.value!==void 0&&await t.update(r.key,r.value,a.ConfigurationTarget.Global),r.key==="shellType"&&f.currentPanel&&f.currentPanel.restartAllCells();break}case"getConfig":{this.sendConfig();break}case"browseFont":{let t=await a.window.showOpenDialog({canSelectMany:!1,filters:{"Font Files":["ttf","otf","woff","woff2"]},title:a.l10n.t("Select Font File")});if(!t||t.length===0)break;let n=t[0].fsPath,d=B.extname(n).toLowerCase();if(!me.includes(d)){a.window.showWarningMessage(a.l10n.t("Unsupported font format. Use .ttf, .otf, .woff, or .woff2"));break}try{N.accessSync(n,N.constants.R_OK)}catch{a.window.showErrorMessage(a.l10n.t("Cannot read font file."));break}let s=B.basename(n,d),c=this._context.globalState.get("customFonts",[]);c.some(g=>g.path===n)||(c.push({name:s,path:n}),await this._context.globalState.update("customFonts",c)),this.sendConfig(),f.currentPanel&&f.currentPanel.loadCustomFonts([{name:s,path:n}]);break}case"removeFont":{let n=this._context.globalState.get("customFonts",[]).filter(d=>d.name!==r.name);await this._context.globalState.update("customFonts",n),this.sendConfig();break}case"addStartupCommand":{let t=this._context.globalState.get("startupCommands",[]);t.push({command:r.command,count:1}),await this._context.globalState.update("startupCommands",t),this.sendConfig();break}case"removeStartupCommand":{let t=this._context.globalState.get("startupCommands",[]);t.splice(r.index,1),await this._context.globalState.update("startupCommands",t),this.sendConfig();break}case"updateCommandCount":{let t=this._context.globalState.get("startupCommands",[]);t[r.index]&&(t[r.index].count=Math.max(1,r.count),await this._context.globalState.update("startupCommands",t)),this.sendConfig();break}case"addStep":{if(r.target==="all"){let t=this._context.globalState.get("defaultSteps",[]);t.push(r.step),await this._context.globalState.update("defaultSteps",t);let n=t.find(d=>d.type==="command");await this._context.globalState.update("defaultCommand",n?.input||"")}else{let t=this._context.globalState.get("cellOverrides",{}),n=r.target;t[n]||(t[n]={}),Array.isArray(t[n].startupSteps)||(t[n].startupSteps=[]),t[n].startupSteps.push(r.step);let d=t[n].startupSteps.find(s=>s.type==="command");t[n].startupCommand=d?.input||"",await this._context.globalState.update("cellOverrides",t)}this.sendConfig();break}case"removeStep":{if(r.target==="all"){let t=this._context.globalState.get("defaultSteps",[]);t.splice(r.index,1),await this._context.globalState.update("defaultSteps",t);let n=t.find(d=>d.type==="command");await this._context.globalState.update("defaultCommand",n?.input||"")}else{let t=this._context.globalState.get("cellOverrides",{}),n=r.target;if(Array.isArray(t[n]?.startupSteps)){t[n].startupSteps.splice(r.index,1);let d=t[n].startupSteps.find(s=>s.type==="command");t[n].startupCommand=d?.input||"",await this._context.globalState.update("cellOverrides",t)}}this.sendConfig();break}case"reorderSteps":{if(r.target==="all"){await this._context.globalState.update("defaultSteps",r.steps);let t=r.steps.find(n=>n.type==="command");await this._context.globalState.update("defaultCommand",t?.input||"")}else{let t=this._context.globalState.get("cellOverrides",{}),n=r.target;t[n]||(t[n]={}),t[n].startupSteps=r.steps;let d=r.steps.find(s=>s.type==="command");t[n].startupCommand=d?.input||"",await this._context.globalState.update("cellOverrides",t)}this.sendConfig();break}case"updateStep":{if(r.target==="all"){let t=this._context.globalState.get("defaultSteps",[]);r.index>=0&&r.index<t.length&&(t[r.index]=r.step,await this._context.globalState.update("defaultSteps",t))}else{let t=this._context.globalState.get("cellOverrides",{}),n=r.target,d=t[n]?.startupSteps||[];r.index>=0&&r.index<d.length&&(d[r.index]=r.step,t[n]||(t[n]={}),t[n].startupSteps=d,await this._context.globalState.update("cellOverrides",t))}this.sendConfig();break}case"addProject":{let t=this._context.globalState.get("projects",[]);t.some(n=>n.path===r.path)||(t.push({name:r.name,path:r.path}),await this._context.globalState.update("projects",t)),this.sendConfig();break}case"removeProject":{let t=this._context.globalState.get("projects",[]);t.splice(r.index,1),await this._context.globalState.update("projects",t),this.sendConfig();break}case"openProject":{let t=a.Uri.file(r.path);await a.commands.executeCommand("vscode.openFolder",t,{forceNewWindow:!!r.newWindow});break}case"addCurrentProject":{let t=a.workspace.workspaceFolders?.[0];if(!t){a.window.showWarningMessage(a.l10n.t("No workspace folder open."));break}let n=this._context.globalState.get("projects",[]),d=t.uri.fsPath;n.some(s=>s.path===d)||(n.push({name:t.name,path:d}),await this._context.globalState.update("projects",n)),this.sendConfig();break}case"browseProject":{let t=await a.window.showOpenDialog({canSelectFiles:!1,canSelectFolders:!0,canSelectMany:!1,title:a.l10n.t("Select Project Folder")});if(!t||t.length===0)break;let n=t[0].fsPath,d=B.basename(n),s=this._context.globalState.get("projects",[]);s.some(c=>c.path===n)||(s.push({name:d,path:n}),await this._context.globalState.update("projects",s)),this.sendConfig();break}case"savePreset":{await this._savePreset(r.name),this.sendConfig();break}case"loadPreset":{let n=this._context.globalState.get("presets",[]).find(s=>s.name===r.name);if(!n)break;let d=a.workspace.getConfiguration("terminalGrid");if(await d.update("defaultRows",n.rows,a.ConfigurationTarget.Global),await d.update("defaultCols",n.cols,a.ConfigurationTarget.Global),await d.update("zoomPercent",n.zoomPercent,a.ConfigurationTarget.Global),await d.update("fontFamily",n.fontFamily,a.ConfigurationTarget.Global),await d.update("backgroundColor",n.bgColor,a.ConfigurationTarget.Global),await d.update("foregroundColor",n.fgColor,a.ConfigurationTarget.Global),await d.update("colorTheme",n.colorTheme||"",a.ConfigurationTarget.Global),await d.update("shellType",n.shellType||"",a.ConfigurationTarget.Global),await this._context.globalState.update("startupCommands",n.startupCommands||[]),await this._context.globalState.update("cellLabels",n.cellLabels||[]),await this._context.globalState.update("defaultCommand",n.defaultCommand||""),n.defaultSteps?await this._context.globalState.update("defaultSteps",n.defaultSteps):n.defaultCommand?await this._context.globalState.update("defaultSteps",[{type:"command",input:n.defaultCommand}]):await this._context.globalState.update("defaultSteps",[]),n.cellStepsOverrides){let s=this._context.globalState.get("cellOverrides",{});for(let[c,g]of Object.entries(n.cellStepsOverrides))s[Number(c)]||(s[Number(c)]={}),Array.isArray(g.startupSteps)&&(s[Number(c)].startupSteps=g.startupSteps);await this._context.globalState.update("cellOverrides",s)}await this._context.globalState.update("mergedRegions",n.mergedRegions||[]),f.createOrShow(this._context,n.rows,n.cols),this.sendConfig();break}case"deletePreset":{let n=this._context.globalState.get("presets",[]).filter(s=>s.name!==r.name);await this._context.globalState.update("presets",n);let d=this._context.globalState.get("projectPresets",{});for(let s of Object.keys(d))d[s]===r.name&&delete d[s];await this._context.globalState.update("projectPresets",d),this.sendConfig();break}case"linkPreset":{let t=this._context.globalState.get("projectPresets",{});r.presetName?t[r.projectPath]=r.presetName:delete t[r.projectPath],await this._context.globalState.update("projectPresets",t),this.sendConfig();break}case"broadcast":{f.currentPanel?f.currentPanel.broadcastInput(r.text):a.window.showWarningMessage(a.l10n.t("No terminal grid is open."));break}case"broadcastToCell":{if(f.currentPanel)for(let t of r.cellIds)f.currentPanel.sendInputToCell(t,r.text);else a.window.showWarningMessage(a.l10n.t("No terminal grid is open."));break}case"setCellConfig":{let t=this._context.globalState.get("cellOverrides",{});if(t[r.cellId]={bgColor:r.bgColor||"",fgColor:r.fgColor||"",fontFamily:r.fontFamily||"",themeName:r.themeName||"",shellType:t[r.cellId]?.shellType||""},await this._context.globalState.update("cellOverrides",t),f.currentPanel){let n=r.themeName?R(r.themeName):null;f.currentPanel.sendCellConfig(r.cellId,r.bgColor||"",r.fgColor||"",r.fontFamily||"",r.themeName||"",n)}break}case"setShellForCell":{let t=this._context.globalState.get("cellOverrides",{});t[r.cellId]||(t[r.cellId]={}),t[r.cellId].shellType=r.shellType||"",await this._context.globalState.update("cellOverrides",t),f.currentPanel&&f.currentPanel.restartCell(r.cellId);break}case"setDefaultCommand":{let t=r.command||"";await this._context.globalState.update("defaultCommand",t),await this._context.globalState.update("defaultSteps",t?[{type:"command",input:t}]:[]),this.sendConfig();break}case"setCellCommand":{let t=this._context.globalState.get("cellOverrides",{});t[r.cellId]||(t[r.cellId]={});let n=r.command||"";t[r.cellId].startupCommand=n,t[r.cellId].startupSteps=n?[{type:"command",input:n}]:[],await this._context.globalState.update("cellOverrides",t),this.sendConfig();break}case"clearAllCellOverrides":{await this._context.globalState.update("cellOverrides",{}),f.currentPanel&&f.currentPanel.clearCellOverrides();break}case"clearAllCellShells":{let t=this._context.globalState.get("cellOverrides",{});for(let n of Object.keys(t))t[parseInt(n)]&&(t[parseInt(n)].shellType="");await this._context.globalState.update("cellOverrides",t);break}case"saveMergeRegions":{let t=r.regions||[];await this._context.globalState.update("mergedRegions",t);let n=a.workspace.getConfiguration("terminalGrid").get("defaultCols",3),d=new Set;for(let s of t)for(let c=s.startRow;c<s.startRow+s.rowSpan;c++)for(let g=s.startCol;g<s.startCol+s.colSpan;g++)c===s.startRow&&g===s.startCol||d.add(c*n+g);if(d.size>0){let s=this._context.globalState.get("cellOverrides",{}),c=this._context.globalState.get("cellLabels",[]),g=!1;for(let b of d)s[String(b)]&&(delete s[String(b)],g=!0),c[b]&&(c[b]="",g=!0);g&&(await this._context.globalState.update("cellOverrides",s),await this._context.globalState.update("cellLabels",c))}this.sendConfig();break}case"saveSectionStates":{await this._context.globalState.update("sectionStates",r.states);break}case"installNodePty":{try{await a.window.withProgress({location:a.ProgressLocation.Notification,title:a.l10n.t("Installing node-pty\u2026"),cancellable:!1},()=>new Promise((d,s)=>{q.exec("npm install node-pty",{cwd:this._context.extensionPath},c=>{c?s(c):d()})})),this._view?.webview.postMessage({type:"ptyInstallResult",success:!0});let t=a.l10n.t("Reload Window");await a.window.showInformationMessage(a.l10n.t("node-pty installed successfully. Reload window to activate."),t)===t&&a.commands.executeCommand("workbench.action.reloadWindow")}catch(t){let n=t instanceof Error?t.message:String(t);a.window.showErrorMessage(a.l10n.t("node-pty install failed: {0}",n)),this._view?.webview.postMessage({type:"ptyInstallResult",success:!1})}break}}}),a.workspace.onDidChangeConfiguration(r=>{r.affectsConfiguration("terminalGrid")&&this.sendConfig()})}async _savePreset(e){let o=a.workspace.getConfiguration("terminalGrid"),l={name:e,rows:o.get("defaultRows",2),cols:o.get("defaultCols",3),startupCommands:this._context.globalState.get("startupCommands",[]),cellLabels:this._context.globalState.get("cellLabels",[]),zoomPercent:o.get("zoomPercent",100),fontFamily:o.get("fontFamily",""),bgColor:o.get("backgroundColor",""),fgColor:o.get("foregroundColor",""),colorTheme:o.get("colorTheme",""),shellType:o.get("shellType",""),defaultCommand:this._context.globalState.get("defaultCommand",""),defaultSteps:this._context.globalState.get("defaultSteps",[]),cellStepsOverrides:this._context.globalState.get("cellOverrides",{}),mergedRegions:this._context.globalState.get("mergedRegions",[])},r=this._context.globalState.get("presets",[]),t=r.findIndex(n=>n.name===e);t>=0?r[t]=l:r.push(l),await this._context.globalState.update("presets",r)}async _migrateSteps(){let e=!1,o=this._context.globalState.get("defaultSteps",[]),l=this._context.globalState.get("defaultCommand","");l&&o.length===0?(await this._context.globalState.update("defaultSteps",[{type:"command",input:l}]),await this._context.globalState.update("defaultCommand",""),e=!0):l&&o.length>0&&(await this._context.globalState.update("defaultCommand",""),e=!0);let r=this._context.globalState.get("cellOverrides",{});for(let n of Object.keys(r)){let d=r[Number(n)];if(!d)continue;let s=d.startupCommand,c=d.startupSteps;s&&(!c||c.length===0)?(d.startupSteps=[{type:"command",input:s}],delete d.startupCommand,e=!0):s&&c&&c.length>0&&(delete d.startupCommand,e=!0)}this._context.globalState.get("startupCommands",[]).length>0&&(await this._context.globalState.update("startupCommands",[]),e=!0),e&&await this._context.globalState.update("cellOverrides",r)}sendConfig(){if(!this._view)return;this._migrateSteps();let e=a.workspace.getConfiguration("terminalGrid"),o=this._context.globalState.get("customFonts",[]),l=this._context.globalState.get("startupCommands",[]),r=this._context.globalState.get("projects",[]),t=this._context.globalState.get("presets",[]),n=this._context.globalState.get("projectPresets",{}),d=this._context.globalState.get("cellLabels",[]),s=this._context.globalState.get("cellOverrides",{}),c=this._context.globalState.get("defaultSteps",[]),g=this._context.globalState.get("sectionStates",{}),b=a.workspace.workspaceFolders?.[0]?.uri.fsPath||"",w=f.currentPanel,_=f.getAvailableShells();this._view.webview.postMessage({type:"configValues",zoom:e.get("zoomPercent",100),fontFamily:e.get("fontFamily",""),bgColor:e.get("backgroundColor",""),fgColor:e.get("foregroundColor",""),colorTheme:e.get("colorTheme",""),shellType:e.get("shellType",""),defaultCommand:this._context.globalState.get("defaultCommand",""),themeNames:$,availableShells:_.map(m=>({name:m.name,path:m.path})),customFonts:o.map(m=>m.name),startupCommands:l,projects:r,presets:t,projectPresets:n,cellLabels:d,cellOverrides:s,defaultSteps:c,sectionStates:g,workspacePath:b,gridRows:w?.getRows()??0,gridCols:w?.getCols()??0,mergedRegions:this._context.globalState.get("mergedRegions",[]),hiddenCells:(()=>{let m=this._context.globalState.get("mergedRegions",[]),C=e.get("defaultCols",3),x=[];for(let v of m)for(let S=v.startRow;S<v.startRow+v.rowSpan;S++)for(let T=v.startCol;T<v.startCol+v.colSpan;T++)S===v.startRow&&T===v.startCol||x.push(S*C+T);return x})()})}_getHtml(){let e=ve();return`<!DOCTYPE html>
+</html>`}};function ue(){let i="",t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";for(let o=0;o<32;o++)i+=t.charAt(Math.floor(Math.random()*t.length));return i}var me=[".ttf",".otf",".woff",".woff2"];function fe(){try{return require("node-pty"),!0}catch{return!1}}var N=class{constructor(t){this._mcpPort=0;this._context=t}static{this.viewType="terminalGrid.sidebarView"}setMcpPort(t){this._mcpPort=t,this._view?.webview.postMessage({type:"mcpPort",port:t})}_getPresetFolderPath(){let t=l.workspace.workspaceFolders?.[0];if(t)return P.join(t.uri.fsPath,"terminal-grid")}_listLocalPresets(){let t=this._getPresetFolderPath();if(!t||!y.existsSync(t))return[];try{let o=y.readdirSync(t),s=[];for(let r of o)if(r.endsWith(".json"))try{let e=y.readFileSync(P.join(t,r),"utf-8"),n=JSON.parse(e);n.name&&s.push(n)}catch(e){console.error(`Failed to parse preset file: ${r}`,e)}return s}catch(o){return console.error("Failed to list local presets",o),[]}}_loadLocalPreset(t){let o=this._getPresetFolderPath();if(!o)return;let s=P.join(o,`${t}.json`);if(y.existsSync(s))try{let r=y.readFileSync(s,"utf-8");return JSON.parse(r)}catch(r){console.error(`Failed to load preset: ${t}`,r)}}async _saveLocalPreset(t,o){let s=this._getPresetFolderPath();if(!s){l.window.showWarningMessage(l.l10n.t("Please open a workspace folder first."));return}try{y.existsSync(s)||y.mkdirSync(s,{recursive:!0});let r=P.join(s,`${t}.json`);y.writeFileSync(r,JSON.stringify(o,null,2),"utf-8")}catch(r){l.window.showErrorMessage(`Failed to save preset: ${r}`)}}async _deleteLocalPreset(t){let o=this._getPresetFolderPath();if(!o)return;let s=P.join(o,`${t}.json`);if(y.existsSync(s))try{y.unlinkSync(s)}catch(r){l.window.showErrorMessage(`Failed to delete preset: ${r}`)}}async _saveWorkspaceConfig(){let t=this._getPresetFolderPath();if(t)try{y.existsSync(t)||y.mkdirSync(t,{recursive:!0});let o=l.workspace.getConfiguration("terminalGrid"),s={name:"terminal-grid",rows:o.get("defaultRows",2),cols:o.get("defaultCols",3),startupCommands:this._context.globalState.get("startupCommands",[]),cellLabels:this._context.globalState.get("cellLabels",[]),zoomPercent:o.get("zoomPercent",100),fontFamily:o.get("fontFamily",""),bgColor:o.get("backgroundColor",""),fgColor:o.get("foregroundColor",""),colorTheme:o.get("colorTheme",""),shellType:o.get("shellType",""),defaultCommand:this._context.globalState.get("defaultCommand",""),defaultSteps:this._context.globalState.get("defaultSteps",[]),cellStepsOverrides:this._context.globalState.get("cellOverrides",{}),mergedRegions:this._context.globalState.get("mergedRegions",[])},r=P.join(t,"terminal-grid.json");y.writeFileSync(r,JSON.stringify(s,null,2),"utf-8")}catch(o){console.error("Failed to auto-save workspace config",o)}}resolveWebviewView(t,o,s){this._view=t,t.webview.options={enableScripts:!0,localResourceRoots:[this._context.extensionUri]},t.webview.html=this._getHtml(),t.webview.onDidReceiveMessage(async r=>{switch(r.type){case"openGrid":await l.commands.executeCommand("terminalGrid.openCustomGrid",r.rows,r.cols),this.sendConfig();break;case"reopenGrid":{let e=f.currentPanel,n=l.workspace.getConfiguration("terminalGrid"),a=e?e.getRows():n.get("defaultRows",2),d=e?e.getCols():n.get("defaultCols",3);await l.commands.executeCommand("terminalGrid.openCustomGrid",a,d),this.sendConfig();break}case"reload":await l.commands.executeCommand("workbench.action.reloadWindow");break;case"setConfig":{let e=l.workspace.getConfiguration("terminalGrid");r.key&&r.value!==void 0&&await e.update(r.key,r.value,l.ConfigurationTarget.Global),r.key==="shellType"&&f.currentPanel&&f.currentPanel.restartAllCells();break}case"getConfig":{this.sendConfig();break}case"browseFont":{let e=await l.window.showOpenDialog({canSelectMany:!1,filters:{"Font Files":["ttf","otf","woff","woff2"]},title:l.l10n.t("Select Font File")});if(!e||e.length===0)break;let n=e[0].fsPath,a=P.extname(n).toLowerCase();if(!me.includes(a)){l.window.showWarningMessage(l.l10n.t("Unsupported font format. Use .ttf, .otf, .woff, or .woff2"));break}try{y.accessSync(n,y.constants.R_OK)}catch{l.window.showErrorMessage(l.l10n.t("Cannot read font file."));break}let d=P.basename(n,a),c=this._context.globalState.get("customFonts",[]);c.some(m=>m.path===n)||(c.push({name:d,path:n}),await this._context.globalState.update("customFonts",c)),await this._saveWorkspaceConfig(),this.sendConfig(),f.currentPanel&&f.currentPanel.loadCustomFonts([{name:d,path:n}]);break}case"removeFont":{let n=this._context.globalState.get("customFonts",[]).filter(a=>a.name!==r.name);await this._context.globalState.update("customFonts",n),await this._saveWorkspaceConfig(),this.sendConfig();break}case"addStartupCommand":{let e=this._context.globalState.get("startupCommands",[]);e.push({command:r.command,count:1}),await this._context.globalState.update("startupCommands",e),await this._saveWorkspaceConfig(),this.sendConfig();break}case"removeStartupCommand":{let e=this._context.globalState.get("startupCommands",[]);e.splice(r.index,1),await this._context.globalState.update("startupCommands",e),await this._saveWorkspaceConfig(),this.sendConfig();break}case"updateCommandCount":{let e=this._context.globalState.get("startupCommands",[]);e[r.index]&&(e[r.index].count=Math.max(1,r.count),await this._context.globalState.update("startupCommands",e)),await this._saveWorkspaceConfig(),this.sendConfig();break}case"addStep":{if(r.target==="all"){let e=this._context.globalState.get("defaultSteps",[]);e.push(r.step),await this._context.globalState.update("defaultSteps",e);let n=e.find(a=>a.type==="command");await this._context.globalState.update("defaultCommand",n?.input||"")}else{let e=this._context.globalState.get("cellOverrides",{}),n=r.target;e[n]||(e[n]={}),Array.isArray(e[n].startupSteps)||(e[n].startupSteps=[]),e[n].startupSteps.push(r.step);let a=e[n].startupSteps.find(d=>d.type==="command");e[n].startupCommand=a?.input||"",await this._context.globalState.update("cellOverrides",e)}await this._saveWorkspaceConfig(),this.sendConfig();break}case"removeStep":{if(r.target==="all"){let e=this._context.globalState.get("defaultSteps",[]);e.splice(r.index,1),await this._context.globalState.update("defaultSteps",e);let n=e.find(a=>a.type==="command");await this._context.globalState.update("defaultCommand",n?.input||"")}else{let e=this._context.globalState.get("cellOverrides",{}),n=r.target;if(Array.isArray(e[n]?.startupSteps)){e[n].startupSteps.splice(r.index,1);let a=e[n].startupSteps.find(d=>d.type==="command");e[n].startupCommand=a?.input||"",await this._context.globalState.update("cellOverrides",e)}}await this._saveWorkspaceConfig(),this.sendConfig();break}case"reorderSteps":{if(r.target==="all"){await this._context.globalState.update("defaultSteps",r.steps);let e=r.steps.find(n=>n.type==="command");await this._context.globalState.update("defaultCommand",e?.input||"")}else{let e=this._context.globalState.get("cellOverrides",{}),n=r.target;e[n]||(e[n]={}),e[n].startupSteps=r.steps;let a=r.steps.find(d=>d.type==="command");e[n].startupCommand=a?.input||"",await this._context.globalState.update("cellOverrides",e)}await this._saveWorkspaceConfig(),this.sendConfig();break}case"updateStep":{if(r.target==="all"){let e=this._context.globalState.get("defaultSteps",[]);r.index>=0&&r.index<e.length&&(e[r.index]=r.step,await this._context.globalState.update("defaultSteps",e))}else{let e=this._context.globalState.get("cellOverrides",{}),n=r.target,a=e[n]?.startupSteps||[];r.index>=0&&r.index<a.length&&(a[r.index]=r.step,e[n]||(e[n]={}),e[n].startupSteps=a,await this._context.globalState.update("cellOverrides",e))}await this._saveWorkspaceConfig(),this.sendConfig();break}case"addProject":{let e=this._context.globalState.get("projects",[]);e.some(n=>n.path===r.path)||(e.push({name:r.name,path:r.path}),await this._context.globalState.update("projects",e)),this.sendConfig();break}case"removeProject":{let e=this._context.globalState.get("projects",[]);e.splice(r.index,1),await this._context.globalState.update("projects",e),this.sendConfig();break}case"openProject":{let e=l.Uri.file(r.path);await l.commands.executeCommand("vscode.openFolder",e,{forceNewWindow:!!r.newWindow});break}case"addCurrentProject":{let e=l.workspace.workspaceFolders?.[0];if(!e){l.window.showWarningMessage(l.l10n.t("No workspace folder open."));break}let n=this._context.globalState.get("projects",[]),a=e.uri.fsPath;n.some(d=>d.path===a)||(n.push({name:e.name,path:a}),await this._context.globalState.update("projects",n)),this.sendConfig();break}case"browseProject":{let e=await l.window.showOpenDialog({canSelectFiles:!1,canSelectFolders:!0,canSelectMany:!1,title:l.l10n.t("Select Project Folder")});if(!e||e.length===0)break;let n=e[0].fsPath,a=P.basename(n),d=this._context.globalState.get("projects",[]);d.some(c=>c.path===n)||(d.push({name:a,path:n}),await this._context.globalState.update("projects",d)),this.sendConfig();break}case"savePreset":{let e=l.workspace.getConfiguration("terminalGrid"),n={name:r.name,rows:e.get("defaultRows",2),cols:e.get("defaultCols",3),startupCommands:this._context.globalState.get("startupCommands",[]),cellLabels:this._context.globalState.get("cellLabels",[]),zoomPercent:e.get("zoomPercent",100),fontFamily:e.get("fontFamily",""),bgColor:e.get("backgroundColor",""),fgColor:e.get("foregroundColor",""),colorTheme:e.get("colorTheme",""),shellType:e.get("shellType",""),defaultCommand:this._context.globalState.get("defaultCommand",""),defaultSteps:this._context.globalState.get("defaultSteps",[]),cellStepsOverrides:this._context.globalState.get("cellOverrides",{}),mergedRegions:this._context.globalState.get("mergedRegions",[])};if(l.workspace.workspaceFolders?.[0])await this._saveLocalPreset(r.name,n);else{let a=this._context.globalState.get("presets",[]),d=a.findIndex(c=>c.name===r.name);d>=0?a[d]=n:a.push(n),await this._context.globalState.update("presets",a)}this.sendConfig(r.name);break}case"loadPreset":{let e=this._loadLocalPreset(r.name);if(e||(e=this._context.globalState.get("presets",[]).find(d=>d.name===r.name)),!e)break;let n=l.workspace.getConfiguration("terminalGrid");if(await n.update("defaultRows",e.rows,l.ConfigurationTarget.Global),await n.update("defaultCols",e.cols,l.ConfigurationTarget.Global),await n.update("zoomPercent",e.zoomPercent,l.ConfigurationTarget.Global),await n.update("fontFamily",e.fontFamily,l.ConfigurationTarget.Global),await n.update("backgroundColor",e.bgColor,l.ConfigurationTarget.Global),await n.update("foregroundColor",e.fgColor,l.ConfigurationTarget.Global),await n.update("colorTheme",e.colorTheme||"",l.ConfigurationTarget.Global),await n.update("shellType",e.shellType||"",l.ConfigurationTarget.Global),await this._context.globalState.update("startupCommands",e.startupCommands||[]),await this._context.globalState.update("cellLabels",e.cellLabels||[]),await this._context.globalState.update("defaultCommand",e.defaultCommand||""),e.defaultSteps?await this._context.globalState.update("defaultSteps",e.defaultSteps):e.defaultCommand?await this._context.globalState.update("defaultSteps",[{type:"command",input:e.defaultCommand}]):await this._context.globalState.update("defaultSteps",[]),e.cellStepsOverrides){let a=this._context.globalState.get("cellOverrides",{});for(let[d,c]of Object.entries(e.cellStepsOverrides)){a[Number(d)]||(a[Number(d)]={});let m=c;Array.isArray(m.startupSteps)&&(a[Number(d)].startupSteps=m.startupSteps)}await this._context.globalState.update("cellOverrides",a)}await this._context.globalState.update("mergedRegions",e.mergedRegions||[]),this.sendConfig(r.name);break}case"deletePreset":{l.workspace.workspaceFolders?.[0]&&await this._deleteLocalPreset(r.name);let n=this._context.globalState.get("presets",[]).filter(a=>a.name!==r.name);await this._context.globalState.update("presets",n),this.sendConfig();break}case"broadcast":{f.currentPanel?f.currentPanel.broadcastInput(r.text):l.window.showWarningMessage(l.l10n.t("No terminal grid is open."));break}case"broadcastToCell":{if(f.currentPanel)for(let e of r.cellIds)f.currentPanel.sendInputToCell(e,r.text);else l.window.showWarningMessage(l.l10n.t("No terminal grid is open."));break}case"setCellConfig":{let e=this._context.globalState.get("cellOverrides",{});if(e[r.cellId]={bgColor:r.bgColor||"",fgColor:r.fgColor||"",fontFamily:r.fontFamily||"",themeName:r.themeName||"",shellType:e[r.cellId]?.shellType||""},await this._context.globalState.update("cellOverrides",e),f.currentPanel){let n=r.themeName?M(r.themeName):null;f.currentPanel.sendCellConfig(r.cellId,r.bgColor||"",r.fgColor||"",r.fontFamily||"",r.themeName||"",n)}await this._saveWorkspaceConfig();break}case"setShellForCell":{let e=this._context.globalState.get("cellOverrides",{});e[r.cellId]||(e[r.cellId]={}),e[r.cellId].shellType=r.shellType||"",await this._context.globalState.update("cellOverrides",e),f.currentPanel&&f.currentPanel.restartCell(r.cellId),await this._saveWorkspaceConfig();break}case"setDefaultCommand":{let e=r.command||"";await this._context.globalState.update("defaultCommand",e),await this._context.globalState.update("defaultSteps",e?[{type:"command",input:e}]:[]),await this._saveWorkspaceConfig(),this.sendConfig();break}case"setCellCommand":{let e=this._context.globalState.get("cellOverrides",{});e[r.cellId]||(e[r.cellId]={});let n=r.command||"";e[r.cellId].startupCommand=n,e[r.cellId].startupSteps=n?[{type:"command",input:n}]:[],await this._context.globalState.update("cellOverrides",e),await this._saveWorkspaceConfig(),this.sendConfig();break}case"clearAllCellOverrides":{await this._context.globalState.update("cellOverrides",{}),f.currentPanel&&f.currentPanel.clearCellOverrides(),await this._saveWorkspaceConfig();break}case"clearAllCellShells":{let e=this._context.globalState.get("cellOverrides",{});for(let n of Object.keys(e))e[parseInt(n)]&&(e[parseInt(n)].shellType="");await this._context.globalState.update("cellOverrides",e),await this._saveWorkspaceConfig();break}case"saveMergeRegions":{let e=r.regions||[];await this._context.globalState.update("mergedRegions",e);let n=f.currentPanel,a=r.rows??n?.getRows()??l.workspace.getConfiguration("terminalGrid").get("defaultRows",2),d=r.cols??n?.getCols()??l.workspace.getConfiguration("terminalGrid").get("defaultCols",3),c=new Set;for(let m of e)for(let h=m.startRow;h<m.startRow+m.rowSpan;h++)for(let b=m.startCol;b<m.startCol+m.colSpan;b++)h===m.startRow&&b===m.startCol||h<a&&b<d&&c.add(h*d+b);if(c.size>0){let m=this._context.globalState.get("cellOverrides",{}),h=this._context.globalState.get("cellLabels",[]),b=!1;for(let v of c)m[String(v)]&&(delete m[String(v)],b=!0),h[v]&&(h[v]="",b=!0);b&&(await this._context.globalState.update("cellOverrides",m),await this._context.globalState.update("cellLabels",h))}await this._saveWorkspaceConfig(),this.sendConfig();break}case"saveSectionStates":{await this._context.globalState.update("sectionStates",r.states);break}case"installNodePty":{try{await l.window.withProgress({location:l.ProgressLocation.Notification,title:l.l10n.t("Installing node-pty\u2026"),cancellable:!1},()=>new Promise((a,d)=>{Z.exec("npm install node-pty",{cwd:this._context.extensionPath},c=>{c?d(c):a()})})),this._view?.webview.postMessage({type:"ptyInstallResult",success:!0});let e=l.l10n.t("Reload Window");await l.window.showInformationMessage(l.l10n.t("node-pty installed successfully. Reload window to activate."),e)===e&&l.commands.executeCommand("workbench.action.reloadWindow")}catch(e){let n=e instanceof Error?e.message:String(e);l.window.showErrorMessage(l.l10n.t("node-pty install failed: {0}",n)),this._view?.webview.postMessage({type:"ptyInstallResult",success:!1})}break}}}),l.workspace.onDidChangeConfiguration(r=>{r.affectsConfiguration("terminalGrid")&&this.sendConfig()})}async _migrateSteps(){let t=!1,o=this._context.globalState.get("defaultSteps",[]),s=this._context.globalState.get("defaultCommand","");s&&o.length===0?(await this._context.globalState.update("defaultSteps",[{type:"command",input:s}]),await this._context.globalState.update("defaultCommand",""),t=!0):s&&o.length>0&&(await this._context.globalState.update("defaultCommand",""),t=!0);let r=this._context.globalState.get("cellOverrides",{});for(let n of Object.keys(r)){let a=r[Number(n)];if(!a)continue;let d=a.startupCommand,c=a.startupSteps;d&&(!c||c.length===0)?(a.startupSteps=[{type:"command",input:d}],delete a.startupCommand,t=!0):d&&c&&c.length>0&&(delete a.startupCommand,t=!0)}this._context.globalState.get("startupCommands",[]).length>0&&(await this._context.globalState.update("startupCommands",[]),t=!0),t&&await this._context.globalState.update("cellOverrides",r)}sendConfig(t){if(!this._view)return;this._migrateSteps();let o=l.workspace.getConfiguration("terminalGrid"),s=this._context.globalState.get("customFonts",[]),r=this._context.globalState.get("startupCommands",[]),e=this._context.globalState.get("projects",[]),n=this._listLocalPresets(),a=this._context.globalState.get("projectPresets",{}),d=this._context.globalState.get("cellLabels",[]),c=this._context.globalState.get("cellOverrides",{}),m=this._context.globalState.get("defaultSteps",[]),h=this._context.globalState.get("sectionStates",{}),b=l.workspace.workspaceFolders?.[0]?.uri.fsPath||"",v=f.currentPanel,u=f.getAvailableShells();this._view.webview.postMessage({type:"configValues",zoom:o.get("zoomPercent",100),fontFamily:o.get("fontFamily",""),bgColor:o.get("backgroundColor",""),fgColor:o.get("foregroundColor",""),colorTheme:o.get("colorTheme",""),shellType:o.get("shellType",""),defaultCommand:this._context.globalState.get("defaultCommand",""),themeNames:U,availableShells:u.map(C=>({name:C.name,path:C.path})),customFonts:s.map(C=>C.name),startupCommands:r,projects:e,presets:n,projectPresets:a,cellLabels:d,cellOverrides:c,defaultSteps:m,sectionStates:h,workspacePath:b,gridRows:v?.getRows()??0,gridCols:v?.getCols()??0,mergedRegions:this._context.globalState.get("mergedRegions",[]),hiddenCells:(()=>{let C=this._context.globalState.get("mergedRegions",[]),T=v?v.getCols():o.get("defaultCols",3),w=[];for(let S of C)for(let L=S.startRow;L<S.startRow+S.rowSpan;L++)for(let E=S.startCol;E<S.startCol+S.colSpan;E++)L===S.startRow&&E===S.startCol||w.push(L*T+E);return w})(),loadedPresetName:t})}_getHtml(){let t=ve();return`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${e}';">
+        content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${t}';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -557,11 +559,14 @@
     }
     .cmd-summary-del {
       width: 16px; height: 16px; border: none; border-radius: 3px;
-      background: transparent; color: rgba(255,255,255,.25);
+      background: transparent; color: rgba(255,255,255,.5);
       font-size: 12px; line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; transition: all .1s;
+      opacity: 0;
     }
+    .cmd-summary-item:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10); }
+    .cmd-summary-item:hover .cmd-summary-del { opacity: 1; }
     .cmd-summary-del:hover { background: rgba(255,80,80,.2); color: #f55; }
     /* \u2500\u2500 Step groups (sequential startup commands) \u2500\u2500 */
     .cmd-step-group { margin-bottom: 6px; }
@@ -578,7 +583,7 @@
       font-size: 10px; cursor: grab; transition: background .15s, border-color .15s, opacity .15s;
       user-select: none;
     }
-    .cmd-step-item:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10); }
+    .cmd-step-item:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); }
     .cmd-step-item.dragging { opacity: .4; border-color: var(--vscode-focusBorder, rgba(0,127,212,.6)); }
     .cmd-step-handle { cursor: grab; opacity: .3; font-size: 14px; line-height: 1; flex-shrink: 0; width: 14px; text-align: center; }
     .cmd-step-handle:hover { opacity: .6; }
@@ -593,11 +598,13 @@
     }
     .cmd-step-del {
       width: 16px; height: 16px; border: none; border-radius: 3px;
-      background: transparent; color: rgba(255,255,255,.25);
+      background: transparent; color: rgba(255,255,255,.5);
       font-size: 12px; line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; transition: all .1s;
+      opacity: 0;
     }
+    .cmd-step-item:hover .cmd-step-del { opacity: 1; }
     .cmd-step-del:hover { background: rgba(255,80,80,.2); color: #f55; }
     /* \u2500\u2500 node-pty banner \u2500\u2500 */
     .pty-banner {
@@ -629,18 +636,18 @@
     ${fe()?"":`
     <div class="pty-banner" id="ptyBanner">
       <span class="pty-banner-icon">\u26A0</span>
-      <span class="pty-banner-text">${a.l10n.t("node-pty is required to use Terminal Grid.")}</span>
-      <button class="pty-banner-btn" id="ptyInstallBtn">${a.l10n.t("Install")}</button>
+      <span class="pty-banner-text">${l.l10n.t("node-pty is required to use Terminal Grid.")}</span>
+      <button class="pty-banner-btn" id="ptyInstallBtn">${l.l10n.t("Install")}</button>
     </div>
     `}
     <!-- Projects -->
     <div class="glass-card" data-section="projects">
       <div class="section-header collapsible">
-        <div class="section-label">${a.l10n.t("Projects")}</div>
+        <div class="section-label">${l.l10n.t("Projects")}</div>
         <span class="tip-wrap">
           <span class="tip-icon">?</span>
           <div class="tip-bubble">
-            ${a.l10n.t("Register projects and click to switch folders. Ctrl+Click to open in a new window. If a preset is linked, it will be auto-applied on switch.")}
+            ${l.l10n.t("Register projects and click to switch folders. Ctrl+Click to open in a new window. If a preset is linked, it will be auto-applied on switch.")}
           </div>
         </span>
         <span class="collapse-icon">\u25BE</span>
@@ -652,22 +659,53 @@
         <div id="projectList" class="cmd-list"></div>
         <div class="btn-group" style="gap: 6px;">
           <button class="glass-btn" id="addCurrentProjectBtn" style="font-size: 11px; padding: 8px 10px;">
-            <span class="btn-icon" style="font-size: 12px;">+</span> ${a.l10n.t("Add Current Folder")}
+            <span class="btn-icon" style="font-size: 12px;">+</span> ${l.l10n.t("Add Current Folder")}
           </button>
           <button class="glass-btn" id="browseProjectBtn" style="font-size: 11px; padding: 8px 10px;">
-            <span class="btn-icon" style="font-size: 12px;">&#128193;</span> ${a.l10n.t("Browse Folder")}
+            <span class="btn-icon" style="font-size: 12px;">&#128193;</span> ${l.l10n.t("Browse Folder")}
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="glass-card" data-section="presets">
+      <div class="section-header collapsible">
+        <div class="section-label">${l.l10n.t("Presets")}</div>
+        <span class="tip-wrap">
+          <span class="tip-icon">?</span>
+          <div class="tip-bubble">
+            ${l.l10n.t("Save and load current grid settings (size, zoom, font, color, commands, cell labels) as presets. Use Link to project for per-project auto-apply.")}
+          </div>
+        </span>
+        <span class="collapse-icon">\u25BE</span>
+      </div>
+      <div class="section-body">
+        <div class="cmd-add-row">
+          <input class="glass-input" id="presetNameInput" placeholder="${l.l10n.t("Preset name\u2026")}" style="flex: 1;" />
+        </div>
+        <div class="cmd-add-row" style="margin-top: 4px;">
+          <select class="glass-select" id="presetSelect" style="flex: 1;">
+            <option value="">${l.l10n.t("Select preset\u2026")}</option>
+          </select>
+        </div>
+        <div class="btn-group" style="gap: 6px; margin-top: 8px;">
+          <div style="display: flex; gap: 6px;">
+            <button class="glass-btn" id="presetSaveBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${l.l10n.t("Save")}</button>
+            <button class="glass-btn primary" id="presetLoadBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${l.l10n.t("Load")}</button>
+            <button class="glass-btn" id="presetDeleteBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${l.l10n.t("Delete")}</button>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="glass-card" data-section="gridSize">
       <div class="section-header collapsible">
-        <div class="section-label">${a.l10n.t("Select Grid Size")}</div>
+        <div class="section-label">${l.l10n.t("Select Grid Size")}</div>
         <span class="tip-wrap">
           <span class="tip-icon">?</span>
           <div class="tip-bubble">
-            ${a.l10n.t("Hover to select the desired rows\xD7cols size. Supports up to 4\xD75 (20 cells). Grid opens as an editor tab, each cell is an independent terminal. Drag cells below to merge them into one larger terminal.")}
+            ${l.l10n.t("Hover to select the desired rows\xD7cols size. Supports up to 4\xD75 (20 cells). Grid opens as an editor tab, each cell is an independent terminal. Drag cells below to merge them into one larger terminal.")}
           </div>
         </span>
         <span class="collapse-icon">\u25BE</span>
@@ -680,37 +718,37 @@
         <div class="merge-row">
           <div class="merge-grid" id="mergeGrid"></div>
           <div class="merge-side">
-            <button class="glass-btn" id="mergeBtn" disabled>${a.l10n.t("Merge")}</button>
-            <button class="glass-btn" id="unmergeBtn" disabled>${a.l10n.t("Unmerge")}</button>
-            <button class="glass-btn" id="mergeClearBtn">${a.l10n.t("Clear")}</button>
+            <button class="glass-btn" id="mergeBtn" disabled>${l.l10n.t("Merge")}</button>
+            <button class="glass-btn" id="unmergeBtn" disabled>${l.l10n.t("Unmerge")}</button>
+            <button class="glass-btn" id="mergeClearBtn">${l.l10n.t("Clear")}</button>
           </div>
         </div>
         <div class="merge-bottom">
           <div class="merge-legend">
-            <div class="merge-legend-item"><div class="merge-legend-swatch sel"></div> ${a.l10n.t("Selection")}</div>
-            <div class="merge-legend-item"><div class="merge-legend-swatch mrg"></div> ${a.l10n.t("Merged")}</div>
+            <div class="merge-legend-item"><div class="merge-legend-swatch sel"></div> ${l.l10n.t("Selection")}</div>
+            <div class="merge-legend-item"><div class="merge-legend-swatch mrg"></div> ${l.l10n.t("Merged")}</div>
           </div>
         </div>
         <button class="glass-btn primary" id="openGridBtn">
-          <span class="btn-icon">&#9654;</span> ${a.l10n.t("Open Grid")}
+          <span class="btn-icon">&#9654;</span> ${l.l10n.t("Open Grid")}
         </button>
       </div>
     </div>
 
     <div class="glass-card" data-section="settings">
       <div class="section-header collapsible">
-        <div class="section-label">${a.l10n.t("Terminal Settings")}</div>
+        <div class="section-label">${l.l10n.t("Terminal Settings")}</div>
         <span class="tip-wrap">
           <span class="tip-icon">?</span>
           <div class="tip-bubble">
-            ${a.l10n.t("Zoom: Global font size (50\u2013300%). Font/Color: Use tabs for global or per-cell settings. Changes in All tab apply to all cells. Set global first, then customize individual cells. Individual cells can be zoomed separately with Ctrl+Wheel.")}
+            ${l.l10n.t("Zoom: Global font size (50\u2013300%). Font/Color: Use tabs for global or per-cell settings. Changes in All tab apply to all cells. Set global first, then customize individual cells. Individual cells can be zoomed separately with Ctrl+Wheel.")}
           </div>
         </span>
         <span class="collapse-icon">\u25BE</span>
       </div>
       <div class="section-body">
         <div class="setting-row">
-          <span class="setting-label">${a.l10n.t("Zoom")}</span>
+          <span class="setting-label">${l.l10n.t("Zoom")}</span>
           <div class="stepper">
             <button class="stepper-btn" id="zoomDown">\u2212</button>
             <span class="stepper-val" id="zoomVal">100%</span>
@@ -721,10 +759,10 @@
         <div id="settingsTabs" class="settings-tabs hidden"></div>
 
         <div class="setting-row">
-          <span class="setting-label">${a.l10n.t("Theme")}</span>
+          <span class="setting-label">${l.l10n.t("Theme")}</span>
           <div class="font-picker" id="themePicker">
             <div class="font-display" id="themeDisplay">
-              <span class="font-display-text" id="themeDisplayText">${a.l10n.t("IDE Default")}</span>
+              <span class="font-display-text" id="themeDisplayText">${l.l10n.t("IDE Default")}</span>
               <span class="font-display-arrow">\u25B2</span>
             </div>
             <div class="font-dropdown" id="themeDropdown"></div>
@@ -732,10 +770,10 @@
         </div>
 
         <div class="setting-row">
-          <span class="setting-label">${a.l10n.t("Font")}</span>
+          <span class="setting-label">${l.l10n.t("Font")}</span>
           <div class="font-picker" id="fontPicker">
             <div class="font-display" id="fontDisplay">
-              <span class="font-display-text" id="fontDisplayText">${a.l10n.t("IDE Default")}</span>
+              <span class="font-display-text" id="fontDisplayText">${l.l10n.t("IDE Default")}</span>
               <span class="font-display-arrow">\u25B2</span>
             </div>
             <div class="font-dropdown" id="fontDropdown"></div>
@@ -743,26 +781,26 @@
         </div>
 
         <div class="setting-row">
-          <span class="setting-label">${a.l10n.t("Back Color")}</span>
+          <span class="setting-label">${l.l10n.t("Back Color")}</span>
           <div class="color-row">
             <div class="color-swatch" id="bgSwatch">
               <div class="color-swatch-fill" id="bgSwatchFill"></div>
               <input type="color" id="bgColorInput" value="#1e1e1e">
             </div>
-            <span class="color-val" id="bgVal">${a.l10n.t("IDE Default")}</span>
-            <button class="color-reset hidden" id="bgReset" title="${a.l10n.t("Reset to IDE Default")}">\xD7</button>
+            <span class="color-val" id="bgVal">${l.l10n.t("IDE Default")}</span>
+            <button class="color-reset hidden" id="bgReset" title="${l.l10n.t("Reset to IDE Default")}">\xD7</button>
           </div>
         </div>
 
         <div class="setting-row">
-          <span class="setting-label">${a.l10n.t("Font Color")}</span>
+          <span class="setting-label">${l.l10n.t("Font Color")}</span>
           <div class="color-row">
             <div class="color-swatch" id="fgSwatch">
               <div class="color-swatch-fill" id="fgSwatchFill"></div>
               <input type="color" id="fgColorInput" value="#cccccc">
             </div>
-            <span class="color-val" id="fgVal">${a.l10n.t("IDE Default")}</span>
-            <button class="color-reset hidden" id="fgReset" title="${a.l10n.t("Reset to IDE Default")}">\xD7</button>
+            <span class="color-val" id="fgVal">${l.l10n.t("IDE Default")}</span>
+            <button class="color-reset hidden" id="fgReset" title="${l.l10n.t("Reset to IDE Default")}">\xD7</button>
           </div>
         </div>
 
@@ -772,11 +810,11 @@
     <!-- Startup Commands -->
     <div class="glass-card" data-section="startup">
       <div class="section-header collapsible">
-        <div class="section-label">${a.l10n.t("Startup Commands")}</div>
+        <div class="section-label">${l.l10n.t("Startup Commands")}</div>
         <span class="tip-wrap">
           <span class="tip-icon">?</span>
           <div class="tip-bubble">
-            ${a.l10n.t("Set shell type and startup command per cell. Use All tab for global defaults, or individual tabs for per-cell overrides.")}
+            ${l.l10n.t("Set shell type and startup command per cell. Use All tab for global defaults, or individual tabs for per-cell overrides.")}
           </div>
         </span>
         <span class="collapse-icon">\u25BE</span>
@@ -784,84 +822,58 @@
       <div class="section-body">
         <div id="cmdTabs" class="settings-tabs hidden"></div>
         <div class="setting-row">
-          <span class="setting-label">${a.l10n.t("Shell")}</span>
+          <span class="setting-label">${l.l10n.t("Shell")}</span>
           <div class="font-picker" id="shellPicker">
             <div class="font-display" id="shellDisplay">
-              <span class="font-display-text" id="shellDisplayText">${a.l10n.t("IDE Default")}</span>
+              <span class="font-display-text" id="shellDisplayText">${l.l10n.t("IDE Default")}</span>
               <span class="font-display-arrow">\u25B2</span>
             </div>
             <div class="font-dropdown" id="shellDropdown"></div>
           </div>
         </div>
-        <div class="setting-row">
-          <span class="setting-label">${a.l10n.t("Command")}</span>
-          <select class="glass-select" id="cmdPreset" style="flex:1;min-width:0;">
-            <option value="">${a.l10n.t("Select command\u2026")}</option>
-            <option value="claude">claude</option>
-            <option value="codex">codex</option>
-            <option value="claude --dangerously-skip-permissions">claude --dangerously-skip-permissions</option>
-            <option value="codex -s danger-full-access -a never">codex -s danger-full-access -a never</option>
-            <option value="npm run dev">npm run dev</option>
-            <option value="npm start">npm start</option>
-            <option value="npm test">npm test</option>
-            <option value="python">python</option>
-            <option value="node">node</option>
-            <option value="docker compose up">docker compose up</option>
-            <option value="ssh">ssh</option>
-            <option value="htop">htop</option>
-            <option value="/resume">/resume</option>
-            <option value="/compact">/compact</option>
-            <option value="yes">yes</option>
-            <option value="exit">exit</option>
-            <option value="__enter__">Enter (\u21B5)</option>
-            <option value="__custom__">${a.l10n.t("Custom command\u2026")}</option>
-            <option value="__timeout__">${a.l10n.t("Timeout (ms)\u2026")}</option>
-          </select>
-        </div>
-        <div class="cmd-add-row" id="cmdCustomRow" style="display:none;">
-          <input class="glass-input" id="cmdCustom" placeholder="${a.l10n.t("Custom command\u2026")}" style="flex:1;min-width:0;" />
-          <button class="stepper-btn" id="cmdApplyBtn" title="${a.l10n.t("Apply")}">&#10003;</button>
+        <div class="setting-row" style="flex-direction: column; align-items: stretch; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="setting-label" style="width: 50px;">${l.l10n.t("Command")}</span>
+            <div style="flex: 1; display: flex; gap: 6px;">
+              <input class="glass-input" id="cmdCustom" placeholder="${l.l10n.t("Custom command\u2026")}" style="flex:1;min-width:0;" />
+              <button class="stepper-btn" id="cmdApplyBtn" title="${l.l10n.t("Apply")}">&#10003;</button>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="setting-label" style="width: 50px; visibility: hidden;">${l.l10n.t("Command")}</span>
+            <select class="glass-select" id="cmdPreset" style="flex:1;min-width:0;">
+              <option value="">${l.l10n.t("Select command\u2026")}</option>
+              <option value="claude">claude</option>
+              <option value="codex">codex</option>
+              <option value="claude --dangerously-skip-permissions">claude --dangerously-skip-permissions</option>
+              <option value="codex -s danger-full-access -a never">codex -s danger-full-access -a never</option>
+              <option value="npm run dev">npm run dev</option>
+              <option value="npm start">npm start</option>
+              <option value="npm test">npm test</option>
+              <option value="python">python</option>
+              <option value="node">node</option>
+              <option value="docker compose up">docker compose up</option>
+              <option value="ssh">ssh</option>
+              <option value="htop">htop</option>
+              <option value="/resume">/resume</option>
+              <option value="/compact">/compact</option>
+              <option value="yes">yes</option>
+              <option value="exit">exit</option>
+              <option value="__enter__">Enter (\u21B5)</option>
+              <option value="__timeout__">${l.l10n.t("Timeout (ms)\u2026")}</option>
+            </select>
+          </div>
         </div>
         <div class="cmd-add-row" id="cmdTimeoutRow" style="display:none;">
-          <input class="glass-input" type="number" id="cmdTimeoutMs" placeholder="${a.l10n.t("Milliseconds (e.g. 1500)")}" min="100" step="100" style="flex:1;min-width:0;" />
-          <button class="stepper-btn" id="cmdTimeoutApplyBtn" title="${a.l10n.t("Apply")}">&#10003;</button>
+          <input class="glass-input" type="number" id="cmdTimeoutMs" placeholder="${l.l10n.t("Milliseconds (e.g. 1500)")}" min="100" step="100" style="flex:1;min-width:0;" />
+          <button class="stepper-btn" id="cmdTimeoutApplyBtn" title="${l.l10n.t("Apply")}">&#10003;</button>
         </div>
         <div class="cmd-summary-divider"></div>
         <div id="cmdSummaryList" class="cmd-summary-list"></div>
-      </div>
-    </div>
-
-    <!-- Presets -->
-    <div class="glass-card" data-section="presets">
-      <div class="section-header collapsible">
-        <div class="section-label">${a.l10n.t("Presets")}</div>
-        <span class="tip-wrap">
-          <span class="tip-icon">?</span>
-          <div class="tip-bubble">
-            ${a.l10n.t("Save and load current grid settings (size, zoom, font, color, commands, cell labels) as presets. Use Link to project for per-project auto-apply.")}
-          </div>
-        </span>
-        <span class="collapse-icon">\u25BE</span>
-      </div>
-      <div class="section-body">
-        <div class="cmd-add-row">
-          <input class="glass-input" id="presetNameInput" placeholder="${a.l10n.t("Preset name\u2026")}" style="flex: 1;" />
-        </div>
-        <div class="cmd-add-row" style="margin-top: 4px;">
-          <select class="glass-select" id="presetSelect" style="flex: 1;">
-            <option value="">${a.l10n.t("Select preset\u2026")}</option>
-          </select>
-        </div>
-        <div class="btn-group" style="gap: 6px; margin-top: 8px;">
-          <div style="display: flex; gap: 6px;">
-            <button class="glass-btn" id="presetSaveBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${a.l10n.t("Save")}</button>
-            <button class="glass-btn primary" id="presetLoadBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${a.l10n.t("Load")}</button>
-            <button class="glass-btn" id="presetDeleteBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${a.l10n.t("Delete")}</button>
-          </div>
-          <div id="presetLinkRow" style="display: flex; align-items: center; gap: 6px; font-size: 11px; opacity: .7; margin-top: 4px;">
-            <input type="checkbox" id="presetLinkCheck" style="margin: 0;" />
-            <label id="presetLinkLabel" for="presetLinkCheck" style="cursor: pointer;">${a.l10n.t("Link to current project")}</label>
-          </div>
+        <div class="btn-group" style="margin-top: 10px;">
+          <button class="glass-btn primary" id="reopenGridBtn">
+            <span class="btn-icon">&#8635;</span> ${l.l10n.t("Reopen Grid")}
+          </button>
         </div>
       </div>
     </div>
@@ -869,11 +881,11 @@
     <!-- Broadcast Input -->
     <div class="glass-card" data-section="broadcast">
       <div class="section-header collapsible">
-        <div class="section-label">${a.l10n.t("Broadcast Input")}</div>
+        <div class="section-label">${l.l10n.t("Broadcast Input")}</div>
         <span class="tip-wrap">
           <span class="tip-icon">?</span>
           <div class="tip-bubble">
-            ${a.l10n.t("Send text to selected terminals. Check All to send to all cells, uncheck for individual selection.")}
+            ${l.l10n.t("Send text to selected terminals. Check All to send to all cells, uncheck for individual selection.")}
           </div>
         </span>
         <span class="collapse-icon">\u25BE</span>
@@ -881,9 +893,9 @@
       <div class="section-body">
         <div id="broadcastTargets" class="broadcast-targets hidden"></div>
         <div class="cmd-add-row" style="flex-direction: column; gap: 4px;">
-          <textarea class="glass-input" id="broadcastInput" placeholder="${a.l10n.t("Type command\u2026")}" rows="3" style="width: 100%; resize: vertical; font-family: var(--vscode-editor-fontFamily, monospace); font-size: 12px; line-height: 1.4;"></textarea>
+          <textarea class="glass-input" id="broadcastInput" placeholder="${l.l10n.t("Type command\u2026")}" rows="3" style="width: 100%; resize: vertical; font-family: var(--vscode-editor-fontFamily, monospace); font-size: 12px; line-height: 1.4;"></textarea>
           <div style="display: flex; justify-content: flex-end;">
-            <button class="stepper-btn" id="broadcastSendBtn" title="${a.l10n.t("Send")}" style="width: 50px;">${a.l10n.t("Send")}</button>
+            <button class="stepper-btn" id="broadcastSendBtn" title="${l.l10n.t("Send")}" style="width: 50px;">${l.l10n.t("Send")}</button>
           </div>
         </div>
       </div>
@@ -891,27 +903,27 @@
 
     <div class="glass-card" data-section="actions">
       <div class="section-header collapsible">
-        <div class="section-label">${a.l10n.t("Actions")}</div>
+        <div class="section-label">${l.l10n.t("Actions")}</div>
         <span class="collapse-icon">\u25BE</span>
       </div>
       <div class="section-body">
         <div class="btn-group">
           <button class="glass-btn" id="reloadBtn">
-            <span class="btn-icon">&#8635;</span> ${a.l10n.t("Reload Window")}
+            <span class="btn-icon">&#8635;</span> ${l.l10n.t("Reload Window")}
           </button>
         </div>
       </div>
     </div>
 
     <div class="hint">
-      ${a.l10n.t(`Grid opens as an editor tab.
+      ${l.l10n.t(`Grid opens as an editor tab.
 Ctrl+Wheel to zoom individual cells.`).replace(`
 `,"<br>")}
     </div>
   </div>
 
-  <script nonce="${e}">
-    var __i18n = ${JSON.stringify({installing:a.l10n.t("Installing\u2026"),ideDefault:a.l10n.t("IDE Default"),remove:a.l10n.t("Remove"),addFontFile:a.l10n.t("Add font file\u2026"),all:a.l10n.t("All"),noStartupCommands:a.l10n.t("No startup commands configured"),noProjects:a.l10n.t("No projects registered"),linkedPrefix:a.l10n.t("Linked: {0}"),linkToProject:a.l10n.t("Link to current project"),selectPreset:a.l10n.t("Select preset\u2026"),reload:a.l10n.t("Reload"),retry:a.l10n.t("Retry"),ptyInstalled:a.l10n.t("node-pty installed successfully!"),ptyInstalledHint:a.l10n.t("Reload the window to activate."),theme:a.l10n.t("Theme"),shellAuto:a.l10n.t("IDE Default"),shell:a.l10n.t("Shell")})};
+  <script nonce="${t}">
+    var __i18n = ${JSON.stringify({installing:l.l10n.t("Installing\u2026"),ideDefault:l.l10n.t("IDE Default"),remove:l.l10n.t("Remove"),addFontFile:l.l10n.t("Add font file\u2026"),all:l.l10n.t("All"),noStartupCommands:l.l10n.t("No startup commands configured"),noProjects:l.l10n.t("No projects registered"),selectPreset:l.l10n.t("Select preset\u2026"),reload:l.l10n.t("Reload"),retry:l.l10n.t("Retry"),ptyInstalled:l.l10n.t("node-pty installed successfully!"),ptyInstalledHint:l.l10n.t("Reload the window to activate."),theme:l.l10n.t("Theme"),shellAuto:l.l10n.t("IDE Default"),shell:l.l10n.t("Shell")})};
     var vscode = acquireVsCodeApi();
 
     // node-pty install button
@@ -972,6 +984,9 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
 
     document.getElementById('openGridBtn').addEventListener('click', function() {
       vscode.postMessage({ type: 'openGrid', rows: selectedRows, cols: selectedCols });
+    });
+    document.getElementById('reopenGridBtn').addEventListener('click', function() {
+      vscode.postMessage({ type: 'reopenGrid' });
     });
     document.getElementById('reloadBtn').addEventListener('click', function() {
       vscode.postMessage({ type: 'reload' });
@@ -1139,7 +1154,7 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
       mergeSelStart = null;
       mergeSelEnd = null;
       renderMergeGrid();
-      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
     });
 
     unmergeBtn.addEventListener('click', function() {
@@ -1151,7 +1166,7 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
       mergeSelStart = null;
       mergeSelEnd = null;
       renderMergeGrid();
-      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
     });
 
     mergeClearBtn.addEventListener('click', function() {
@@ -1159,7 +1174,7 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
       mergeSelStart = null;
       mergeSelEnd = null;
       renderMergeGrid();
-      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
     });
 
     // Rebuild merge grid when grid size changes
@@ -1171,7 +1186,7 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
           mergeSelStart = null;
           mergeSelEnd = null;
           buildMergeGrid();
-          vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+          vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
         }
       });
       observer.observe(document.getElementById('sizeLabel'), { childList: true, subtree: true });
@@ -1217,7 +1232,8 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
     var settingsTabsEl = document.getElementById('settingsTabs');
     var builtinFonts = [
       { value: '', label: __i18n.ideDefault },
-      { value: 'Consolas', label: 'Consolas' },
+      { value: 'MesloLGS NF', label: 'MesloLGS NF' },
+      { value: 'JetBrainsMono Nerd Font', label: 'JetBrainsMono NF' },
       { value: 'Cascadia Code', label: 'Cascadia Code' },
       { value: 'Cascadia Mono', label: 'Cascadia Mono' },
       { value: 'JetBrains Mono', label: 'JetBrains Mono' },
@@ -1227,6 +1243,7 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
       { value: 'Ubuntu Mono', label: 'Ubuntu Mono' },
       { value: 'Menlo', label: 'Menlo' },
       { value: 'Monaco', label: 'Monaco' },
+      { value: 'Consolas', label: 'Consolas' },
       { value: 'Courier New', label: 'Courier New' }
     ];
     var customFontNames = [];
@@ -1373,7 +1390,6 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
 
     // \u2500\u2500 Per-cell sequential startup steps \u2500\u2500
     var cmdPresetEl = document.getElementById('cmdPreset');
-    var cmdCustomRow = document.getElementById('cmdCustomRow');
     var cmdCustomInput = document.getElementById('cmdCustom');
     var cmdTimeoutRow = document.getElementById('cmdTimeoutRow');
     var cmdTimeoutMsInput = document.getElementById('cmdTimeoutMs');
@@ -1402,41 +1418,34 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
 
     cmdPresetEl.addEventListener('change', function() {
       var val = this.value;
-      if (val === '__custom__') {
-        cmdCustomRow.style.display = 'flex';
-        cmdTimeoutRow.style.display = 'none';
-        cmdCustomInput.focus();
-        this.value = '';
-        return;
-      }
       if (val === '__timeout__') {
         cmdTimeoutRow.style.display = 'flex';
-        cmdCustomRow.style.display = 'none';
         cmdTimeoutMsInput.focus();
         this.value = '';
         return;
       }
       if (val === '__enter__') {
-        cmdCustomRow.style.display = 'none';
         cmdTimeoutRow.style.display = 'none';
+        cmdCustomInput.value = '';
         addStep({ type: 'command', input: '' });
         this.value = '';
         return;
       }
       if (val) {
-        cmdCustomRow.style.display = 'none';
         cmdTimeoutRow.style.display = 'none';
-        addStep({ type: 'command', input: val });
+        cmdCustomInput.value = val;
         this.value = '';
+        cmdCustomInput.focus();
       }
     });
 
     document.getElementById('cmdApplyBtn').addEventListener('click', function() {
       var val = cmdCustomInput.value.trim();
+      // Allow empty string if user explicitly wants an Enter step by typing nothing and clicking apply?
+      // But user usually wants to type something. Enter step is handled by dropdown.
       if (val) {
         addStep({ type: 'command', input: val });
         cmdCustomInput.value = '';
-        cmdCustomRow.style.display = 'none';
       }
     });
 
@@ -1684,15 +1693,16 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
       renderCmdSummary();
     }
 
-    function buildSettingsTabs(total, labels, hidden) {
+    function buildSettingsTabs(rows, cols, labels, hidden) {
       var hiddenSet = {};
       if (hidden) for (var h = 0; h < hidden.length; h++) hiddenSet[hidden[h]] = true;
       settingsTabsEl.innerHTML = '';
-      if (total <= 0) {
+      if (rows <= 0 || cols <= 0) {
         settingsTabsEl.classList.add('hidden');
         activeSettingsTab = 'all';
         return;
       }
+      var total = rows * cols;
       settingsTabsEl.classList.remove('hidden');
       // All tab
       var allBtn = document.createElement('button');
@@ -1708,7 +1718,20 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
           var btn = document.createElement('button');
           btn.className = 'stab';
           btn.dataset.tab = String(idx);
-          btn.textContent = labels[idx] || String(idx + 1);
+          var r = Math.floor(idx / cols);
+          var c = idx % cols;
+          var region = getMergedRegionAt(r, c);
+          var label = labels[idx];
+          if (!label && region) {
+            var nums = [];
+            for (var rr = region.startRow; rr < region.startRow + region.rowSpan; rr++) {
+              for (var cc = region.startCol; cc < region.startCol + region.colSpan; cc++) {
+                nums.push(rr * cols + cc + 1);
+              }
+            }
+            label = nums.join('+');
+          }
+          btn.textContent = label || String(idx + 1);
           btn.addEventListener('click', function() { switchSettingsTab(String(idx)); });
           settingsTabsEl.appendChild(btn);
         })(i);
@@ -1741,16 +1764,17 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
     var cmdTabsEl = document.getElementById('cmdTabs');
     var activeCmdTab = 'all';
 
-    function buildCmdTabs(total, labels, hidden) {
+    function buildCmdTabs(rows, cols, labels, hidden) {
       var hiddenSet = {};
       if (hidden) for (var h = 0; h < hidden.length; h++) hiddenSet[hidden[h]] = true;
       var prevTab = activeCmdTab;
       cmdTabsEl.innerHTML = '';
-      if (total <= 0) {
+      if (rows <= 0 || cols <= 0) {
         cmdTabsEl.classList.add('hidden');
         activeCmdTab = 'all';
         return;
       }
+      var total = rows * cols;
       cmdTabsEl.classList.remove('hidden');
       // Check if previous tab still valid (and not hidden)
       var validPrev = prevTab === 'all' || (parseInt(prevTab, 10) < total && !hiddenSet[parseInt(prevTab, 10)]);
@@ -1767,7 +1791,20 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
           var btn = document.createElement('button');
           btn.className = 'stab' + (restoreTab === String(idx) ? ' active' : '');
           btn.dataset.tab = String(idx);
-          btn.textContent = labels[idx] || String(idx + 1);
+          var r = Math.floor(idx / cols);
+          var c = idx % cols;
+          var region = getMergedRegionAt(r, c);
+          var label = labels[idx];
+          if (!label && region) {
+            var nums = [];
+            for (var rr = region.startRow; rr < region.startRow + region.rowSpan; rr++) {
+              for (var cc = region.startCol; cc < region.startCol + region.colSpan; cc++) {
+                nums.push(rr * cols + cc + 1);
+              }
+            }
+            label = nums.join('+');
+          }
+          btn.textContent = label || String(idx + 1);
           btn.addEventListener('click', function() { switchCmdTab(String(idx)); });
           cmdTabsEl.appendChild(btn);
         })(i);
@@ -1976,14 +2013,15 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
         renderStepGroup(list, 'all', __i18n.all, allSteps, allShell);
       }
 
-      // Per-cell groups
-      var total = cmdTabsEl.querySelectorAll('.stab:not([data-tab="all"])').length;
-      for (var i = 0; i < total; i++) {
-        var ov = cellOverrides[i] || {};
+      // Per-cell groups - use actual tab IDs
+      var btns = cmdTabsEl.querySelectorAll('.stab:not([data-tab="all"])');
+      for (var i = 0; i < btns.length; i++) {
+        var cid = parseInt(btns[i].dataset.tab, 10);
+        var ov = cellOverrides[cid] || {};
         var cellShell = ov.shellType ? getShellDisplayName(ov.shellType) : '';
-        var cellSteps = getStepsForTarget(i);
+        var cellSteps = getStepsForTarget(cid);
         if (cellShell || cellSteps.length > 0) {
-          renderStepGroup(list, i, getCellLabel(i), cellSteps, cellShell);
+          renderStepGroup(list, cid, getCellLabel(cid), cellSteps, cellShell);
         }
       }
     }
@@ -2027,14 +2065,6 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
           nameEl.title = p.path;
           item.appendChild(nameEl);
 
-          // Show linked preset if any
-          if (projectPresetsMap[p.path]) {
-            var badge = document.createElement('span');
-            badge.style.cssText = 'font-size:9px;opacity:.5;flex-shrink:0;margin-left:4px;';
-            badge.textContent = projectPresetsMap[p.path];
-            item.appendChild(badge);
-          }
-
           var del = document.createElement('button');
           del.className = 'cmd-item-del';
           del.textContent = '\\u00d7';
@@ -2056,11 +2086,12 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
 
     // \u2500\u2500 Presets \u2500\u2500
     var presets = [];
-    var projectPresetsMap = {};
+    var curPresetName = '';
 
     document.getElementById('presetSelect').addEventListener('change', function() {
       var nameInput = document.getElementById('presetNameInput');
-      nameInput.value = this.value;
+      curPresetName = this.value;
+      nameInput.value = curPresetName;
     });
 
     document.getElementById('presetSaveBtn').addEventListener('click', function() {
@@ -2071,7 +2102,10 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
 
     document.getElementById('presetLoadBtn').addEventListener('click', function() {
       var name = document.getElementById('presetSelect').value;
-      if (!name) return;
+      if (!name) {
+        vscode.postMessage({ type: 'loadPreset', name: 'terminal-grid' });
+        return;
+      }
       vscode.postMessage({ type: 'loadPreset', name: name });
     });
 
@@ -2081,49 +2115,39 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
       vscode.postMessage({ type: 'deletePreset', name: name });
     });
 
-    document.getElementById('presetLinkCheck').addEventListener('change', function() {
-      var sel = document.getElementById('presetSelect');
-      var name = this.checked ? sel.value : '';
-      if (this.checked && !name) return;
-      vscode.postMessage({ type: 'linkPreset', projectPath: workspacePath, presetName: name });
-    });
-
-    function renderPresetDropdown() {
+    function renderPresetDropdown(selectedName) {
       var sel = document.getElementById('presetSelect');
       var nameInput = document.getElementById('presetNameInput');
+      if (selectedName !== undefined) curPresetName = selectedName;
+      
       sel.innerHTML = '<option value="">' + __i18n.selectPreset + '</option>';
-      var linkedPreset = workspacePath ? (projectPresetsMap[workspacePath] || '') : '';
       for (var i = 0; i < presets.length; i++) {
         var opt = document.createElement('option');
         opt.value = presets[i].name;
-        opt.textContent = (presets[i].name === linkedPreset ? '\\u2605 ' : '') + presets[i].name;
+        opt.textContent = presets[i].name;
+        if (presets[i].name === curPresetName) {
+          opt.selected = true;
+        }
         sel.appendChild(opt);
       }
-      if (linkedPreset) {
-        sel.value = linkedPreset;
-        nameInput.value = linkedPreset;
+      if (curPresetName) {
+        nameInput.value = curPresetName;
       }
-      var check = document.getElementById('presetLinkCheck');
-      check.checked = !!linkedPreset;
-      var linkLabel = document.getElementById('presetLinkLabel');
-      linkLabel.textContent = linkedPreset
-        ? __i18n.linkedPrefix.replace('{0}', linkedPreset)
-        : __i18n.linkToProject;
     }
 
     // \u2500\u2500 Broadcast \u2500\u2500
     var broadcastTargetsEl = document.getElementById('broadcastTargets');
     var curGridTotal = 0;
 
-    function buildBroadcastTargets(total, labels, hidden) {
+    function buildBroadcastTargets(rows, cols, labels, hidden) {
       var hiddenSet = {};
       if (hidden) for (var h = 0; h < hidden.length; h++) hiddenSet[hidden[h]] = true;
-      curGridTotal = total;
       broadcastTargetsEl.innerHTML = '';
-      if (total <= 0) {
+      if (rows <= 0 || cols <= 0) {
         broadcastTargetsEl.classList.add('hidden');
         return;
       }
+      var total = rows * cols;
       broadcastTargetsEl.classList.remove('hidden');
       // All checkbox
       var allLabel = document.createElement('label');
@@ -2142,7 +2166,21 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
         cb.type = 'checkbox'; cb.checked = false;
         cb.dataset.cell = String(i);
         lbl.appendChild(cb);
-        lbl.appendChild(document.createTextNode(' ' + (labels[i] || (i + 1))));
+        
+        var r = Math.floor(i / cols);
+        var c = i % cols;
+        var region = getMergedRegionAt(r, c);
+        var label = labels[i];
+        if (!label && region) {
+          var nums = [];
+          for (var rr = region.startRow; rr < region.startRow + region.rowSpan; rr++) {
+            for (var cc = region.startCol; cc < region.startCol + region.colSpan; cc++) {
+              nums.push(rr * cols + cc + 1);
+            }
+          }
+          label = nums.join('+');
+        }
+        lbl.appendChild(document.createTextNode(' ' + (label || (i + 1))));
         broadcastTargetsEl.appendChild(lbl);
       }
       // All click \u2192 uncheck all individuals
@@ -2240,23 +2278,31 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
         customFontNames = msg.customFonts || [];
         projects = msg.projects || [];
         presets = msg.presets || [];
-        projectPresetsMap = msg.projectPresets || {};
         workspacePath = msg.workspacePath || '';
         cellOverrides = msg.cellOverrides || {};
         defaultSteps = msg.defaultSteps || [];
-        updateSettingsUI();
-        renderProjectList();
-        renderPresetDropdown();
-        var gridTotal = (msg.gridRows || 0) * (msg.gridCols || 0);
-        var curHiddenCells = msg.hiddenCells || [];
-        buildBroadcastTargets(gridTotal, msg.cellLabels || [], curHiddenCells);
-        buildSettingsTabs(gridTotal, msg.cellLabels || [], curHiddenCells);
-        buildCmdTabs(gridTotal, msg.cellLabels || [], curHiddenCells);
-        showCmdTabValues();
-        applySectionStates(msg.sectionStates || {});
-        // Restore merge regions
+
+        // Restore merge regions BEFORE building tabs
         if (msg.mergedRegions && msg.mergedRegions.length > 0) {
           mergedRegions = msg.mergedRegions;
+        } else {
+          mergedRegions = [];
+        }
+
+        updateSettingsUI();
+        renderProjectList();
+        renderPresetDropdown(msg.loadedPresetName);
+
+        var rows = msg.gridRows || 0;
+        var cols = msg.gridCols || 0;
+        var curHiddenCells = msg.hiddenCells || [];
+        buildBroadcastTargets(rows, cols, msg.cellLabels || [], curHiddenCells);
+        buildSettingsTabs(rows, cols, msg.cellLabels || [], curHiddenCells);
+        buildCmdTabs(rows, cols, msg.cellLabels || [], curHiddenCells);
+        showCmdTabValues();
+        applySectionStates(msg.sectionStates || {});
+
+        if (mergedRegions.length > 0) {
           if (mergeRows !== selectedRows || mergeCols !== selectedCols) {
             buildMergeGrid();
           } else {
@@ -2269,13 +2315,13 @@ Ctrl+Wheel to zoom individual cells.`).replace(`
     vscode.postMessage({ type: 'getConfig' });
   </script>
 </body>
-</html>`}};function ve(){let i="",e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";for(let o=0;o<32;o++)i+=e.charAt(Math.floor(Math.random()*e.length));return i}var Y=k(require("http"));var F=class{constructor(e){this._server=null;this._port=e}start(e=10){return new Promise((o,l)=>{this._server=this._createServer();let r=t=>{this._server.removeAllListeners("error"),this._server.on("error",n=>{n.code==="EADDRINUSE"&&t<e?(this._port++,r(t+1)):l(n)}),this._server.listen(this._port,"127.0.0.1",()=>{let n=this._server.address();this._port=n.port,o(this._port)})};r(0)})}_createServer(){return Y.createServer((e,o)=>{if(o.setHeader("Content-Type","application/json"),e.method==="OPTIONS"){o.writeHead(204),o.end();return}let l=new URL(e.url||"/",`http://127.0.0.1:${this._port}`);e.method==="GET"&&l.pathname==="/api/health"?(o.writeHead(200),o.end(JSON.stringify({status:"ok"}))):e.method==="GET"&&l.pathname==="/api/info"?this._handleInfo(o):e.method==="POST"&&l.pathname==="/api/send"?this._readBody(e).then(r=>this._handleSend(r,o)):e.method==="POST"&&l.pathname==="/api/read"?this._readBody(e).then(r=>this._handleRead(r,o)):e.method==="POST"&&l.pathname==="/api/broadcast"?this._readBody(e).then(r=>this._handleBroadcast(r,o)):(o.writeHead(404),o.end(JSON.stringify({error:"Not found"})))})}stop(){this._server?.close(),this._server=null}getPort(){return this._port}_handleInfo(e){let o=f.currentPanel;if(!o){e.writeHead(200),e.end(JSON.stringify({grid:null}));return}e.writeHead(200),e.end(JSON.stringify({grid:{rows:o.getRows(),cols:o.getCols(),cellCount:o.getCellCount(),cellLabels:o.getCellLabels()}}))}_handleSend(e,o){let l=f.currentPanel;if(!l){o.writeHead(200),o.end(JSON.stringify({success:!1,error:"No grid open"}));return}let r=typeof e.cellId=="number"?e.cellId:-1,t=typeof e.text=="string"?e.text:"",d=e.submit===!0?l.sendInputToCell(r,t):l.sendToCell(r,t);o.writeHead(200),o.end(JSON.stringify({success:d}))}_handleRead(e,o){let l=f.currentPanel;if(!l){o.writeHead(200),o.end(JSON.stringify({output:null,error:"No grid open"}));return}let r=typeof e.cellId=="number"?e.cellId:-1,t=typeof e.lines=="number"?e.lines:void 0,n=l.readCell(r,t);o.writeHead(200),o.end(JSON.stringify({output:n}))}_handleBroadcast(e,o){let l=f.currentPanel;if(!l){o.writeHead(200),o.end(JSON.stringify({success:!1,error:"No grid open"}));return}let r=typeof e.text=="string"?e.text:"",t=e.submit===!0,n=l.getCellCount();if(t)l.broadcastInput(r);else for(let d=0;d<n;d++)l.sendToCell(d,r);o.writeHead(200),o.end(JSON.stringify({success:!0,cellCount:n}))}_readBody(e){return new Promise(o=>{let l="";e.on("data",r=>{l+=r}),e.on("end",()=>{try{o(JSON.parse(l))}catch{o({})}})})}};function be(i,e){return{command:"node",args:[y.join(i,"mcp-server.js")],env:{TERMINAL_GRID_PORT:String(e)}}}function K(i,e,o){try{let l=y.dirname(i);h.existsSync(l)||h.mkdirSync(l,{recursive:!0});let r={};h.existsSync(i)&&(r=JSON.parse(h.readFileSync(i,"utf-8"))),(!r.mcpServers||typeof r.mcpServers!="object")&&(r.mcpServers={}),r.mcpServers["terminal-grid"]=be(e,o),h.writeFileSync(i,JSON.stringify(r,null,2),"utf-8")}catch{}}function he(i,e,o){try{if(!h.existsSync(i))return;let l=JSON.parse(h.readFileSync(i,"utf-8")),r=l?.mcpServers;if(!r||typeof r!="object")return;let t=r["terminal-grid"];if(!t||!Array.isArray(t.args)||t.args.length===0)return;let n=y.join(e,"mcp-server.js");if(t.args[0]===n)return;t.args[0]=n,t.env={...t.env,TERMINAL_GRID_PORT:String(o)},h.writeFileSync(i,JSON.stringify(l,null,2),"utf-8")}catch{}}function X(i,e){try{let o=y.join(I.homedir(),".codex","config.toml"),l=y.join(i,"mcp-server.js").replace(/\\/g,"\\\\");if(h.existsSync(o)){let n=h.readFileSync(o,"utf-8");if(n.includes("[mcp_servers.terminal-grid]")){let d=n.replace(/(\[mcp_servers\.terminal-grid\][\s\S]*?args\s*=\s*\[")([^"]*)("])/,`$1${l}$3`);d!==n&&h.writeFileSync(o,d,"utf-8");return}}let r=`
+</html>`}};function ve(){let i="",t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";for(let o=0;o<32;o++)i+=t.charAt(Math.floor(Math.random()*t.length));return i}var Y=k(require("http"));var j=class{constructor(t){this._server=null;this._port=t}start(t=10){return new Promise((o,s)=>{this._server=this._createServer();let r=e=>{this._server.removeAllListeners("error"),this._server.on("error",n=>{n.code==="EADDRINUSE"&&e<t?(this._port++,r(e+1)):s(n)}),this._server.listen(this._port,"127.0.0.1",()=>{let n=this._server.address();this._port=n.port,o(this._port)})};r(0)})}_createServer(){return Y.createServer((t,o)=>{if(o.setHeader("Content-Type","application/json"),t.method==="OPTIONS"){o.writeHead(204),o.end();return}let s=new URL(t.url||"/",`http://127.0.0.1:${this._port}`);t.method==="GET"&&s.pathname==="/api/health"?(o.writeHead(200),o.end(JSON.stringify({status:"ok"}))):t.method==="GET"&&s.pathname==="/api/info"?this._handleInfo(o):t.method==="POST"&&s.pathname==="/api/send"?this._readBody(t).then(r=>this._handleSend(r,o)):t.method==="POST"&&s.pathname==="/api/read"?this._readBody(t).then(r=>this._handleRead(r,o)):t.method==="POST"&&s.pathname==="/api/broadcast"?this._readBody(t).then(r=>this._handleBroadcast(r,o)):(o.writeHead(404),o.end(JSON.stringify({error:"Not found"})))})}stop(){this._server?.close(),this._server=null}getPort(){return this._port}_handleInfo(t){let o=f.currentPanel;if(!o){t.writeHead(200),t.end(JSON.stringify({grid:null}));return}t.writeHead(200),t.end(JSON.stringify({grid:{rows:o.getRows(),cols:o.getCols(),cellCount:o.getCellCount(),cellLabels:o.getCellLabels()}}))}_handleSend(t,o){let s=f.currentPanel;if(!s){o.writeHead(200),o.end(JSON.stringify({success:!1,error:"No grid open"}));return}let r=typeof t.cellId=="number"?t.cellId:-1,e=typeof t.text=="string"?t.text:"",a=t.submit===!0?s.sendInputToCell(r,e):s.sendToCell(r,e);o.writeHead(200),o.end(JSON.stringify({success:a}))}_handleRead(t,o){let s=f.currentPanel;if(!s){o.writeHead(200),o.end(JSON.stringify({output:null,error:"No grid open"}));return}let r=typeof t.cellId=="number"?t.cellId:-1,e=typeof t.lines=="number"?t.lines:void 0,n=s.readCell(r,e);o.writeHead(200),o.end(JSON.stringify({output:n}))}_handleBroadcast(t,o){let s=f.currentPanel;if(!s){o.writeHead(200),o.end(JSON.stringify({success:!1,error:"No grid open"}));return}let r=typeof t.text=="string"?t.text:"",e=t.submit===!0,n=s.getCellCount();if(e)s.broadcastInput(r);else for(let a=0;a<n;a++)s.sendToCell(a,r);o.writeHead(200),o.end(JSON.stringify({success:!0,cellCount:n}))}_readBody(t){return new Promise(o=>{let s="";t.on("data",r=>{s+=r}),t.on("end",()=>{try{o(JSON.parse(s))}catch{o({})}})})}};function be(i,t){return{command:"node",args:[_.join(i,"mcp-server.js")],env:{TERMINAL_GRID_PORT:String(t)}}}function K(i,t,o){try{let s=_.dirname(i);x.existsSync(s)||x.mkdirSync(s,{recursive:!0});let r={};x.existsSync(i)&&(r=JSON.parse(x.readFileSync(i,"utf-8"))),(!r.mcpServers||typeof r.mcpServers!="object")&&(r.mcpServers={}),r.mcpServers["terminal-grid"]=be(t,o),x.writeFileSync(i,JSON.stringify(r,null,2),"utf-8")}catch{}}function he(i,t,o){try{if(!x.existsSync(i))return;let s=JSON.parse(x.readFileSync(i,"utf-8")),r=s?.mcpServers;if(!r||typeof r!="object")return;let e=r["terminal-grid"];if(!e||!Array.isArray(e.args)||e.args.length===0)return;let n=_.join(t,"mcp-server.js");if(e.args[0]===n)return;e.args[0]=n,e.env={...e.env,TERMINAL_GRID_PORT:String(o)},x.writeFileSync(i,JSON.stringify(s,null,2),"utf-8")}catch{}}function X(i,t){try{let o=_.join(D.homedir(),".codex","config.toml"),s=_.join(i,"mcp-server.js").replace(/\\/g,"\\\\");if(x.existsSync(o)){let n=x.readFileSync(o,"utf-8");if(n.includes("[mcp_servers.terminal-grid]")){let a=n.replace(/(\[mcp_servers\.terminal-grid\][\s\S]*?args\s*=\s*\[")([^"]*)("])/,`$1${s}$3`);a!==n&&x.writeFileSync(o,a,"utf-8");return}}let r=`
 [mcp_servers.terminal-grid]
 command = "node"
-args = ["${l}"]
+args = ["${s}"]
 
 [mcp_servers.terminal-grid.env]
-TERMINAL_GRID_PORT = "${e}"
-`,t=y.dirname(o);h.existsSync(t)||h.mkdirSync(t,{recursive:!0}),h.appendFileSync(o,r,"utf-8")}catch{}}function Q(i,e){K(y.join(I.homedir(),".claude.json"),i,e);let o=process.platform==="win32"?process.env.APPDATA||y.join(I.homedir(),"AppData","Roaming"):process.platform==="darwin"?y.join(I.homedir(),"Library","Application Support"):y.join(I.homedir(),".config");K(y.join(o,"Claude","claude_desktop_config.json"),i,e);for(let l of p.workspace.workspaceFolders||[])he(y.join(l.uri.fsPath,".mcp.json"),i,e)}var O,P;function we(i){let e=p.workspace.workspaceFolders?.[0]?.uri.fsPath;if(e){let n=i.globalState.get("projectPresets",{})[e];if(n){let s=i.globalState.get("presets",[]).find(c=>c.name===n);if(s){let c=p.workspace.getConfiguration("terminalGrid");if(c.update("defaultRows",s.rows,p.ConfigurationTarget.Global),c.update("defaultCols",s.cols,p.ConfigurationTarget.Global),c.update("zoomPercent",s.zoomPercent,p.ConfigurationTarget.Global),c.update("fontFamily",s.fontFamily,p.ConfigurationTarget.Global),c.update("backgroundColor",s.bgColor,p.ConfigurationTarget.Global),c.update("foregroundColor",s.fgColor,p.ConfigurationTarget.Global),c.update("colorTheme",s.colorTheme||"",p.ConfigurationTarget.Global),c.update("shellType",s.shellType||"",p.ConfigurationTarget.Global),i.globalState.update("startupCommands",s.startupCommands||[]),i.globalState.update("cellLabels",s.cellLabels||[]),i.globalState.update("defaultCommand",s.defaultCommand||""),s.defaultSteps?i.globalState.update("defaultSteps",s.defaultSteps):s.defaultCommand?i.globalState.update("defaultSteps",[{type:"command",input:s.defaultCommand}]):i.globalState.update("defaultSteps",[]),s.cellStepsOverrides){let g=i.globalState.get("cellOverrides",{});for(let[b,w]of Object.entries(s.cellStepsOverrides))g[Number(b)]||(g[Number(b)]={}),Array.isArray(w.startupSteps)&&(g[Number(b)].startupSteps=w.startupSteps);i.globalState.update("cellOverrides",g)}}}}let o=new D(i),l=p.workspace.getConfiguration("terminalGrid").get("apiPort",7890);l>0&&(O=new F(l),O.start().then(t=>{P=p.window.createStatusBarItem(p.StatusBarAlignment.Right,50),P.text=`$(broadcast) TG :${t}`,P.tooltip=p.l10n.t("Terminal Grid API active on port {0}",t),P.command="terminalGrid.copyMcpConfig",P.show(),i.subscriptions.push(P),o.setMcpPort(t),Q(i.extensionPath,t),X(i.extensionPath,t)}).catch(t=>{p.window.showWarningMessage(p.l10n.t("Terminal Grid API bridge failed to start: {0}",t.message))}));let r=p.lm;if(typeof r?.registerMcpServerDefinitionProvider=="function"){let t=new p.EventEmitter,n=l,d=r.registerMcpServerDefinitionProvider;i.subscriptions.push(d("terminalGrid",{onDidChangeMcpServerDefinitions:t.event,provideMcpServerDefinitions:async()=>{if(n<=0)return[];let s=p.McpStdioServerDefinition;return s?[new s("Terminal Grid","node",[y.join(i.extensionPath,"mcp-server.js")],{TERMINAL_GRID_PORT:String(n)},i.extension.packageJSON.version)]:[]}}),t),i.subscriptions.push(p.workspace.onDidChangeConfiguration(s=>{s.affectsConfiguration("terminalGrid.apiPort")&&(n=p.workspace.getConfiguration("terminalGrid").get("apiPort",7890),t.fire())}))}i.subscriptions.push(p.workspace.onDidChangeConfiguration(t=>{if(t.affectsConfiguration("terminalGrid.apiPort")){let n=p.workspace.getConfiguration("terminalGrid").get("apiPort",7890);n>0&&(Q(i.extensionPath,n),X(i.extensionPath,n))}})),i.subscriptions.push(p.window.registerWebviewViewProvider(D.viewType,o)),i.subscriptions.push(p.commands.registerCommand("terminalGrid._refreshSidebar",()=>{o.sendConfig()})),i.subscriptions.push(p.window.registerWebviewPanelSerializer("terminalGrid",{async deserializeWebviewPanel(t,n){let d=i.globalState.get("lastGrid");d?f.revive(t,i,d.rows,d.cols):t.dispose()}})),i.subscriptions.push(p.commands.registerCommand("terminalGrid.openGrid",()=>{let t=p.workspace.getConfiguration("terminalGrid"),n=t.get("defaultRows",2),d=t.get("defaultCols",3);f.createOrShow(i,n,d)}),p.commands.registerCommand("terminalGrid.openCustomGrid",(t,n)=>{f.createOrShow(i,t,n)}),p.commands.registerCommand("terminalGrid.open2x2",()=>f.createOrShow(i,2,2)),p.commands.registerCommand("terminalGrid.open2x3",()=>f.createOrShow(i,2,3)),p.commands.registerCommand("terminalGrid.open3x3",()=>f.createOrShow(i,3,3)),p.commands.registerCommand("terminalGrid.sendToCell",(t,n)=>f.currentPanel?.sendToCell(t,n)??!1),p.commands.registerCommand("terminalGrid.readCell",(t,n)=>f.currentPanel?.readCell(t,n)??null),p.commands.registerCommand("terminalGrid.getGridInfo",()=>{let t=f.currentPanel;return t?{rows:t.getRows(),cols:t.getCols(),cellCount:t.getCellCount(),cellLabels:t.getCellLabels()}:null}),p.commands.registerCommand("terminalGrid.testAPI",async()=>{let t=p.window.createOutputChannel("Terminal Grid Tests");t.show(),t.appendLine(`=== Terminal Grid API Tests ===
-`);let n=0,d=0;function s(v,S,T){let E=S?"PASS":"FAIL";S?n++:d++,t.appendLine(`[${E}] ${v}${T?" \u2014 "+T:""}`)}let c=await p.commands.executeCommand("terminalGrid.getGridInfo");if(!c){t.appendLine("[FAIL] getGridInfo returned null. Open a grid first.");return}s("getGridInfo returns object",!!c,JSON.stringify(c)),s("rows is number",typeof c.rows=="number",`rows=${c.rows}`),s("cols is number",typeof c.cols=="number",`cols=${c.cols}`),s("cellCount = rows*cols",c.cellCount===c.rows*c.cols,`${c.cellCount}`),s("cellLabels is array",Array.isArray(c.cellLabels),`length=${c.cellLabels.length}`),s("cellLabels.length = cellCount",c.cellLabels.length===c.cellCount);let g=await p.commands.executeCommand("terminalGrid.sendToCell",0,"echo __API_TEST__\r");s("sendToCell(0) returns true",g===!0);let b=await p.commands.executeCommand("terminalGrid.sendToCell",999,"x\r");s("sendToCell(999) returns false",b===!1,`got ${b}`);let w=await p.commands.executeCommand("terminalGrid.sendToCell",0,"TYPED_ONLY");s("sendToCell without \\r returns true",w===!0),await new Promise(v=>setTimeout(v,2e3)),await p.commands.executeCommand("terminalGrid.sendToCell",0,"");let _=await p.commands.executeCommand("terminalGrid.readCell",0);s("readCell(0) returns string",typeof _=="string",`length=${_?.length??0}`),s("readCell(0) contains test marker",!!_&&_.includes("__API_TEST__"));let m=await p.commands.executeCommand("terminalGrid.readCell",0,3);s("readCell(0, 3) returns string",typeof m=="string");let C=await p.commands.executeCommand("terminalGrid.readCell",0,0);s("readCell(0, 0) returns empty",C==="",`got "${C}"`);let x=await p.commands.executeCommand("terminalGrid.readCell",999);if(s("readCell(999) returns null",x===null,`got ${x}`),c.cellCount>1){let v=await p.commands.executeCommand("terminalGrid.sendToCell",1,"echo CELL1_OK\r");s("sendToCell(1) returns true",v===!0),await new Promise(T=>setTimeout(T,1500));let S=await p.commands.executeCommand("terminalGrid.readCell",1);s("readCell(1) contains CELL1_OK",!!S&&S.includes("CELL1_OK"))}t.appendLine(`
-=== ${n} passed, ${d} failed ===`),d===0?p.window.showInformationMessage(p.l10n.t("Terminal Grid API: All {0} tests passed!",n)):p.window.showWarningMessage(p.l10n.t("Terminal Grid API: {0} test(s) failed. See output.",d))}),p.commands.registerCommand("terminalGrid.copyMcpConfig",()=>{let t=O?.getPort()??7890,d={mcpServers:{"terminal-grid":{command:"node",args:[y.join(i.extensionPath,"mcp-server.js")],env:{TERMINAL_GRID_PORT:String(t)}}}};p.env.clipboard.writeText(JSON.stringify(d,null,2)),p.window.showInformationMessage(p.l10n.t("Terminal Grid MCP config copied to clipboard (port {0})",t))}))}function ye(){O?.stop(),O=void 0,f.currentPanel?.dispose()}0&&(module.exports={activate,deactivate});
+TERMINAL_GRID_PORT = "${t}"
+`,e=_.dirname(o);x.existsSync(e)||x.mkdirSync(e,{recursive:!0}),x.appendFileSync(o,r,"utf-8")}catch{}}function Q(i,t){K(_.join(D.homedir(),".claude.json"),i,t);let o=process.platform==="win32"?process.env.APPDATA||_.join(D.homedir(),"AppData","Roaming"):process.platform==="darwin"?_.join(D.homedir(),"Library","Application Support"):_.join(D.homedir(),".config");K(_.join(o,"Claude","claude_desktop_config.json"),i,t);for(let s of p.workspace.workspaceFolders||[])he(_.join(s.uri.fsPath,".mcp.json"),i,t)}var F,O;function we(i){let t=p.workspace.workspaceFolders?.[0];if(t){let e=_.join(t.uri.fsPath,"terminal-grid","terminal-grid.json"),n=null;if(x.existsSync(e))try{n=JSON.parse(x.readFileSync(e,"utf-8"))}catch(a){console.error("Failed to parse local terminal-grid.json",a)}else{let d=i.globalState.get("projectPresets",{})[t.uri.fsPath];d&&(n=i.globalState.get("presets",[]).find(m=>m.name===d))}if(n){let a=p.workspace.getConfiguration("terminalGrid");if(a.update("defaultRows",n.rows,p.ConfigurationTarget.Global),a.update("defaultCols",n.cols,p.ConfigurationTarget.Global),a.update("zoomPercent",n.zoomPercent,p.ConfigurationTarget.Global),a.update("fontFamily",n.fontFamily,p.ConfigurationTarget.Global),a.update("backgroundColor",n.bgColor,p.ConfigurationTarget.Global),a.update("foregroundColor",n.fgColor,p.ConfigurationTarget.Global),a.update("colorTheme",n.colorTheme||"",p.ConfigurationTarget.Global),a.update("shellType",n.shellType||"",p.ConfigurationTarget.Global),i.globalState.update("startupCommands",n.startupCommands||[]),i.globalState.update("cellLabels",n.cellLabels||[]),i.globalState.update("defaultCommand",n.defaultCommand||""),n.defaultSteps?i.globalState.update("defaultSteps",n.defaultSteps):n.defaultCommand?i.globalState.update("defaultSteps",[{type:"command",input:n.defaultCommand}]):i.globalState.update("defaultSteps",[]),n.cellStepsOverrides){let d=i.globalState.get("cellOverrides",{});for(let[c,m]of Object.entries(n.cellStepsOverrides)){d[Number(c)]||(d[Number(c)]={});let h=m;Array.isArray(h.startupSteps)&&(d[Number(c)].startupSteps=h.startupSteps)}i.globalState.update("cellOverrides",d)}i.globalState.update("mergedRegions",n.mergedRegions||[])}}let o=new N(i),s=p.workspace.getConfiguration("terminalGrid").get("apiPort",7890);s>0&&(F=new j(s),F.start().then(e=>{O=p.window.createStatusBarItem(p.StatusBarAlignment.Right,50),O.text=`$(broadcast) TG :${e}`,O.tooltip=p.l10n.t("Terminal Grid API active on port {0}",e),O.command="terminalGrid.copyMcpConfig",O.show(),i.subscriptions.push(O),o.setMcpPort(e),Q(i.extensionPath,e),X(i.extensionPath,e)}).catch(e=>{p.window.showWarningMessage(p.l10n.t("Terminal Grid API bridge failed to start: {0}",e.message))}));let r=p.lm;if(typeof r?.registerMcpServerDefinitionProvider=="function"){let e=new p.EventEmitter,n=s,a=r.registerMcpServerDefinitionProvider;i.subscriptions.push(a("terminalGrid",{onDidChangeMcpServerDefinitions:e.event,provideMcpServerDefinitions:async()=>{if(n<=0)return[];let d=p.McpStdioServerDefinition;return d?[new d("Terminal Grid","node",[_.join(i.extensionPath,"mcp-server.js")],{TERMINAL_GRID_PORT:String(n)},i.extension.packageJSON.version)]:[]}}),e),i.subscriptions.push(p.workspace.onDidChangeConfiguration(d=>{d.affectsConfiguration("terminalGrid.apiPort")&&(n=p.workspace.getConfiguration("terminalGrid").get("apiPort",7890),e.fire())}))}i.subscriptions.push(p.workspace.onDidChangeConfiguration(e=>{if(e.affectsConfiguration("terminalGrid.apiPort")){let n=p.workspace.getConfiguration("terminalGrid").get("apiPort",7890);n>0&&(Q(i.extensionPath,n),X(i.extensionPath,n))}})),i.subscriptions.push(p.window.registerWebviewViewProvider(N.viewType,o)),i.subscriptions.push(p.commands.registerCommand("terminalGrid._refreshSidebar",()=>{o.sendConfig()})),i.subscriptions.push(p.window.registerWebviewPanelSerializer("terminalGrid",{async deserializeWebviewPanel(e,n){let a=i.globalState.get("lastGrid");a?f.revive(e,i,a.rows,a.cols):e.dispose()}})),i.subscriptions.push(p.commands.registerCommand("terminalGrid.openGrid",()=>{let e=p.workspace.getConfiguration("terminalGrid"),n=e.get("defaultRows",2),a=e.get("defaultCols",3);f.createOrShow(i,n,a)}),p.commands.registerCommand("terminalGrid.openCustomGrid",(e,n)=>{f.createOrShow(i,e,n)}),p.commands.registerCommand("terminalGrid.open2x2",()=>f.createOrShow(i,2,2)),p.commands.registerCommand("terminalGrid.open2x3",()=>f.createOrShow(i,2,3)),p.commands.registerCommand("terminalGrid.open3x3",()=>f.createOrShow(i,3,3)),p.commands.registerCommand("terminalGrid.sendToCell",(e,n)=>f.currentPanel?.sendToCell(e,n)??!1),p.commands.registerCommand("terminalGrid.readCell",(e,n)=>f.currentPanel?.readCell(e,n)??null),p.commands.registerCommand("terminalGrid.getGridInfo",()=>{let e=f.currentPanel;return e?{rows:e.getRows(),cols:e.getCols(),cellCount:e.getCellCount(),cellLabels:e.getCellLabels()}:null}),p.commands.registerCommand("terminalGrid.testAPI",async()=>{let e=p.window.createOutputChannel("Terminal Grid Tests");e.show(),e.appendLine(`=== Terminal Grid API Tests ===
+`);let n=0,a=0;function d(w,S,L){let E=S?"PASS":"FAIL";S?n++:a++,e.appendLine(`[${E}] ${w}${L?" \u2014 "+L:""}`)}let c=await p.commands.executeCommand("terminalGrid.getGridInfo");if(!c){e.appendLine("[FAIL] getGridInfo returned null. Open a grid first.");return}d("getGridInfo returns object",!!c,JSON.stringify(c)),d("rows is number",typeof c.rows=="number",`rows=${c.rows}`),d("cols is number",typeof c.cols=="number",`cols=${c.cols}`),d("cellCount = rows*cols",c.cellCount===c.rows*c.cols,`${c.cellCount}`),d("cellLabels is array",Array.isArray(c.cellLabels),`length=${c.cellLabels.length}`),d("cellLabels.length = cellCount",c.cellLabels.length===c.cellCount);let m=await p.commands.executeCommand("terminalGrid.sendToCell",0,"echo __API_TEST__\r");d("sendToCell(0) returns true",m===!0);let h=await p.commands.executeCommand("terminalGrid.sendToCell",999,"x\r");d("sendToCell(999) returns false",h===!1,`got ${h}`);let b=await p.commands.executeCommand("terminalGrid.sendToCell",0,"TYPED_ONLY");d("sendToCell without \\r returns true",b===!0),await new Promise(w=>setTimeout(w,2e3)),await p.commands.executeCommand("terminalGrid.sendToCell",0,"");let v=await p.commands.executeCommand("terminalGrid.readCell",0);d("readCell(0) returns string",typeof v=="string",`length=${v?.length??0}`),d("readCell(0) contains test marker",!!v&&v.includes("__API_TEST__"));let u=await p.commands.executeCommand("terminalGrid.readCell",0,3);d("readCell(0, 3) returns string",typeof u=="string");let C=await p.commands.executeCommand("terminalGrid.readCell",0,0);d("readCell(0, 0) returns empty",C==="",`got "${C}"`);let T=await p.commands.executeCommand("terminalGrid.readCell",999);if(d("readCell(999) returns null",T===null,`got ${T}`),c.cellCount>1){let w=await p.commands.executeCommand("terminalGrid.sendToCell",1,"echo CELL1_OK\r");d("sendToCell(1) returns true",w===!0),await new Promise(L=>setTimeout(L,1500));let S=await p.commands.executeCommand("terminalGrid.readCell",1);d("readCell(1) contains CELL1_OK",!!S&&S.includes("CELL1_OK"))}e.appendLine(`
+=== ${n} passed, ${a} failed ===`),a===0?p.window.showInformationMessage(p.l10n.t("Terminal Grid API: All {0} tests passed!",n)):p.window.showWarningMessage(p.l10n.t("Terminal Grid API: {0} test(s) failed. See output.",a))}),p.commands.registerCommand("terminalGrid.copyMcpConfig",()=>{let e=F?.getPort()??7890,a={mcpServers:{"terminal-grid":{command:"node",args:[_.join(i.extensionPath,"mcp-server.js")],env:{TERMINAL_GRID_PORT:String(e)}}}};p.env.clipboard.writeText(JSON.stringify(a,null,2)),p.window.showInformationMessage(p.l10n.t("Terminal Grid MCP config copied to clipboard (port {0})",e))}))}function ye(){F?.stop(),F=void 0,f.currentPanel?.dispose()}0&&(module.exports={activate,deactivate});

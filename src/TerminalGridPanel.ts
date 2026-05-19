@@ -132,6 +132,7 @@ export class TerminalGridPanel {
     if (TerminalGridPanel._nodePty === undefined) {
       try {
         TerminalGridPanel._nodePty = require("node-pty");
+        TerminalGridPanel._ensureNodePtySpawnHelperExecutable();
       } catch {
         TerminalGridPanel._nodePty = null;
       }
@@ -139,22 +140,103 @@ export class TerminalGridPanel {
     return TerminalGridPanel._nodePty as typeof import("node-pty") | null;
   }
 
+  private static _ensureNodePtySpawnHelperExecutable(): void {
+    if (process.platform !== "darwin") return;
+
+    try {
+      const packageJson = require.resolve("node-pty/package.json");
+      const nodePtyRoot = path.dirname(packageJson);
+      const helper = path.join(nodePtyRoot, "prebuilds", `darwin-${process.arch}`, "spawn-helper");
+      if (!fs.existsSync(helper)) return;
+
+      const stat = fs.statSync(helper);
+      if ((stat.mode & 0o111) !== 0) return;
+
+      fs.chmodSync(helper, stat.mode | 0o755);
+      TerminalGridPanel._getLog().appendLine(`[_getNodePty] fixed executable bit on "${helper}"`);
+    } catch (err) {
+      TerminalGridPanel._getLog().appendLine(
+        `[_getNodePty] could not fix node-pty spawn-helper permissions: ${err instanceof Error ? err.message : String(err)}`
+      );
+    }
+  }
+
+  private static _resolveCommandPath(command: string): string | null {
+    const value = command.trim();
+    if (!value) return null;
+
+    try {
+      if (/[/\\]/.test(value)) return fs.existsSync(value) ? value : null;
+    } catch {
+      return null;
+    }
+
+    if (process.platform !== "win32") {
+      for (const dir of ["/bin", "/usr/bin", "/usr/local/bin", "/opt/homebrew/bin"]) {
+        const candidate = path.join(dir, value);
+        try {
+          if (fs.existsSync(candidate)) return candidate;
+        } catch { /* continue */ }
+      }
+    }
+
+    try {
+      const cp = require("child_process") as typeof import("child_process");
+      const lookup = process.platform === "win32" ? "where" : "which";
+      const output = cp.execFileSync(lookup, [value], {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+        timeout: 500,
+      });
+      const first = output.split(/\r?\n/).map((line) => line.trim()).find(Boolean);
+      return first || null;
+    } catch {
+      return null;
+    }
+  }
+
+  private static _defaultShell(log?: vscode.OutputChannel): { path: string; args: string[] } {
+    if (process.platform === "win32") {
+      const preferred = TerminalGridPanel._resolveCommandPath("pwsh.exe") ||
+        TerminalGridPanel._resolveCommandPath("powershell.exe");
+      if (preferred) {
+        log?.appendLine(`[_defaultShell] -> using powershell: "${preferred}"`);
+        return { path: preferred, args: ["-NoLogo", "-NoProfile"] };
+      }
+      const cmd = process.env.COMSPEC || TerminalGridPanel._resolveCommandPath("cmd.exe") || "cmd.exe";
+      log?.appendLine(`[_defaultShell] -> using cmd: "${cmd}"`);
+      return { path: cmd, args: [] };
+    }
+
+    const envShell = process.env.SHELL;
+    if (envShell) {
+      const resolved = TerminalGridPanel._resolveCommandPath(envShell);
+      if (resolved) {
+        log?.appendLine(`[_defaultShell] -> using SHELL: "${resolved}"`);
+        return { path: resolved, args: [] };
+      }
+      log?.appendLine(`[_defaultShell] -> SHELL not usable: "${envShell}"`);
+    }
+
+    for (const candidate of ["/bin/zsh", "/bin/bash", "/bin/sh"]) {
+      const resolved = TerminalGridPanel._resolveCommandPath(candidate);
+      if (resolved) {
+        log?.appendLine(`[_defaultShell] -> using fallback: "${resolved}"`);
+        return { path: resolved, args: [] };
+      }
+    }
+
+    log?.appendLine(`[_defaultShell] -> using final fallback: "/bin/sh"`);
+    return { path: "/bin/sh", args: [] };
+  }
+
   public static getAvailableShells(): ShellDescriptor[] {
     const shells: ShellDescriptor[] = [{ name: "IDE Default", path: "", args: [] }];
     try {
-      const fs = require("fs") as typeof import("fs");
-      const cp = require("child_process") as typeof import("child_process");
       const seen = new Set<string>();
 
       function shellExists(p: string): boolean {
-        try {
-          // Absolute path → check file
-          if (/[/\\]/.test(p)) return fs.existsSync(p);
-          // Bare name (e.g. "powershell.exe") → check via where/which
-          const cmd = process.platform === "win32" ? `where ${p}` : `which ${p}`;
-          cp.execSync(cmd, { stdio: "ignore", timeout: 500 });
-          return true;
-        } catch { return false; }
+        return TerminalGridPanel._resolveCommandPath(p) !== null;
       }
 
       const platform = process.platform === "win32" ? "windows"
@@ -200,31 +282,44 @@ export class TerminalGridPanel {
   }
 
   private _resolveShell(shellType?: string): { path: string; args: string[] } {
-    if (!shellType) {
-      // Current "auto" behavior
-      if (process.platform === "win32") {
-        if (TerminalGridPanel._getNodePty()) {
-          return { path: "powershell.exe", args: ["-NoLogo", "-NoProfile"] };
-        }
-        return { path: process.env.COMSPEC || "cmd.exe", args: [] };
-      }
-      return { path: process.env.SHELL || "bash", args: [] };
+    const log = TerminalGridPanel._getLog();
+    const requested = (shellType || "").trim();
+    log.appendLine(`[_resolveShell] shellType="${requested}"`);
+    if (!requested || requested.toLowerCase() === "ide default") {
+      return TerminalGridPanel._defaultShell(log);
     }
+
     // Look up from available shells
     const available = TerminalGridPanel.getAvailableShells();
-    const match = available.find(s => s.path === shellType || s.name === shellType);
+    const requestedLower = requested.toLowerCase();
+    const match = available.find(s =>
+      s.path.toLowerCase() === requestedLower ||
+      s.name.toLowerCase() === requestedLower ||
+      path.basename(s.path).toLowerCase() === requestedLower
+    );
     if (match && match.path) {
+      log.appendLine(`[_resolveShell] -> matched: "${match.path}"`);
       return { path: match.path, args: match.args };
     }
+
+    const resolvedPath = TerminalGridPanel._resolveCommandPath(requested);
+    if (!resolvedPath) {
+      log.appendLine(`[_resolveShell] -> requested shell not found, falling back: "${requested}"`);
+      return TerminalGridPanel._defaultShell(log);
+    }
+
     // Direct path - infer args
-    const lower = shellType.toLowerCase();
+    const lower = resolvedPath.toLowerCase();
     if (lower.includes("powershell") || lower.includes("pwsh")) {
-      return { path: shellType, args: ["-NoLogo"] };
+      log.appendLine(`[_resolveShell] -> direct path powershell: "${resolvedPath}"`);
+      return { path: resolvedPath, args: ["-NoLogo"] };
     }
     if (lower.includes("bash") || lower.includes("zsh")) {
-      return { path: shellType, args: ["--login"] };
+      log.appendLine(`[_resolveShell] -> direct path bash/zsh: "${resolvedPath}"`);
+      return { path: resolvedPath, args: ["--login"] };
     }
-    return { path: shellType, args: [] };
+    log.appendLine(`[_resolveShell] -> direct path (no match): "${resolvedPath}"`);
+    return { path: resolvedPath, args: [] };
   }
 
   public static createOrShow(
@@ -564,8 +659,12 @@ export class TerminalGridPanel {
     shellType?: string
   ): PtyLike {
     const resolved = this._resolveShell(shellType);
-    if (nodePty) {
-      const proc = nodePty.spawn(resolved.path, resolved.args, {
+    const log = TerminalGridPanel._getLog();
+    log.appendLine(`[_spawnPty] shellType param="${shellType}", resolved path="${resolved.path}", args=${JSON.stringify(resolved.args)}`);
+
+    const wrapNodePty = (shell: { path: string; args: string[] }): PtyLike => {
+      if (!nodePty) throw new Error("node-pty unavailable");
+      const proc = nodePty.spawn(shell.path, shell.args, {
         name: "xterm-256color",
         cols, rows, cwd,
         env: process.env as Record<string, string>,
@@ -576,14 +675,40 @@ export class TerminalGridPanel {
         resize: (c, r) => proc.resize(c, r),
         kill: () => proc.kill(),
       };
+    };
+
+    if (nodePty) {
+      try {
+        return wrapNodePty(resolved);
+      } catch (err) {
+        log.appendLine(`[_spawnPty] node-pty failed for "${resolved.path}": ${err instanceof Error ? err.message : String(err)}`);
+        const fallback = TerminalGridPanel._defaultShell(log);
+        if (fallback.path !== resolved.path) {
+          try {
+            log.appendLine(`[_spawnPty] retrying node-pty with fallback "${fallback.path}"`);
+            return wrapNodePty(fallback);
+          } catch (fallbackErr) {
+            log.appendLine(`[_spawnPty] fallback node-pty failed: ${fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr)}`);
+          }
+        }
+        vscode.window.showWarningMessage(
+          vscode.l10n.t("Terminal Grid could not start the configured shell. Falling back to basic shell.")
+        );
+      }
     }
+
     // Fallback: child_process.spawn
     const { spawn } = require("child_process") as typeof import("child_process");
-    const proc = spawn(resolved.path, resolved.args, { cwd, env: process.env, windowsHide: true });
+    const fallback = TerminalGridPanel._defaultShell(log);
+    const proc = spawn(fallback.path, fallback.args, { cwd, env: process.env, windowsHide: true });
     return {
       onData: (cb) => {
         proc.stdout?.on("data", (d: Buffer) => cb(d.toString()));
         proc.stderr?.on("data", (d: Buffer) => cb(d.toString()));
+        proc.on("error", (err: Error) => {
+          log.appendLine(`[_spawnPty] child_process fallback failed: ${err.message}`);
+          cb(`Terminal Grid failed to start shell: ${err.message}\r\n`);
+        });
       },
       write: (data) => { proc.stdin?.write(data); },
       resize: () => {},
@@ -899,7 +1024,7 @@ export class TerminalGridPanel {
         content="default-src 'none';
                  style-src ${webview.cspSource} 'unsafe-inline';
                  script-src 'nonce-${nonce}';
-                 font-src ${webview.cspSource} data:;">
+                 font-src ${webview.cspSource} data: *;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${xtermCss}">
   <style>
@@ -939,7 +1064,7 @@ export class TerminalGridPanel {
       top: 4px; right: 8px;
       display: flex; align-items: center; gap: 6px;
       font-size: 10px;
-      font-family: var(--vscode-terminal-fontFamily, var(--vscode-editor-fontFamily, monospace));
+      font-family: var(--vscode-terminal-fontFamily, var(--vscode-editor-fontFamily, 'Menlo', 'Monaco', 'Consolas', monospace));
       z-index: 1;
       pointer-events: none;
       user-select: none;
@@ -1030,6 +1155,7 @@ export class TerminalGridPanel {
     var __GRID_COLS = ${this._cols};
     var __GRID_ZOOM = ${vscode.workspace.getConfiguration("terminalGrid").get<number>("zoomPercent", 100)};
     var __GRID_FONT_FAMILY = ${JSON.stringify(vscode.workspace.getConfiguration("terminalGrid").get<string>("fontFamily", ""))};
+    var __GRID_IDE_FONT_FAMILY = ${JSON.stringify(vscode.workspace.getConfiguration("terminal.integrated").get<string>("fontFamily", "") || vscode.workspace.getConfiguration("editor").get<string>("fontFamily", ""))};
     var __GRID_BG_COLOR = ${JSON.stringify(vscode.workspace.getConfiguration("terminalGrid").get<string>("backgroundColor", ""))};
     var __GRID_FG_COLOR = ${JSON.stringify(vscode.workspace.getConfiguration("terminalGrid").get<string>("foregroundColor", ""))};
     var __GRID_THEME = ${JSON.stringify(vscode.workspace.getConfiguration("terminalGrid").get<string>("colorTheme", ""))};

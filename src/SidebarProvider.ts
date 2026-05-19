@@ -31,6 +31,110 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     this._view?.webview.postMessage({ type: "mcpPort", port });
   }
 
+  private _getPresetFolderPath(): string | undefined {
+    const folder = vscode.workspace.workspaceFolders?.[0];
+    if (!folder) return undefined;
+    return path.join(folder.uri.fsPath, "terminal-grid");
+  }
+
+  private _listLocalPresets(): any[] {
+    const folderPath = this._getPresetFolderPath();
+    if (!folderPath || !fs.existsSync(folderPath)) return [];
+    try {
+      const files = fs.readdirSync(folderPath);
+      const presets: any[] = [];
+      for (const file of files) {
+        if (file.endsWith(".json")) {
+          try {
+            const content = fs.readFileSync(path.join(folderPath, file), "utf-8");
+            const preset = JSON.parse(content);
+            if (preset.name) presets.push(preset);
+          } catch (e) {
+            console.error(`Failed to parse preset file: ${file}`, e);
+          }
+        }
+      }
+      return presets;
+    } catch (e) {
+      console.error("Failed to list local presets", e);
+      return [];
+    }
+  }
+
+  private _loadLocalPreset(name: string): any | undefined {
+    const folderPath = this._getPresetFolderPath();
+    if (!folderPath) return undefined;
+    const filePath = path.join(folderPath, `${name}.json`);
+    if (fs.existsSync(filePath)) {
+      try {
+        const content = fs.readFileSync(filePath, "utf-8");
+        return JSON.parse(content);
+      } catch (e) {
+        console.error(`Failed to load preset: ${name}`, e);
+      }
+    }
+    return undefined;
+  }
+
+  private async _saveLocalPreset(name: string, preset: any): Promise<void> {
+    const folderPath = this._getPresetFolderPath();
+    if (!folderPath) {
+      vscode.window.showWarningMessage(vscode.l10n.t("Please open a workspace folder first."));
+      return;
+    }
+    try {
+      if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
+      const filePath = path.join(folderPath, `${name}.json`);
+      fs.writeFileSync(filePath, JSON.stringify(preset, null, 2), "utf-8");
+    } catch (e) {
+      vscode.window.showErrorMessage(`Failed to save preset: ${e}`);
+    }
+  }
+
+  private async _deleteLocalPreset(name: string): Promise<void> {
+    const folderPath = this._getPresetFolderPath();
+    if (!folderPath) return;
+    const filePath = path.join(folderPath, `${name}.json`);
+    if (fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        vscode.window.showErrorMessage(`Failed to delete preset: ${e}`);
+      }
+    }
+  }
+
+  private async _saveWorkspaceConfig(): Promise<void> {
+    const folderPath = this._getPresetFolderPath();
+    if (!folderPath) return;
+
+    try {
+      if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
+      const cfg = vscode.workspace.getConfiguration("terminalGrid");
+      const config = {
+        name: "terminal-grid",
+        rows: cfg.get<number>("defaultRows", 2),
+        cols: cfg.get<number>("defaultCols", 3),
+        startupCommands: this._context.globalState.get<{command: string; count: number}[]>("startupCommands", []),
+        cellLabels: this._context.globalState.get<string[]>("cellLabels", []),
+        zoomPercent: cfg.get<number>("zoomPercent", 100),
+        fontFamily: cfg.get<string>("fontFamily", ""),
+        bgColor: cfg.get<string>("backgroundColor", ""),
+        fgColor: cfg.get<string>("foregroundColor", ""),
+        colorTheme: cfg.get<string>("colorTheme", ""),
+        shellType: cfg.get<string>("shellType", ""),
+        defaultCommand: this._context.globalState.get<string>("defaultCommand", ""),
+        defaultSteps: this._context.globalState.get<unknown[]>("defaultSteps", []),
+        cellStepsOverrides: this._context.globalState.get<Record<number, Record<string, unknown>>>("cellOverrides", {}),
+        mergedRegions: this._context.globalState.get<unknown[]>("mergedRegions", []),
+      };
+      const filePath = path.join(folderPath, "terminal-grid.json");
+      fs.writeFileSync(filePath, JSON.stringify(config, null, 2), "utf-8");
+    } catch (e) {
+      console.error("Failed to auto-save workspace config", e);
+    }
+  }
+
   resolveWebviewView(
     webviewView: vscode.WebviewView,
     _context: vscode.WebviewViewResolveContext,
@@ -55,6 +159,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           );
           this.sendConfig();
           break;
+        case "reopenGrid": {
+          const panel = TerminalGridPanel.currentPanel;
+          const cfg = vscode.workspace.getConfiguration("terminalGrid");
+          const r = panel ? panel.getRows() : cfg.get<number>("defaultRows", 2);
+          const c = panel ? panel.getCols() : cfg.get<number>("defaultCols", 3);
+          await vscode.commands.executeCommand("terminalGrid.openCustomGrid", r, c);
+          this.sendConfig();
+          break;
+        }
         case "reload":
           await vscode.commands.executeCommand(
             "workbench.action.reloadWindow"
@@ -104,6 +217,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             await this._context.globalState.update("customFonts", customFonts);
           }
 
+          await this._saveWorkspaceConfig();
           this.sendConfig();
 
           if (TerminalGridPanel.currentPanel) {
@@ -116,6 +230,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           const customFonts = this._context.globalState.get<CustomFont[]>("customFonts", []);
           const updated = customFonts.filter((f) => f.name !== msg.name);
           await this._context.globalState.update("customFonts", updated);
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -123,6 +238,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           const cmds = this._context.globalState.get<{command: string; count: number}[]>("startupCommands", []);
           cmds.push({ command: msg.command, count: 1 });
           await this._context.globalState.update("startupCommands", cmds);
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -130,6 +246,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           const cmds = this._context.globalState.get<{command: string; count: number}[]>("startupCommands", []);
           cmds.splice(msg.index, 1);
           await this._context.globalState.update("startupCommands", cmds);
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -139,6 +256,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             cmds[msg.index].count = Math.max(1, msg.count);
             await this._context.globalState.update("startupCommands", cmds);
           }
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -162,6 +280,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             overrides[cid].startupCommand = first?.input || "";
             await this._context.globalState.update("cellOverrides", overrides);
           }
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -182,6 +301,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               await this._context.globalState.update("cellOverrides", overrides);
             }
           }
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -199,6 +319,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             overrides[cid].startupCommand = first?.input || "";
             await this._context.globalState.update("cellOverrides", overrides);
           }
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -220,6 +341,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               await this._context.globalState.update("cellOverrides", overrides);
             }
           }
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -280,21 +402,42 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         }
         // ── Presets ──
         case "savePreset": {
-          await this._savePreset(msg.name);
-          this.sendConfig();
+          const cfg = vscode.workspace.getConfiguration("terminalGrid");
+          const preset = {
+            name: msg.name,
+            rows: cfg.get<number>("defaultRows", 2),
+            cols: cfg.get<number>("defaultCols", 3),
+            startupCommands: this._context.globalState.get<{command: string; count: number}[]>("startupCommands", []),
+            cellLabels: this._context.globalState.get<string[]>("cellLabels", []),
+            zoomPercent: cfg.get<number>("zoomPercent", 100),
+            fontFamily: cfg.get<string>("fontFamily", ""),
+            bgColor: cfg.get<string>("backgroundColor", ""),
+            fgColor: cfg.get<string>("foregroundColor", ""),
+            colorTheme: cfg.get<string>("colorTheme", ""),
+            shellType: cfg.get<string>("shellType", ""),
+            defaultCommand: this._context.globalState.get<string>("defaultCommand", ""),
+            defaultSteps: this._context.globalState.get<unknown[]>("defaultSteps", []),
+            cellStepsOverrides: this._context.globalState.get<Record<number, Record<string, unknown>>>("cellOverrides", {}),
+            mergedRegions: this._context.globalState.get<unknown[]>("mergedRegions", []),
+          };
+          
+          if (vscode.workspace.workspaceFolders?.[0]) {
+            await this._saveLocalPreset(msg.name, preset);
+          } else {
+            const presets = this._context.globalState.get<Record<string, unknown>[]>("presets", []);
+            const existIdx = presets.findIndex((p) => (p as {name: string}).name === msg.name);
+            if (existIdx >= 0) presets[existIdx] = preset; else presets.push(preset);
+            await this._context.globalState.update("presets", presets);
+          }
+          this.sendConfig(msg.name);
           break;
         }
         case "loadPreset": {
-          const presets = this._context.globalState.get<Record<string, unknown>[]>("presets", []);
-          const preset = presets.find((p) => (p as {name: string}).name === msg.name) as {
-            name: string; rows: number; cols: number;
-            startupCommands: {command: string; count: number}[];
-            cellLabels: string[]; zoomPercent: number;
-            fontFamily: string; bgColor: string; fgColor: string;
-            colorTheme?: string; shellType?: string; defaultCommand?: string;
-            defaultSteps?: unknown[]; cellStepsOverrides?: Record<number, Record<string, unknown>>;
-            mergedRegions?: unknown[];
-          } | undefined;
+          let preset = this._loadLocalPreset(msg.name);
+          if (!preset) {
+            const presets = this._context.globalState.get<Record<string, unknown>[]>("presets", []);
+            preset = presets.find((p) => (p as {name: string}).name === msg.name) as any;
+          }
           if (!preset) break;
           const cfg = vscode.workspace.getConfiguration("terminalGrid");
           await cfg.update("defaultRows", preset.rows, vscode.ConfigurationTarget.Global);
@@ -320,40 +463,23 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             const cur = this._context.globalState.get<Record<number, Record<string, unknown>>>("cellOverrides", {});
             for (const [k, v] of Object.entries(preset.cellStepsOverrides)) {
               if (!cur[Number(k)]) cur[Number(k)] = {};
-              if (Array.isArray(v.startupSteps)) cur[Number(k)].startupSteps = v.startupSteps;
+              const ov = v as any;
+              if (Array.isArray(ov.startupSteps)) cur[Number(k)].startupSteps = ov.startupSteps;
             }
             await this._context.globalState.update("cellOverrides", cur);
           }
           // Restore merge regions
           await this._context.globalState.update("mergedRegions", preset.mergedRegions || []);
-          // Auto-open grid with loaded preset dimensions
-          TerminalGridPanel.createOrShow(this._context, preset.rows, preset.cols);
-          this.sendConfig();
+          this.sendConfig(msg.name);
           break;
         }
         case "deletePreset": {
+          if (vscode.workspace.workspaceFolders?.[0]) {
+            await this._deleteLocalPreset(msg.name);
+          }
           const presets = this._context.globalState.get<Record<string, unknown>[]>("presets", []);
           const filtered = presets.filter((p) => (p as {name: string}).name !== msg.name);
           await this._context.globalState.update("presets", filtered);
-          // Also remove any project links to this preset
-          const projectPresets = this._context.globalState.get<Record<string, string>>("projectPresets", {});
-          for (const key of Object.keys(projectPresets)) {
-            if (projectPresets[key] === msg.name) {
-              delete projectPresets[key];
-            }
-          }
-          await this._context.globalState.update("projectPresets", projectPresets);
-          this.sendConfig();
-          break;
-        }
-        case "linkPreset": {
-          const projectPresets = this._context.globalState.get<Record<string, string>>("projectPresets", {});
-          if (msg.presetName) {
-            projectPresets[msg.projectPath] = msg.presetName;
-          } else {
-            delete projectPresets[msg.projectPath];
-          }
-          await this._context.globalState.update("projectPresets", projectPresets);
           this.sendConfig();
           break;
         }
@@ -385,6 +511,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             const tc = msg.themeName ? resolveThemeColors(msg.themeName) : null;
             TerminalGridPanel.currentPanel.sendCellConfig(msg.cellId, msg.bgColor || "", msg.fgColor || "", msg.fontFamily || "", msg.themeName || "", tc);
           }
+          await this._saveWorkspaceConfig();
           break;
         }
         case "setShellForCell": {
@@ -397,6 +524,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           if (TerminalGridPanel.currentPanel) {
             TerminalGridPanel.currentPanel.restartCell(msg.cellId);
           }
+          await this._saveWorkspaceConfig();
           break;
         }
         case "setDefaultCommand": {
@@ -404,6 +532,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           const cmd = msg.command || "";
           await this._context.globalState.update("defaultCommand", cmd);
           await this._context.globalState.update("defaultSteps", cmd ? [{ type: "command", input: cmd }] : []);
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -415,6 +544,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           overrides[msg.cellId].startupCommand = cmdVal;
           overrides[msg.cellId].startupSteps = cmdVal ? [{ type: "command", input: cmdVal }] : [];
           await this._context.globalState.update("cellOverrides", overrides);
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -423,6 +553,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           if (TerminalGridPanel.currentPanel) {
             TerminalGridPanel.currentPanel.clearCellOverrides();
           }
+          await this._saveWorkspaceConfig();
           break;
         }
         case "clearAllCellShells": {
@@ -433,19 +564,24 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             }
           }
           await this._context.globalState.update("cellOverrides", overrides);
+          await this._saveWorkspaceConfig();
           break;
         }
         case "saveMergeRegions": {
           const regions = msg.regions || [];
           await this._context.globalState.update("mergedRegions", regions);
           // Excel-style: clear settings for hidden (absorbed) cells
-          const gridCols = vscode.workspace.getConfiguration("terminalGrid").get<number>("defaultCols", 3);
+          const panel = TerminalGridPanel.currentPanel;
+          const gridRows = msg.rows ?? panel?.getRows() ?? vscode.workspace.getConfiguration("terminalGrid").get<number>("defaultRows", 2);
+          const gridCols = msg.cols ?? panel?.getCols() ?? vscode.workspace.getConfiguration("terminalGrid").get<number>("defaultCols", 3);
           const hidden = new Set<number>();
           for (const m of regions as {startRow: number; startCol: number; rowSpan: number; colSpan: number}[]) {
             for (let r = m.startRow; r < m.startRow + m.rowSpan; r++) {
               for (let c = m.startCol; c < m.startCol + m.colSpan; c++) {
                 if (r === m.startRow && c === m.startCol) continue;
-                hidden.add(r * gridCols + c);
+                if (r < gridRows && c < gridCols) {
+                  hidden.add(r * gridCols + c);
+                }
               }
             }
           }
@@ -462,6 +598,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               await this._context.globalState.update("cellLabels", labels);
             }
           }
+          await this._saveWorkspaceConfig();
           this.sendConfig();
           break;
         }
@@ -511,35 +648,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     });
   }
 
-  private async _savePreset(name: string): Promise<void> {
-    const cfg = vscode.workspace.getConfiguration("terminalGrid");
-    const preset = {
-      name,
-      rows: cfg.get<number>("defaultRows", 2),
-      cols: cfg.get<number>("defaultCols", 3),
-      startupCommands: this._context.globalState.get<{command: string; count: number}[]>("startupCommands", []),
-      cellLabels: this._context.globalState.get<string[]>("cellLabels", []),
-      zoomPercent: cfg.get<number>("zoomPercent", 100),
-      fontFamily: cfg.get<string>("fontFamily", ""),
-      bgColor: cfg.get<string>("backgroundColor", ""),
-      fgColor: cfg.get<string>("foregroundColor", ""),
-      colorTheme: cfg.get<string>("colorTheme", ""),
-      shellType: cfg.get<string>("shellType", ""),
-      defaultCommand: this._context.globalState.get<string>("defaultCommand", ""),
-      defaultSteps: this._context.globalState.get<unknown[]>("defaultSteps", []),
-      cellStepsOverrides: this._context.globalState.get<Record<number, Record<string, unknown>>>("cellOverrides", {}),
-      mergedRegions: this._context.globalState.get<unknown[]>("mergedRegions", []),
-    };
-    const presets = this._context.globalState.get<Record<string, unknown>[]>("presets", []);
-    const existIdx = presets.findIndex((p) => (p as {name: string}).name === name);
-    if (existIdx >= 0) {
-      presets[existIdx] = preset;
-    } else {
-      presets.push(preset);
-    }
-    await this._context.globalState.update("presets", presets);
-  }
-
   /** Migrate legacy single-command fields into the new sequential steps format, then clear them. */
   private async _migrateSteps(): Promise<void> {
     let dirty = false;
@@ -582,7 +690,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     }
   }
 
-  public sendConfig(): void {
+  public sendConfig(loadedPresetName?: string): void {
     if (!this._view) return;
     // Auto-migrate legacy fields on every config send
     this._migrateSteps();
@@ -590,7 +698,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     const customFonts = this._context.globalState.get<CustomFont[]>("customFonts", []);
     const startupCommands = this._context.globalState.get<{command: string; count: number}[]>("startupCommands", []);
     const projects = this._context.globalState.get<{name: string; path: string}[]>("projects", []);
-    const presets = this._context.globalState.get<Record<string, unknown>[]>("presets", []);
+    const presets = this._listLocalPresets();
     const projectPresets = this._context.globalState.get<Record<string, string>>("projectPresets", {});
     const cellLabels = this._context.globalState.get<string[]>("cellLabels", []);
     const cellOverrides = this._context.globalState.get<Record<number, {bgColor?: string; fgColor?: string; fontFamily?: string; shellType?: string; startupSteps?: unknown[]}>>("cellOverrides", {});
@@ -625,7 +733,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       mergedRegions: this._context.globalState.get<unknown[]>("mergedRegions", []),
       hiddenCells: (() => {
         const mr = this._context.globalState.get<{startRow: number; startCol: number; rowSpan: number; colSpan: number}[]>("mergedRegions", []);
-        const gc = cfg.get<number>("defaultCols", 3);
+        const gc = panel ? panel.getCols() : cfg.get<number>("defaultCols", 3);
         const h: number[] = [];
         for (const m of mr) {
           for (let r = m.startRow; r < m.startRow + m.rowSpan; r++) {
@@ -637,6 +745,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         }
         return h;
       })(),
+      loadedPresetName: loadedPresetName,
     });
   }
 
@@ -1047,11 +1156,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     }
     .cmd-summary-del {
       width: 16px; height: 16px; border: none; border-radius: 3px;
-      background: transparent; color: rgba(255,255,255,.25);
+      background: transparent; color: rgba(255,255,255,.5);
       font-size: 12px; line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; transition: all .1s;
+      opacity: 0;
     }
+    .cmd-summary-item:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10); }
+    .cmd-summary-item:hover .cmd-summary-del { opacity: 1; }
     .cmd-summary-del:hover { background: rgba(255,80,80,.2); color: #f55; }
     /* ── Step groups (sequential startup commands) ── */
     .cmd-step-group { margin-bottom: 6px; }
@@ -1068,7 +1180,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       font-size: 10px; cursor: grab; transition: background .15s, border-color .15s, opacity .15s;
       user-select: none;
     }
-    .cmd-step-item:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10); }
+    .cmd-step-item:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); }
     .cmd-step-item.dragging { opacity: .4; border-color: var(--vscode-focusBorder, rgba(0,127,212,.6)); }
     .cmd-step-handle { cursor: grab; opacity: .3; font-size: 14px; line-height: 1; flex-shrink: 0; width: 14px; text-align: center; }
     .cmd-step-handle:hover { opacity: .6; }
@@ -1083,11 +1195,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     }
     .cmd-step-del {
       width: 16px; height: 16px; border: none; border-radius: 3px;
-      background: transparent; color: rgba(255,255,255,.25);
+      background: transparent; color: rgba(255,255,255,.5);
       font-size: 12px; line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; transition: all .1s;
+      opacity: 0;
     }
+    .cmd-step-item:hover .cmd-step-del { opacity: 1; }
     .cmd-step-del:hover { background: rgba(255,80,80,.2); color: #f55; }
     /* ── node-pty banner ── */
     .pty-banner {
@@ -1147,6 +1261,37 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           <button class="glass-btn" id="browseProjectBtn" style="font-size: 11px; padding: 8px 10px;">
             <span class="btn-icon" style="font-size: 12px;">&#128193;</span> ${vscode.l10n.t("Browse Folder")}
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="glass-card" data-section="presets">
+      <div class="section-header collapsible">
+        <div class="section-label">${vscode.l10n.t("Presets")}</div>
+        <span class="tip-wrap">
+          <span class="tip-icon">?</span>
+          <div class="tip-bubble">
+            ${vscode.l10n.t("Save and load current grid settings (size, zoom, font, color, commands, cell labels) as presets. Use Link to project for per-project auto-apply.")}
+          </div>
+        </span>
+        <span class="collapse-icon">\u25BE</span>
+      </div>
+      <div class="section-body">
+        <div class="cmd-add-row">
+          <input class="glass-input" id="presetNameInput" placeholder="${vscode.l10n.t("Preset name…")}" style="flex: 1;" />
+        </div>
+        <div class="cmd-add-row" style="margin-top: 4px;">
+          <select class="glass-select" id="presetSelect" style="flex: 1;">
+            <option value="">${vscode.l10n.t("Select preset…")}</option>
+          </select>
+        </div>
+        <div class="btn-group" style="gap: 6px; margin-top: 8px;">
+          <div style="display: flex; gap: 6px;">
+            <button class="glass-btn" id="presetSaveBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${vscode.l10n.t("Save")}</button>
+            <button class="glass-btn primary" id="presetLoadBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${vscode.l10n.t("Load")}</button>
+            <button class="glass-btn" id="presetDeleteBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${vscode.l10n.t("Delete")}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1283,34 +1428,38 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             <div class="font-dropdown" id="shellDropdown"></div>
           </div>
         </div>
-        <div class="setting-row">
-          <span class="setting-label">${vscode.l10n.t("Command")}</span>
-          <select class="glass-select" id="cmdPreset" style="flex:1;min-width:0;">
-            <option value="">${vscode.l10n.t("Select command…")}</option>
-            <option value="claude">claude</option>
-            <option value="codex">codex</option>
-            <option value="claude --dangerously-skip-permissions">claude --dangerously-skip-permissions</option>
-            <option value="codex -s danger-full-access -a never">codex -s danger-full-access -a never</option>
-            <option value="npm run dev">npm run dev</option>
-            <option value="npm start">npm start</option>
-            <option value="npm test">npm test</option>
-            <option value="python">python</option>
-            <option value="node">node</option>
-            <option value="docker compose up">docker compose up</option>
-            <option value="ssh">ssh</option>
-            <option value="htop">htop</option>
-            <option value="/resume">/resume</option>
-            <option value="/compact">/compact</option>
-            <option value="yes">yes</option>
-            <option value="exit">exit</option>
-            <option value="__enter__">Enter (\u21B5)</option>
-            <option value="__custom__">${vscode.l10n.t("Custom command…")}</option>
-            <option value="__timeout__">${vscode.l10n.t("Timeout (ms)…")}</option>
-          </select>
-        </div>
-        <div class="cmd-add-row" id="cmdCustomRow" style="display:none;">
-          <input class="glass-input" id="cmdCustom" placeholder="${vscode.l10n.t("Custom command…")}" style="flex:1;min-width:0;" />
-          <button class="stepper-btn" id="cmdApplyBtn" title="${vscode.l10n.t("Apply")}">&#10003;</button>
+        <div class="setting-row" style="flex-direction: column; align-items: stretch; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="setting-label" style="width: 50px;">${vscode.l10n.t("Command")}</span>
+            <div style="flex: 1; display: flex; gap: 6px;">
+              <input class="glass-input" id="cmdCustom" placeholder="${vscode.l10n.t("Custom command…")}" style="flex:1;min-width:0;" />
+              <button class="stepper-btn" id="cmdApplyBtn" title="${vscode.l10n.t("Apply")}">&#10003;</button>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="setting-label" style="width: 50px; visibility: hidden;">${vscode.l10n.t("Command")}</span>
+            <select class="glass-select" id="cmdPreset" style="flex:1;min-width:0;">
+              <option value="">${vscode.l10n.t("Select command…")}</option>
+              <option value="claude">claude</option>
+              <option value="codex">codex</option>
+              <option value="claude --dangerously-skip-permissions">claude --dangerously-skip-permissions</option>
+              <option value="codex -s danger-full-access -a never">codex -s danger-full-access -a never</option>
+              <option value="npm run dev">npm run dev</option>
+              <option value="npm start">npm start</option>
+              <option value="npm test">npm test</option>
+              <option value="python">python</option>
+              <option value="node">node</option>
+              <option value="docker compose up">docker compose up</option>
+              <option value="ssh">ssh</option>
+              <option value="htop">htop</option>
+              <option value="/resume">/resume</option>
+              <option value="/compact">/compact</option>
+              <option value="yes">yes</option>
+              <option value="exit">exit</option>
+              <option value="__enter__">Enter (\u21B5)</option>
+              <option value="__timeout__">${vscode.l10n.t("Timeout (ms)…")}</option>
+            </select>
+          </div>
         </div>
         <div class="cmd-add-row" id="cmdTimeoutRow" style="display:none;">
           <input class="glass-input" type="number" id="cmdTimeoutMs" placeholder="${vscode.l10n.t("Milliseconds (e.g. 1500)")}" min="100" step="100" style="flex:1;min-width:0;" />
@@ -1318,40 +1467,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         </div>
         <div class="cmd-summary-divider"></div>
         <div id="cmdSummaryList" class="cmd-summary-list"></div>
-      </div>
-    </div>
-
-    <!-- Presets -->
-    <div class="glass-card" data-section="presets">
-      <div class="section-header collapsible">
-        <div class="section-label">${vscode.l10n.t("Presets")}</div>
-        <span class="tip-wrap">
-          <span class="tip-icon">?</span>
-          <div class="tip-bubble">
-            ${vscode.l10n.t("Save and load current grid settings (size, zoom, font, color, commands, cell labels) as presets. Use Link to project for per-project auto-apply.")}
-          </div>
-        </span>
-        <span class="collapse-icon">\u25BE</span>
-      </div>
-      <div class="section-body">
-        <div class="cmd-add-row">
-          <input class="glass-input" id="presetNameInput" placeholder="${vscode.l10n.t("Preset name…")}" style="flex: 1;" />
-        </div>
-        <div class="cmd-add-row" style="margin-top: 4px;">
-          <select class="glass-select" id="presetSelect" style="flex: 1;">
-            <option value="">${vscode.l10n.t("Select preset…")}</option>
-          </select>
-        </div>
-        <div class="btn-group" style="gap: 6px; margin-top: 8px;">
-          <div style="display: flex; gap: 6px;">
-            <button class="glass-btn" id="presetSaveBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${vscode.l10n.t("Save")}</button>
-            <button class="glass-btn primary" id="presetLoadBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${vscode.l10n.t("Load")}</button>
-            <button class="glass-btn" id="presetDeleteBtn" style="font-size: 11px; padding: 8px 10px; flex: 1;">${vscode.l10n.t("Delete")}</button>
-          </div>
-          <div id="presetLinkRow" style="display: flex; align-items: center; gap: 6px; font-size: 11px; opacity: .7; margin-top: 4px;">
-            <input type="checkbox" id="presetLinkCheck" style="margin: 0;" />
-            <label id="presetLinkLabel" for="presetLinkCheck" style="cursor: pointer;">${vscode.l10n.t("Link to current project")}</label>
-          </div>
+        <div class="btn-group" style="margin-top: 10px;">
+          <button class="glass-btn primary" id="reopenGridBtn">
+            <span class="btn-icon">&#8635;</span> ${vscode.l10n.t("Reopen Grid")}
+          </button>
         </div>
       </div>
     </div>
@@ -1407,8 +1526,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       all: vscode.l10n.t("All"),
       noStartupCommands: vscode.l10n.t("No startup commands configured"),
       noProjects: vscode.l10n.t("No projects registered"),
-      linkedPrefix: vscode.l10n.t("Linked: {0}"),
-      linkToProject: vscode.l10n.t("Link to current project"),
       selectPreset: vscode.l10n.t("Select preset…"),
       reload: vscode.l10n.t("Reload"),
       retry: vscode.l10n.t("Retry"),
@@ -1478,6 +1595,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     document.getElementById('openGridBtn').addEventListener('click', function() {
       vscode.postMessage({ type: 'openGrid', rows: selectedRows, cols: selectedCols });
+    });
+    document.getElementById('reopenGridBtn').addEventListener('click', function() {
+      vscode.postMessage({ type: 'reopenGrid' });
     });
     document.getElementById('reloadBtn').addEventListener('click', function() {
       vscode.postMessage({ type: 'reload' });
@@ -1645,7 +1765,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       mergeSelStart = null;
       mergeSelEnd = null;
       renderMergeGrid();
-      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
     });
 
     unmergeBtn.addEventListener('click', function() {
@@ -1657,7 +1777,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       mergeSelStart = null;
       mergeSelEnd = null;
       renderMergeGrid();
-      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
     });
 
     mergeClearBtn.addEventListener('click', function() {
@@ -1665,7 +1785,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       mergeSelStart = null;
       mergeSelEnd = null;
       renderMergeGrid();
-      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+      vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
     });
 
     // Rebuild merge grid when grid size changes
@@ -1677,7 +1797,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           mergeSelStart = null;
           mergeSelEnd = null;
           buildMergeGrid();
-          vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions });
+          vscode.postMessage({ type: 'saveMergeRegions', regions: mergedRegions, rows: selectedRows, cols: selectedCols });
         }
       });
       observer.observe(document.getElementById('sizeLabel'), { childList: true, subtree: true });
@@ -1723,7 +1843,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     var settingsTabsEl = document.getElementById('settingsTabs');
     var builtinFonts = [
       { value: '', label: __i18n.ideDefault },
-      { value: 'Consolas', label: 'Consolas' },
+      { value: 'MesloLGS NF', label: 'MesloLGS NF' },
+      { value: 'JetBrainsMono Nerd Font', label: 'JetBrainsMono NF' },
       { value: 'Cascadia Code', label: 'Cascadia Code' },
       { value: 'Cascadia Mono', label: 'Cascadia Mono' },
       { value: 'JetBrains Mono', label: 'JetBrains Mono' },
@@ -1733,6 +1854,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       { value: 'Ubuntu Mono', label: 'Ubuntu Mono' },
       { value: 'Menlo', label: 'Menlo' },
       { value: 'Monaco', label: 'Monaco' },
+      { value: 'Consolas', label: 'Consolas' },
       { value: 'Courier New', label: 'Courier New' }
     ];
     var customFontNames = [];
@@ -1879,7 +2001,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     // ── Per-cell sequential startup steps ──
     var cmdPresetEl = document.getElementById('cmdPreset');
-    var cmdCustomRow = document.getElementById('cmdCustomRow');
     var cmdCustomInput = document.getElementById('cmdCustom');
     var cmdTimeoutRow = document.getElementById('cmdTimeoutRow');
     var cmdTimeoutMsInput = document.getElementById('cmdTimeoutMs');
@@ -1908,41 +2029,34 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     cmdPresetEl.addEventListener('change', function() {
       var val = this.value;
-      if (val === '__custom__') {
-        cmdCustomRow.style.display = 'flex';
-        cmdTimeoutRow.style.display = 'none';
-        cmdCustomInput.focus();
-        this.value = '';
-        return;
-      }
       if (val === '__timeout__') {
         cmdTimeoutRow.style.display = 'flex';
-        cmdCustomRow.style.display = 'none';
         cmdTimeoutMsInput.focus();
         this.value = '';
         return;
       }
       if (val === '__enter__') {
-        cmdCustomRow.style.display = 'none';
         cmdTimeoutRow.style.display = 'none';
+        cmdCustomInput.value = '';
         addStep({ type: 'command', input: '' });
         this.value = '';
         return;
       }
       if (val) {
-        cmdCustomRow.style.display = 'none';
         cmdTimeoutRow.style.display = 'none';
-        addStep({ type: 'command', input: val });
+        cmdCustomInput.value = val;
         this.value = '';
+        cmdCustomInput.focus();
       }
     });
 
     document.getElementById('cmdApplyBtn').addEventListener('click', function() {
       var val = cmdCustomInput.value.trim();
+      // Allow empty string if user explicitly wants an Enter step by typing nothing and clicking apply?
+      // But user usually wants to type something. Enter step is handled by dropdown.
       if (val) {
         addStep({ type: 'command', input: val });
         cmdCustomInput.value = '';
-        cmdCustomRow.style.display = 'none';
       }
     });
 
@@ -2190,15 +2304,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       renderCmdSummary();
     }
 
-    function buildSettingsTabs(total, labels, hidden) {
+    function buildSettingsTabs(rows, cols, labels, hidden) {
       var hiddenSet = {};
       if (hidden) for (var h = 0; h < hidden.length; h++) hiddenSet[hidden[h]] = true;
       settingsTabsEl.innerHTML = '';
-      if (total <= 0) {
+      if (rows <= 0 || cols <= 0) {
         settingsTabsEl.classList.add('hidden');
         activeSettingsTab = 'all';
         return;
       }
+      var total = rows * cols;
       settingsTabsEl.classList.remove('hidden');
       // All tab
       var allBtn = document.createElement('button');
@@ -2214,7 +2329,20 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           var btn = document.createElement('button');
           btn.className = 'stab';
           btn.dataset.tab = String(idx);
-          btn.textContent = labels[idx] || String(idx + 1);
+          var r = Math.floor(idx / cols);
+          var c = idx % cols;
+          var region = getMergedRegionAt(r, c);
+          var label = labels[idx];
+          if (!label && region) {
+            var nums = [];
+            for (var rr = region.startRow; rr < region.startRow + region.rowSpan; rr++) {
+              for (var cc = region.startCol; cc < region.startCol + region.colSpan; cc++) {
+                nums.push(rr * cols + cc + 1);
+              }
+            }
+            label = nums.join('+');
+          }
+          btn.textContent = label || String(idx + 1);
           btn.addEventListener('click', function() { switchSettingsTab(String(idx)); });
           settingsTabsEl.appendChild(btn);
         })(i);
@@ -2247,16 +2375,17 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     var cmdTabsEl = document.getElementById('cmdTabs');
     var activeCmdTab = 'all';
 
-    function buildCmdTabs(total, labels, hidden) {
+    function buildCmdTabs(rows, cols, labels, hidden) {
       var hiddenSet = {};
       if (hidden) for (var h = 0; h < hidden.length; h++) hiddenSet[hidden[h]] = true;
       var prevTab = activeCmdTab;
       cmdTabsEl.innerHTML = '';
-      if (total <= 0) {
+      if (rows <= 0 || cols <= 0) {
         cmdTabsEl.classList.add('hidden');
         activeCmdTab = 'all';
         return;
       }
+      var total = rows * cols;
       cmdTabsEl.classList.remove('hidden');
       // Check if previous tab still valid (and not hidden)
       var validPrev = prevTab === 'all' || (parseInt(prevTab, 10) < total && !hiddenSet[parseInt(prevTab, 10)]);
@@ -2273,7 +2402,20 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           var btn = document.createElement('button');
           btn.className = 'stab' + (restoreTab === String(idx) ? ' active' : '');
           btn.dataset.tab = String(idx);
-          btn.textContent = labels[idx] || String(idx + 1);
+          var r = Math.floor(idx / cols);
+          var c = idx % cols;
+          var region = getMergedRegionAt(r, c);
+          var label = labels[idx];
+          if (!label && region) {
+            var nums = [];
+            for (var rr = region.startRow; rr < region.startRow + region.rowSpan; rr++) {
+              for (var cc = region.startCol; cc < region.startCol + region.colSpan; cc++) {
+                nums.push(rr * cols + cc + 1);
+              }
+            }
+            label = nums.join('+');
+          }
+          btn.textContent = label || String(idx + 1);
           btn.addEventListener('click', function() { switchCmdTab(String(idx)); });
           cmdTabsEl.appendChild(btn);
         })(i);
@@ -2482,14 +2624,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         renderStepGroup(list, 'all', __i18n.all, allSteps, allShell);
       }
 
-      // Per-cell groups
-      var total = cmdTabsEl.querySelectorAll('.stab:not([data-tab="all"])').length;
-      for (var i = 0; i < total; i++) {
-        var ov = cellOverrides[i] || {};
+      // Per-cell groups - use actual tab IDs
+      var btns = cmdTabsEl.querySelectorAll('.stab:not([data-tab="all"])');
+      for (var i = 0; i < btns.length; i++) {
+        var cid = parseInt(btns[i].dataset.tab, 10);
+        var ov = cellOverrides[cid] || {};
         var cellShell = ov.shellType ? getShellDisplayName(ov.shellType) : '';
-        var cellSteps = getStepsForTarget(i);
+        var cellSteps = getStepsForTarget(cid);
         if (cellShell || cellSteps.length > 0) {
-          renderStepGroup(list, i, getCellLabel(i), cellSteps, cellShell);
+          renderStepGroup(list, cid, getCellLabel(cid), cellSteps, cellShell);
         }
       }
     }
@@ -2533,14 +2676,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           nameEl.title = p.path;
           item.appendChild(nameEl);
 
-          // Show linked preset if any
-          if (projectPresetsMap[p.path]) {
-            var badge = document.createElement('span');
-            badge.style.cssText = 'font-size:9px;opacity:.5;flex-shrink:0;margin-left:4px;';
-            badge.textContent = projectPresetsMap[p.path];
-            item.appendChild(badge);
-          }
-
           var del = document.createElement('button');
           del.className = 'cmd-item-del';
           del.textContent = '\\u00d7';
@@ -2562,11 +2697,12 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     // ── Presets ──
     var presets = [];
-    var projectPresetsMap = {};
+    var curPresetName = '';
 
     document.getElementById('presetSelect').addEventListener('change', function() {
       var nameInput = document.getElementById('presetNameInput');
-      nameInput.value = this.value;
+      curPresetName = this.value;
+      nameInput.value = curPresetName;
     });
 
     document.getElementById('presetSaveBtn').addEventListener('click', function() {
@@ -2577,7 +2713,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     document.getElementById('presetLoadBtn').addEventListener('click', function() {
       var name = document.getElementById('presetSelect').value;
-      if (!name) return;
+      if (!name) {
+        vscode.postMessage({ type: 'loadPreset', name: 'terminal-grid' });
+        return;
+      }
       vscode.postMessage({ type: 'loadPreset', name: name });
     });
 
@@ -2587,49 +2726,39 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       vscode.postMessage({ type: 'deletePreset', name: name });
     });
 
-    document.getElementById('presetLinkCheck').addEventListener('change', function() {
-      var sel = document.getElementById('presetSelect');
-      var name = this.checked ? sel.value : '';
-      if (this.checked && !name) return;
-      vscode.postMessage({ type: 'linkPreset', projectPath: workspacePath, presetName: name });
-    });
-
-    function renderPresetDropdown() {
+    function renderPresetDropdown(selectedName) {
       var sel = document.getElementById('presetSelect');
       var nameInput = document.getElementById('presetNameInput');
+      if (selectedName !== undefined) curPresetName = selectedName;
+      
       sel.innerHTML = '<option value="">' + __i18n.selectPreset + '</option>';
-      var linkedPreset = workspacePath ? (projectPresetsMap[workspacePath] || '') : '';
       for (var i = 0; i < presets.length; i++) {
         var opt = document.createElement('option');
         opt.value = presets[i].name;
-        opt.textContent = (presets[i].name === linkedPreset ? '\\u2605 ' : '') + presets[i].name;
+        opt.textContent = presets[i].name;
+        if (presets[i].name === curPresetName) {
+          opt.selected = true;
+        }
         sel.appendChild(opt);
       }
-      if (linkedPreset) {
-        sel.value = linkedPreset;
-        nameInput.value = linkedPreset;
+      if (curPresetName) {
+        nameInput.value = curPresetName;
       }
-      var check = document.getElementById('presetLinkCheck');
-      check.checked = !!linkedPreset;
-      var linkLabel = document.getElementById('presetLinkLabel');
-      linkLabel.textContent = linkedPreset
-        ? __i18n.linkedPrefix.replace('{0}', linkedPreset)
-        : __i18n.linkToProject;
     }
 
     // ── Broadcast ──
     var broadcastTargetsEl = document.getElementById('broadcastTargets');
     var curGridTotal = 0;
 
-    function buildBroadcastTargets(total, labels, hidden) {
+    function buildBroadcastTargets(rows, cols, labels, hidden) {
       var hiddenSet = {};
       if (hidden) for (var h = 0; h < hidden.length; h++) hiddenSet[hidden[h]] = true;
-      curGridTotal = total;
       broadcastTargetsEl.innerHTML = '';
-      if (total <= 0) {
+      if (rows <= 0 || cols <= 0) {
         broadcastTargetsEl.classList.add('hidden');
         return;
       }
+      var total = rows * cols;
       broadcastTargetsEl.classList.remove('hidden');
       // All checkbox
       var allLabel = document.createElement('label');
@@ -2648,7 +2777,21 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         cb.type = 'checkbox'; cb.checked = false;
         cb.dataset.cell = String(i);
         lbl.appendChild(cb);
-        lbl.appendChild(document.createTextNode(' ' + (labels[i] || (i + 1))));
+        
+        var r = Math.floor(i / cols);
+        var c = i % cols;
+        var region = getMergedRegionAt(r, c);
+        var label = labels[i];
+        if (!label && region) {
+          var nums = [];
+          for (var rr = region.startRow; rr < region.startRow + region.rowSpan; rr++) {
+            for (var cc = region.startCol; cc < region.startCol + region.colSpan; cc++) {
+              nums.push(rr * cols + cc + 1);
+            }
+          }
+          label = nums.join('+');
+        }
+        lbl.appendChild(document.createTextNode(' ' + (label || (i + 1))));
         broadcastTargetsEl.appendChild(lbl);
       }
       // All click → uncheck all individuals
@@ -2746,23 +2889,31 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         customFontNames = msg.customFonts || [];
         projects = msg.projects || [];
         presets = msg.presets || [];
-        projectPresetsMap = msg.projectPresets || {};
         workspacePath = msg.workspacePath || '';
         cellOverrides = msg.cellOverrides || {};
         defaultSteps = msg.defaultSteps || [];
-        updateSettingsUI();
-        renderProjectList();
-        renderPresetDropdown();
-        var gridTotal = (msg.gridRows || 0) * (msg.gridCols || 0);
-        var curHiddenCells = msg.hiddenCells || [];
-        buildBroadcastTargets(gridTotal, msg.cellLabels || [], curHiddenCells);
-        buildSettingsTabs(gridTotal, msg.cellLabels || [], curHiddenCells);
-        buildCmdTabs(gridTotal, msg.cellLabels || [], curHiddenCells);
-        showCmdTabValues();
-        applySectionStates(msg.sectionStates || {});
-        // Restore merge regions
+
+        // Restore merge regions BEFORE building tabs
         if (msg.mergedRegions && msg.mergedRegions.length > 0) {
           mergedRegions = msg.mergedRegions;
+        } else {
+          mergedRegions = [];
+        }
+
+        updateSettingsUI();
+        renderProjectList();
+        renderPresetDropdown(msg.loadedPresetName);
+
+        var rows = msg.gridRows || 0;
+        var cols = msg.gridCols || 0;
+        var curHiddenCells = msg.hiddenCells || [];
+        buildBroadcastTargets(rows, cols, msg.cellLabels || [], curHiddenCells);
+        buildSettingsTabs(rows, cols, msg.cellLabels || [], curHiddenCells);
+        buildCmdTabs(rows, cols, msg.cellLabels || [], curHiddenCells);
+        showCmdTabValues();
+        applySectionStates(msg.sectionStates || {});
+
+        if (mergedRegions.length > 0) {
           if (mergeRows !== selectedRows || mergeCols !== selectedCols) {
             buildMergeGrid();
           } else {

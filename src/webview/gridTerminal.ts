@@ -11,6 +11,7 @@ declare const __GRID_ROWS: number;
 declare const __GRID_COLS: number;
 declare const __GRID_ZOOM: number;
 declare const __GRID_FONT_FAMILY: string;
+declare const __GRID_IDE_FONT_FAMILY: string;
 declare const __GRID_BG_COLOR: string;
 declare const __GRID_FG_COLOR: string;
 declare const __GRID_THEME: string;
@@ -39,6 +40,7 @@ function getMergeOrigin(cellRow: number, cellCol: number) {
 
 let globalZoom = __GRID_ZOOM;
 let fontFamilyOverride = __GRID_FONT_FAMILY;
+let ideFontFamily = (typeof __GRID_IDE_FONT_FAMILY !== "undefined" ? __GRID_IDE_FONT_FAMILY : "");
 let bgColorOverride = __GRID_BG_COLOR;
 let fgColorOverride = __GRID_FG_COLOR;
 let globalThemeName = __GRID_THEME;
@@ -109,10 +111,12 @@ function buildTheme(): ITheme {
 
 function getTermFontFamily(): string {
   if (fontFamilyOverride) return fontFamilyOverride;
+  const fallbacks = 'Menlo, Monaco, Consolas, "Cascadia Code", "JetBrains Mono", "Fira Code", "Courier New", monospace';
   return (
+    ideFontFamily ||
     css("--vscode-terminal-fontFamily") ||
     css("--vscode-editor-fontFamily") ||
-    'Consolas, "Courier New", monospace'
+    fallbacks
   );
 }
 

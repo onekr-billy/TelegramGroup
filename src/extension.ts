@@ -114,54 +114,57 @@ let mcpBridge: McpBridge | undefined;
 let mcpStatusItem: vscode.StatusBarItem | undefined;
 
 export function activate(context: vscode.ExtensionContext): void {
-  // Auto-load preset for current workspace
-  const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-  if (workspacePath) {
-    const mapping = context.globalState.get<Record<string, string>>("projectPresets", {});
-    const presetName = mapping[workspacePath];
-    if (presetName) {
-      const presets = context.globalState.get<Array<{
-        name: string; rows: number; cols: number;
-        startupCommands: {command: string; count: number}[];
-        cellLabels: string[]; zoomPercent: number;
-        fontFamily: string; bgColor: string; fgColor: string;
-        colorTheme?: string; shellType?: string; defaultCommand?: string;
-        defaultSteps?: {type: string; input?: string; ms?: number}[];
-        cellStepsOverrides?: Record<number, Record<string, unknown>>;
-      }>>("presets", []);
-      const preset = presets.find((p) => p.name === presetName);
-      if (preset) {
-        const cfg = vscode.workspace.getConfiguration("terminalGrid");
-        cfg.update("defaultRows", preset.rows, vscode.ConfigurationTarget.Global);
-        cfg.update("defaultCols", preset.cols, vscode.ConfigurationTarget.Global);
-        cfg.update("zoomPercent", preset.zoomPercent, vscode.ConfigurationTarget.Global);
-        cfg.update("fontFamily", preset.fontFamily, vscode.ConfigurationTarget.Global);
-        cfg.update("backgroundColor", preset.bgColor, vscode.ConfigurationTarget.Global);
-        cfg.update("foregroundColor", preset.fgColor, vscode.ConfigurationTarget.Global);
-        cfg.update("colorTheme", preset.colorTheme || "", vscode.ConfigurationTarget.Global);
-        cfg.update("shellType", preset.shellType || "", vscode.ConfigurationTarget.Global);
-        context.globalState.update("startupCommands", preset.startupCommands || []);
-        context.globalState.update("cellLabels", preset.cellLabels || []);
-        context.globalState.update("defaultCommand", preset.defaultCommand || "");
-        // Restore sequential startup steps
-        if (preset.defaultSteps) {
-          context.globalState.update("defaultSteps", preset.defaultSteps);
-        } else if (preset.defaultCommand) {
-          context.globalState.update("defaultSteps", [{ type: "command", input: preset.defaultCommand }]);
-        } else {
-          context.globalState.update("defaultSteps", []);
-        }
-        if (preset.cellStepsOverrides) {
-          const cur = context.globalState.get<Record<number, Record<string, unknown>>>("cellOverrides", {});
-          for (const [k, v] of Object.entries(preset.cellStepsOverrides)) {
-            if (!cur[Number(k)]) cur[Number(k)] = {};
-            if (Array.isArray((v as Record<string, unknown>).startupSteps)) {
-              cur[Number(k)].startupSteps = (v as Record<string, unknown>).startupSteps;
-            }
-          }
-          context.globalState.update("cellOverrides", cur);
-        }
+  // ── Auto-load workspace-isolated config ──
+  const folder = vscode.workspace.workspaceFolders?.[0];
+  if (folder) {
+    const configPath = path.join(folder.uri.fsPath, "terminal-grid", "terminal-grid.json");
+    let preset: any = null;
+    if (fs.existsSync(configPath)) {
+      try {
+        preset = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+      } catch (e) {
+        console.error("Failed to parse local terminal-grid.json", e);
       }
+    } else {
+      // Fallback to project mapping logic
+      const mapping = context.globalState.get<Record<string, string>>("projectPresets", {});
+      const presetName = mapping[folder.uri.fsPath];
+      if (presetName) {
+        const presets = context.globalState.get<any[]>("presets", []);
+        preset = presets.find((p) => p.name === presetName);
+      }
+    }
+
+    if (preset) {
+      const cfg = vscode.workspace.getConfiguration("terminalGrid");
+      cfg.update("defaultRows", preset.rows, vscode.ConfigurationTarget.Global);
+      cfg.update("defaultCols", preset.cols, vscode.ConfigurationTarget.Global);
+      cfg.update("zoomPercent", preset.zoomPercent, vscode.ConfigurationTarget.Global);
+      cfg.update("fontFamily", preset.fontFamily, vscode.ConfigurationTarget.Global);
+      cfg.update("backgroundColor", preset.bgColor, vscode.ConfigurationTarget.Global);
+      cfg.update("foregroundColor", preset.fgColor, vscode.ConfigurationTarget.Global);
+      cfg.update("colorTheme", preset.colorTheme || "", vscode.ConfigurationTarget.Global);
+      cfg.update("shellType", preset.shellType || "", vscode.ConfigurationTarget.Global);
+      context.globalState.update("startupCommands", preset.startupCommands || []);
+      context.globalState.update("cellLabels", preset.cellLabels || []);
+      context.globalState.update("defaultCommand", preset.defaultCommand || "");
+      if (preset.defaultSteps) {
+        context.globalState.update("defaultSteps", preset.defaultSteps);
+      } else if (preset.defaultCommand) {
+        context.globalState.update("defaultSteps", [{ type: "command", input: preset.defaultCommand }]);
+      } else {
+        context.globalState.update("defaultSteps", []);
+      }
+      if (preset.cellStepsOverrides) {
+        const cur = context.globalState.get<Record<number, Record<string, unknown>>>("cellOverrides", {});
+        for (const [k, v] of Object.entries(preset.cellStepsOverrides)) {
+          if (!cur[Number(k)]) cur[Number(k)] = {};
+          const ov = v as any;
+          if (Array.isArray(ov.startupSteps)) cur[Number(k)].startupSteps = ov.startupSteps;
+        }
+        context.globalState.update("cellOverrides", cur);
+      }
+      context.globalState.update("mergedRegions", preset.mergedRegions || []);
     }
   }
 
