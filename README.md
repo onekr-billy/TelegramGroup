@@ -41,7 +41,7 @@
 | **🌈 彩虹群发器** | [自助下单](https://t.me/caihongautobot) |多账号管理·一键群发·自动加群·用户采集·智能炒群·适合推广|
 | **免费频道搬运机器人** | [@xnby08bot](https://t.me/xnby08bot?start=invite_8105886270) | 频道搬运、备份、模仿 → [教程](https://www.youtube.com/watch?v=rV6vIMFTAPA)|
 | **搜索群①** | [@sousuo20w](https://t.me/sousuo20w) | 搜索任意资源(加群要过人机校验，防止刷子) |
-| **搜索群②** | [@jiso5173](https://t.me/jiso5173) | 搜索任意资源(加群要过人机校验，防止刷子) |
+| **搜索群②** | [@sousou20w](https://t.me/sousou20w) | 搜索任意资源(加群要过人机校验，防止刷子) |
 | **搜索群③** | [@jisoubar](https://t.me/jisoubar) | “极搜吧”，支持资源搜索(加群要过人机校验，防止刷子) |
 | **搜索群④** | [@sepiansousuo](https://t.me/sepiansousuo) | 搜索任意资源(加群要过人机校验，防止刷子) |
 | **搜索群⑤** | [@kuaisou20w](https://t.me/kuaisou20w) | 搜索任意资源(加群要过人机校验，防止刷子) |
